@@ -4,6 +4,7 @@ import { analyzeFailure } from '../../core/runner/analyzeFailure.js';
 import { storage } from '../../core/storage/db.js';
 import { calculateMastery } from '../../core/mastery/calculateMastery.js';
 import { calculateNextReview } from '../../core/review/calculateNextReview.js';
+import { createStruggleProgress, createStruggleRecord } from '../../core/review/createStruggleReview.js';
 import { getCodeStorageKey, getLanguage } from '../../core/languages/registry.js';
 import GlossaryText, { GlossaryGuide } from '../glossary/GlossaryText.jsx';
 
@@ -31,20 +32,90 @@ function TestResults({ result, mode }) {
 }
 
 function HintDrawer({ problem, hintLevel, onNext, onClose, onStuck, onGiveUp }) {
-  return <aside className="drawer" aria-label="힌트"><div className="drawer-head"><div><span className="eyebrow">STEP BY STEP</span><h2>막힌 부분이 있나요?</h2></div><button className="icon-button" aria-label="힌트 닫기" onClick={onClose}>×</button></div><div className="hint-meter"><span>{hintLevel || 1} / 5</span><div>{[1,2,3,4,5].map((level)=><i key={level} className={level <= Math.max(1,hintLevel) ? 'active' : ''} />)}</div></div><div className="hint-stack">{problem.hints.slice(0, Math.max(1, hintLevel)).map((hint, index)=><div className="hint-item" key={hint}><span>{String(index + 1).padStart(2,'0')}</span><div><small>{['문제 이해','입력과 출력','핵심 관찰','도구 후보','의사코드'][index]}</small><p><GlossaryText text={hint} /></p></div></div>)}</div>{hintLevel < 5 && <button className="primary-button full" onClick={onNext}>다음 방향 열기 <span>→</span></button>}<p className="hint-note">힌트는 점수를 깎기 위한 장치가 아니에요. 복습 시점을 더 잘 정하는 데만 사용합니다.</p><div className="drawer-links"><button onClick={onStuck}>😵 상황별로 도움받기</button><button onClick={onGiveUp}>풀이 포기하고 복기하기</button></div></aside>;
+  return <aside className="drawer" aria-label="힌트"><div className="drawer-head"><div><span className="eyebrow">STEP BY STEP</span><h2>막힌 부분이 있나요?</h2></div><button className="icon-button" aria-label="힌트 닫기" onClick={onClose}>×</button></div><div className="hint-meter"><span>{hintLevel || 1} / 5</span><div>{[1,2,3,4,5].map((level)=><i key={level} className={level <= Math.max(1,hintLevel) ? 'active' : ''} />)}</div></div><div className="hint-stack">{problem.hints.slice(0, Math.max(1, hintLevel)).map((hint, index)=><div className="hint-item" key={hint}><span>{String(index + 1).padStart(2,'0')}</span><div><small>{['문제 이해','입력과 출력','핵심 관찰','도구 후보','의사코드'][index]}</small><p><GlossaryText text={hint} /></p></div></div>)}</div>{hintLevel < 5 && <button className="primary-button full" onClick={onNext}>다음 방향 열기 <span>→</span></button>}<p className="hint-note">힌트는 점수를 깎기 위한 장치가 아니에요. 복습 시점을 더 잘 정하는 데만 사용합니다.</p><div className="drawer-links"><button onClick={onStuck}>🧭 막힘 코치 시작하기</button><button onClick={onGiveUp}>풀이 포기하고 복기하기</button></div></aside>;
 }
 
 const stuckGuidance = {
-  '문제 자체가 이해되지 않음': '입력 하나와 출력 하나를 골라 “무엇을 받아 무엇을 반환하는가”만 먼저 말해보세요.',
-  '접근 방법이 떠오르지 않음': '가장 작은 예제를 직접 계산하며 매 단계에서 계속 기억해야 하는 값을 찾아보세요.',
-  '알고리즘은 알겠는데 구현이 안 됨': '전체 코드를 쓰기 전에 초기값, 반복 조건, 갱신식, 반환값 네 줄의 의사코드부터 적어보세요.',
-  '코드는 작성했는데 틀림': '공개 예제와 함께 빈 입력, 중복, 마지막 인덱스를 현재 코드에 한 줄씩 넣어보세요.',
-  '시간초과가 발생함': '같은 배열을 반복 순회하거나 includes를 반복 호출하는 지점을 찾아 Map 또는 Set으로 기억할 수 있는지 보세요.',
+  '문제 자체가 이해되지 않음': {
+    prompt: '입력 하나와 출력 하나를 골라, “무엇을 받아 무엇을 반환해야 하는지” 내 말로 적어보세요.',
+    placeholder: '예: 숫자 배열을 받아 가장 큰 값의 위치를 반환한다.',
+    clue: '문제의 배경 설명은 잠시 내려놓고 입력의 자료형, 출력의 자료형, 둘 사이에서 바뀌어야 하는 것만 표시해보세요.',
+  },
+  '접근 방법이 떠오르지 않음': {
+    prompt: '가장 작은 예제를 직접 계산한 과정을 한 단계씩 적어보세요. 매 단계에서 기억한 값은 무엇인가요?',
+    placeholder: '예: 첫 값을 저장하고 다음 값과 비교해 더 큰 값을 남긴다.',
+    clue: '손으로 푼 과정에서 반복되는 행동과 계속 유지되는 값을 찾으면 반복문과 필요한 자료구조가 보입니다.',
+  },
+  '알고리즘은 알겠는데 구현이 안 됨': {
+    prompt: '초기값, 반복할 대상, 매번 바꿀 값, 마지막 반환값을 각각 한 줄로 적어보세요.',
+    placeholder: '예: count=0으로 시작 → 배열 순회 → 조건이 맞으면 count 증가 → count 반환',
+    clue: '완성된 코드를 한 번에 쓰지 말고 방금 적은 네 줄을 위에서부터 JavaScript 한 줄씩으로 바꿔보세요.',
+  },
+  '코드는 작성했는데 틀림': {
+    prompt: '현재 코드가 실패할 것 같은 입력을 하나 직접 만들고, 기대 결과와 실제 흐름을 적어보세요.',
+    placeholder: '예: 빈 배열이면 첫 값이 없어서 undefined가 된다.',
+    clue: '공개 예제뿐 아니라 빈 입력, 값 하나, 중복, 최솟값·최댓값, 마지막 인덱스를 코드에 직접 넣어보세요.',
+  },
+  '시간초과가 발생함': {
+    prompt: '입력 하나를 처리할 때 전체 배열을 몇 번 다시 훑는지 적어보세요. 반복문 안에 또 탐색이 있나요?',
+    placeholder: '예: 모든 원소마다 includes를 호출해 배열을 다시 훑는다.',
+    clue: '이미 본 값을 Map이나 Set에 저장하면 같은 배열을 반복해서 찾는 일을 한 번의 조회로 바꿀 수 있는지 확인해보세요.',
+  },
 };
 
-function StuckDialog({ onClose }) {
+function StuckDialog({ problem, onClose, onSave }) {
   const [selected, setSelected] = useState('');
-  return <div className="modal-backdrop" role="presentation"><section className="modal compact" role="dialog" aria-modal="true"><button className="modal-close" onClick={onClose} aria-label="닫기">×</button><span className="eyebrow">지금 상태부터 확인할게요</span><h2>어디에서 막혔나요?</h2><div className="stuck-options">{Object.keys(stuckGuidance).map((item)=><button className={selected===item?'selected':''} key={item} onClick={()=>setSelected(item)}>{item}</button>)}</div>{selected && <div className="guided-answer"><span>다음 한 걸음</span><p><GlossaryText text={stuckGuidance[selected]} /></p></div>}</section></div>;
+  const [step, setStep] = useState(0);
+  const [recall, setRecall] = useState('');
+  const [nextAttempt, setNextAttempt] = useState('');
+  const [saving, setSaving] = useState(false);
+  const guide = selected ? stuckGuidance[selected] : null;
+
+  const choose = (item) => {
+    setSelected(item);
+    setRecall('');
+    setNextAttempt('');
+    setStep(1);
+  };
+
+  const save = async () => {
+    setSaving(true);
+    await onSave({ blockage: selected, prompt: guide.prompt, recall, nextAttempt });
+  };
+
+  return (
+    <div className="modal-backdrop" role="presentation">
+      <section className="modal stuck-coach" role="dialog" aria-modal="true" aria-labelledby="stuck-coach-title">
+        <button className="modal-close" onClick={onClose} aria-label="닫기">×</button>
+        <span className="eyebrow">GUIDED STRUGGLE · {problem.id}</span>
+        <h2 id="stuck-coach-title">정답 대신, 기억에 남을<br />다음 한 걸음을 찾아볼게요.</h2>
+        <div className="coach-progress" aria-label={`막힘 코치 ${step + 1}단계 중 3단계`}>
+          {['막힌 지점', '기억 꺼내기', '다음 시도'].map((label, index) => <span className={index <= step ? 'active' : ''} key={label}><i>{index + 1}</i>{label}</span>)}
+        </div>
+
+        {step === 0 && <div className="coach-screen"><h3>지금 어디에서 막혔나요?</h3><p>가장 가까운 상태를 고르면 정답을 노출하지 않고 질문으로 안내합니다.</p><div className="stuck-options">{Object.keys(stuckGuidance).map((item)=><button key={item} onClick={()=>choose(item)}>{item}<span>→</span></button>)}</div></div>}
+
+        {step === 1 && guide && <div className="coach-screen"><button className="coach-back" onClick={()=>setStep(0)}>← 막힌 지점 다시 선택</button><span className="coach-label">먼저 내 기억 사용하기</span><h3><GlossaryText text={guide.prompt} /></h3><p>완벽한 답이 아니어도 괜찮아요. 지금 떠오르는 것부터 적는 과정이 기억을 만듭니다.</p><textarea value={recall} onChange={(event)=>setRecall(event.target.value)} placeholder={guide.placeholder} autoFocus /><div className="coach-actions"><small>{recall.trim().length < 5 ? '5자 이상 적으면 작은 단서가 열려요.' : '좋아요. 이제 작은 단서만 확인해보세요.'}</small><button className="primary-button" disabled={recall.trim().length < 5} onClick={()=>setStep(2)}>작은 단서 보기 <span>→</span></button></div></div>}
+
+        {step === 2 && guide && <div className="coach-screen"><button className="coach-back" onClick={()=>setStep(1)}>← 내 생각 수정하기</button><div className="recall-echo"><small>내가 먼저 떠올린 것</small><p>{recall}</p></div><div className="guided-answer"><span>정답이 아닌 작은 단서</span><p><GlossaryText text={guide.clue} /></p></div><label className="next-attempt-field"><span>코드로 돌아가 가장 먼저 시도할 한 단계는?</span><textarea value={nextAttempt} onChange={(event)=>setNextAttempt(event.target.value)} placeholder="예: 빈 배열 테스트를 먼저 추가한다." autoFocus /></label><div className="memory-schedule"><span>↻</span><p><strong>내일 다시 떠올리도록 복습 큐에 넣을게요.</strong>지금 적은 내용은 답을 가린 기억 카드로 저장됩니다.</p></div><button className="primary-button full" disabled={nextAttempt.trim().length < 5 || saving} onClick={save}>{saving ? '기억 카드 저장 중…' : '기억 카드 저장하고 다시 풀기'} <span>→</span></button></div>}
+      </section>
+    </div>
+  );
+}
+
+function MemoryRecall({ card }) {
+  const [revealed, setRevealed] = useState(false);
+
+  return (
+    <section className="memory-recall">
+      <span>MEMORY CHECK · 지난번 막힌 지점</span>
+      <small>{card.blockage}</small>
+      <h3><GlossaryText text={card.prompt} /></h3>
+      <p>지난 답을 보기 전에 머릿속으로 먼저 설명해보세요.</p>
+      <button className="secondary-button" onClick={()=>setRevealed((value)=>!value)}>{revealed ? '기억 카드 접기' : '내가 남긴 기억 카드 보기'}</button>
+      {revealed && <div className="memory-reveal"><small>내가 떠올렸던 것</small><p>{card.recall}</p><small>다음에 하기로 한 것</small><p>{card.nextAttempt}</p></div>}
+    </section>
+  );
 }
 
 function GiveUpDialog({ problem, onClose }) {
@@ -151,6 +222,17 @@ export default function ProblemSolver({ problem, initialProgress, settings, onCl
     });
   };
 
+  const saveStruggle = async ({ blockage, prompt, recall, nextAttempt }) => {
+    const record = createStruggleRecord({ problemId: problem.id, blockage, prompt, recall, nextAttempt });
+    const progressPatch = createStruggleProgress(initialProgress, record, hintLevel);
+    await storage.set('notes', `${problem.id}-struggle-${Date.now()}`, record);
+    setHintLevel(progressPatch.hintsUsed);
+    onProgress(problem.id, progressPatch);
+    setStuckOpen(false);
+    setHintOpen(false);
+    setTimerRunning(true);
+  };
+
   const finishReview = async (review) => {
     const record = { ...review, problemId: problem.id, createdAt: new Date().toISOString() };
     await storage.set('notes', `${problem.id}-review-${Date.now()}`, record);
@@ -171,9 +253,9 @@ export default function ProblemSolver({ problem, initialProgress, settings, onCl
   return (
     <main className={`solver ${focusMode ? 'focus-mode' : ''}`}>
       <header className="solver-header"><div className="solver-brand"><button className="back-button" onClick={onClose} aria-label="문제 목록으로">←</button><span className="brand-mark small">L</span><div><span>{problem.id}</span><strong>{problem.title}</strong></div></div><div className="problem-meta"><span>Level {problem.level}</span><span>·</span><span>{difficultyLabel}</span><span>·</span><span>약 {problem.estimatedMinutes}분</span></div><div className="solver-tools"><button className="timer" onClick={()=>setTimerRunning((value)=>!value)} aria-label={timerRunning?'타이머 일시정지':'타이머 시작'}><i className={timerRunning?'live':''} />{formatTime(seconds)} <span>{timerRunning?'Ⅱ':'▶'}</span></button><button className="timer-reset" onClick={()=>{setTimerRunning(false);setSeconds(0);}} aria-label="타이머 초기화">↺</button><button className="tool-button" onClick={()=>setFocusMode((value)=>!value)}>{focusMode?'집중 모드 종료':'집중 모드'}</button><button className={`tool-button hint-trigger ${hintOpen?'active':''}`} onClick={()=>setHintOpen((value)=>!value)}>💡 조금만 도와줘 {hintLevel > 0 && <b>{hintLevel}</b>}</button></div></header>
-      <div className="solver-body"><section className="problem-pane"><div className="pane-tabs"><button className="active">문제</button><button onClick={()=>document.querySelector('.memo-area')?.focus()}>내 메모</button></div><article className="problem-copy"><div className="problem-title-row"><span className="level-chip">LEVEL {problem.level}</span><span>{difficultyLabel}</span></div><h1>{problem.title}</h1><GlossaryGuide compact /><p className="problem-description"><GlossaryText text={problem.description} /></p><h3>제한사항</h3><ul>{problem.constraints.map((item)=><li key={item}><GlossaryText text={item} /></li>)}</ul><h3>입출력 예</h3>{problem.examples.map((example,index)=><div className="example" key={index}><span>예제 {index+1}</span><div><small>입력</small><code>{example.args.map(stringify).join(', ')}</code></div><div><small>출력</small><code>{stringify(example.expected)}</code></div></div>)}<h3>내 메모</h3><textarea className="memo-area" value={note} onChange={(event)=>{setNote(event.target.value);storage.set('notes',problem.id,event.target.value);}} placeholder="떠오른 관찰, 시도할 방법, 놓치기 쉬운 조건을 적어보세요." /></article></section><section className="workspace-pane"><div className="editor-toolbar"><div><span className="language-dot" /> {language.label} <small>solution()</small></div><div><button onClick={()=>setCode(problem.starterCode)} title="Undo starter">↶</button><label>글자 <select value={settings.editorFontSize} onChange={(event)=>settings.onChange('editorFontSize',Number(event.target.value))}>{[13,14,15,16,18].map((size)=><option key={size}>{size}</option>)}</select></label></div></div><div className="editor-host"><Suspense fallback={<div className="editor-loading"><span className="spinner" /> 에디터 불러오는 중</div>}><CodeEditor value={code} problemId={`${problem.id}:${language.id}`} onChange={updateCode} onRun={()=>execute('run')} onSubmit={()=>execute('submit')} onSave={saveCode} theme={settings.theme} fontSize={settings.editorFontSize} /></Suspense></div><div className="result-pane"><div className="result-head"><div><strong>Test Result</strong>{result && result.status!=='running' && <span className={`run-status ${result.status}`}>{result.status}</span>}</div><button onClick={()=>setResult(null)}>비우기</button></div><div className="result-content"><TestResults result={result} mode={runMode} /></div><div className="action-bar"><button className="text-button danger" onClick={resetCode}>초기화</button><div><span className="shortcut-help">⌘ ↵ 실행 · ⇧ ⌘ ↵ 제출</span><button className="secondary-button" disabled={running} onClick={()=>execute('run')}>실행</button><button className="primary-button" disabled={running} onClick={()=>execute('submit')}>제출하기 <span>→</span></button></div></div></div></section></div>
+      <div className="solver-body"><section className="problem-pane"><div className="pane-tabs"><button className="active">문제</button><button onClick={()=>document.querySelector('.memo-area')?.focus()}>내 메모</button></div><article className="problem-copy"><div className="problem-title-row"><span className="level-chip">LEVEL {problem.level}</span><span>{difficultyLabel}</span></div><h1>{problem.title}</h1><GlossaryGuide compact />{initialProgress?.recallCard && <MemoryRecall card={initialProgress.recallCard} />}<p className="problem-description"><GlossaryText text={problem.description} /></p><h3>제한사항</h3><ul>{problem.constraints.map((item)=><li key={item}><GlossaryText text={item} /></li>)}</ul><h3>입출력 예</h3>{problem.examples.map((example,index)=><div className="example" key={index}><span>예제 {index+1}</span><div><small>입력</small><code>{example.args.map(stringify).join(', ')}</code></div><div><small>출력</small><code>{stringify(example.expected)}</code></div></div>)}<h3>내 메모</h3><textarea className="memo-area" value={note} onChange={(event)=>{setNote(event.target.value);storage.set('notes',problem.id,event.target.value);}} placeholder="떠오른 관찰, 시도할 방법, 놓치기 쉬운 조건을 적어보세요." /></article></section><section className="workspace-pane"><div className="editor-toolbar"><div><span className="language-dot" /> {language.label} <small>solution()</small></div><div><button onClick={()=>setCode(problem.starterCode)} title="Undo starter">↶</button><label>글자 <select value={settings.editorFontSize} onChange={(event)=>settings.onChange('editorFontSize',Number(event.target.value))}>{[13,14,15,16,18].map((size)=><option key={size}>{size}</option>)}</select></label></div></div><div className="editor-host"><Suspense fallback={<div className="editor-loading"><span className="spinner" /> 에디터 불러오는 중</div>}><CodeEditor value={code} problemId={`${problem.id}:${language.id}`} onChange={updateCode} onRun={()=>execute('run')} onSubmit={()=>execute('submit')} onSave={saveCode} theme={settings.theme} fontSize={settings.editorFontSize} /></Suspense></div><div className="result-pane"><div className="result-head"><div><strong>Test Result</strong>{result && result.status!=='running' && <span className={`run-status ${result.status}`}>{result.status}</span>}</div><button onClick={()=>setResult(null)}>비우기</button></div><div className="result-content"><TestResults result={result} mode={runMode} /></div><div className="action-bar"><button className="text-button danger" onClick={resetCode}>초기화</button><div><span className="shortcut-help">⌘ ↵ 실행 · ⇧ ⌘ ↵ 제출</span><button className="secondary-button" disabled={running} onClick={()=>execute('run')}>실행</button><button className="primary-button" disabled={running} onClick={()=>execute('submit')}>제출하기 <span>→</span></button></div></div></div></section></div>
       {hintOpen && <HintDrawer problem={problem} hintLevel={hintLevel} onNext={useHint} onClose={()=>setHintOpen(false)} onStuck={()=>setStuckOpen(true)} onGiveUp={()=>setGiveUpOpen(true)} />}
-      {stuckOpen && <StuckDialog onClose={()=>setStuckOpen(false)} />}
+      {stuckOpen && <StuckDialog problem={problem} onClose={()=>setStuckOpen(false)} onSave={saveStruggle} />}
       {giveUpOpen && <GiveUpDialog problem={problem} onClose={()=>setGiveUpOpen(false)} />}
       {retrospective && <Retrospective problem={problem} onDone={finishReview} />}
     </main>
