@@ -81,6 +81,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .text-button.danger { color: var(--red); }
 .icon-button { border: 0; background: transparent; color: var(--text-soft); font-size: 25px; width: 36px; height: 36px; }
 
+/* Contextual glossary */
+.glossary-term { display: inline-flex; align-items: baseline; gap: 2px; margin: 0 1px; padding: 0; border: 0; border-radius: 3px; background: transparent; color: inherit; font: inherit; line-height: inherit; text-align: inherit; vertical-align: baseline; text-decoration-line: underline; text-decoration-style: dotted; text-decoration-color: color-mix(in srgb, var(--accent) 68%, transparent); text-underline-offset: 3px; cursor: help; }
+.glossary-term:hover, .glossary-term:focus { color: var(--accent); background: var(--accent-soft); }
+.glossary-lens { width: .82em; height: .82em; flex: none; color: var(--accent); opacity: .75; transform: translateY(.08em); }
+.glossary-lens svg, .glossary-guide svg { display: block; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.glossary-tooltip { position: fixed; z-index: 1000; display: block; padding: 15px 17px; border: 1px solid rgba(255,255,255,.12); border-radius: 9px; color: #d8dbe4; background: #1b1e27; box-shadow: 0 14px 45px rgba(8,10,16,.3); pointer-events: none; font-size: 12px; line-height: 1.65; animation: glossaryIn .14s ease-out; }
+.glossary-tooltip.above { transform: translate(-50%, -100%); }
+.glossary-tooltip.below { transform: translateX(-50%); }
+.glossary-tooltip strong { display: block; margin-bottom: 5px; color: #aeb8ff; font-size: 11px; }
+.glossary-tooltip > span { display: block; }
+@keyframes glossaryIn { from { opacity: 0; } }
+.glossary-guide { display: flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 11px 13px; border: 1px solid var(--border); border-radius: 8px; color: var(--text-soft); background: var(--surface-subtle); }
+.glossary-guide > span { display: grid; place-items: center; width: 24px; height: 24px; flex: none; border-radius: 50%; color: var(--accent); background: var(--accent-soft); }
+.glossary-guide > span svg { width: 12px; height: 12px; }
+.glossary-guide p { margin: 0; font-size: 9px; line-height: 1.5; }
+.glossary-guide strong { color: var(--text); margin-right: 4px; }
+.glossary-guide.compact { margin: -6px 0 18px; padding: 9px 11px; }
+.glossary-guide.compact > span { width: 21px; height: 21px; }
+
 /* Onboarding */
 .onboarding-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(660px, 1.7fr) minmax(390px, .8fr); background: var(--surface); }
 .onboarding-panel, .diagnostic-panel { width: min(620px, calc(100% - 72px)); margin: 0 auto; padding: 46px 0 34px; display: flex; flex-direction: column; }

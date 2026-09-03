@@ -79,6 +79,7 @@ npm run validate:problems
 - 5단계 질문형 힌트, 상황별 `막혔어요`, 단계형 풀이 포기·복기
 - 문제·개념별 숙련도, 1·3·7·14일 복습 큐
 - Roadmap, JavaScript/브라우저 이론, FE × AI 사고 문제, Analytics
+- 이론·문제·힌트의 어려운 용어를 자동 표시하는 마우스 오버·탭 용어 설명
 - IndexedDB 저장과 JSON 백업/복구, 항목별 초기화
 - Light/Dark, 집중 모드, 문제 타이머, 반응형 레이아웃
 
