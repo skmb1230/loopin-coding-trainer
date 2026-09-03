@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "seed": 10482,
+  "generatedAt": "1970-01-01T00:00:00.000Z",
+  "strategy": "validated-template-and-parameter-variants",
+  "targetCount": 800,
+  "levels": [
+    {
+      "level": 0,
+      "target": 200,
+      "implemented": 30
+    },
+    {
+      "level": 1,
+      "target": 220,
+      "implemented": 0
+    },
+    {
+      "level": 2,
+      "target": 180,
+      "implemented": 0
+    },
+    {
+      "level": 3,
+      "target": 120,
+      "implemented": 0
+    },
+    {
+      "level": 4,
+      "target": 60,
+      "implemented": 0
+    },
+    {
+      "level": 5,
+      "target": 20,
+      "implemented": 0
+    }
+  ],
+  "templateOrder": [
+    {
+      "id": "JS0016",
+      "category": "문자열",
+      "seed": 126704
+    },
+    {
+      "id": "JS0003",
+      "category": "배열",
+      "seed": 23757
+    },
+    {
+      "id": "JS0005",
+      "category": "문자열",
+      "seed": 39595
+    },
+    {
+      "id": "JS0009",
+      "category": "정렬",
+      "seed": 71271
+    },
+    {
+      "id": "JS0010",
+      "category": "문자열",
+      "seed": 79190
+    },
+    {
+      "id": "JS0024",
+      "category": "Greedy",
+      "seed": 190056
+    },
+    {
+      "id": "JS0015",
+      "category": "문자열",
+      "seed": 118785
+    },
+    {
+      "id": "JS0017",
+      "category": "Stack",
+      "seed": 134623
+    },
+    {
+      "id": "JS0026",
+      "category": "Map",
+      "seed": 205894
+    },
+    {
+      "id": "JS0021",
+      "category": "배열",
+      "seed": 166299
+    },
+    {
+      "id": "JS0027",
+      "category": "Sliding Window",
+      "seed": 213813
+    },
+    {
+      "id": "JS0018",
+      "category": "배열",
+      "seed": 142542
+    },
+    {
+      "id": "JS0008",
+      "category": "Map",
+      "seed": 63352
+    },
+    {
+      "id": "JS0028",
+      "category": "조건문",
+      "seed": 221732
+    },
+    {
+      "id": "JS0029",
+      "category": "정렬",
+      "seed": 229651
+    },
+    {
+      "id": "JS0019",
+      "category": "Map",
+      "seed": 150461
+    },
+    {
+      "id": "JS0011",
+      "category": "배열",
+      "seed": 87109
+    },
+    {
+      "id": "JS0014",
+      "category": "Set",
+      "seed": 110866
+    },
+    {
+      "id": "JS0020",
+      "category": "완전탐색",
+      "seed": 158380
+    },
+    {
+      "id": "JS0013",
+      "category": "배열",
+      "seed": 102947
+    },
+    {
+      "id": "JS0012",
+      "category": "문자열",
+      "seed": 95028
+    },
+    {
+      "id": "JS0002",
+      "category": "반복문",
+      "seed": 15838
+    },
+    {
+      "id": "JS0004",
+      "category": "문자열",
+      "seed": 31676
+    },
+    {
+      "id": "JS0001",
+      "category": "숫자 연산",
+      "seed": 7919
+    },
+    {
+      "id": "JS0023",
+      "category": "문자열",
+      "seed": 182137
+    },
+    {
+      "id": "JS0025",
+      "category": "Set",
+      "seed": 197975
+    },
+    {
+      "id": "JS0030",
+      "category": "Queue",
+      "seed": 237570
+    },
+    {
+      "id": "JS0022",
+      "category": "배열",
+      "seed": 174218
+    },
+    {
+      "id": "JS0006",
+      "category": "배열",
+      "seed": 47514
+    },
+    {
+      "id": "JS0007",
+      "category": "Set",
+      "seed": 55433
+    }
+  ]
+}
