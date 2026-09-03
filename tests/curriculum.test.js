@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate } from '../src/core/curriculum/calculateStudyAllocation.js';
+import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate, getSystemsTrackForDate } from '../src/core/curriculum/calculateStudyAllocation.js';
 import { adjustDifficulty } from '../src/core/curriculum/adjustDifficulty.js';
 import { selectDailyProblems } from '../src/core/curriculum/selectDailyProblems.js';
 import { calculateLevelStats, calculateStudyStreak, deriveCurriculumState, getLanguageProgress } from '../src/core/curriculum/curriculumEngine.js';
@@ -19,6 +19,7 @@ test('2시간 미만인 날은 Git·AWS를 생략하고 핵심 학습을 유지�
 
   assert.equal(Object.values(allocation).reduce((sum, value) => sum + value, 0), 60);
   assert.equal(allocation.career, 0);
+  assert.ok(allocation.systems > 0);
   assert.ok(allocation.review > 0);
 });
 
@@ -28,6 +29,15 @@ test('Git과 AWS 보조 트랙은 날짜에 따라 번갈아 배정된다', () =
 
   assert.deepEqual(new Set(tracks), new Set(['git', 'aws']));
   assert.equal(sessions[0].track, tracks[0]);
+});
+
+test('SMTP·IMAP과 웹 보안 트랙은 날짜에 따라 번갈아 배정된다', () => {
+  const tracks = [0, 1].map((offset) => getSystemsTrackForDate(new Date(2026, 8, 1 + offset)).id);
+  const sessions = buildStudySessions({ systems: 20 }, 50, new Date(2026, 8, 1));
+
+  assert.deepEqual(new Set(tracks), new Set(['mail', 'security']));
+  assert.equal(sessions[0].track, tracks[0]);
+  assert.match(sessions[0].title, /메일|보안/);
 });
 
 test('이론 세션 이름은 선택한 학습 언어를 따른다', () => {

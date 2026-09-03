@@ -185,6 +185,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .result-allocation > div > span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #aab3ff; background: rgba(119,135,230,.14); font: 500 9px "DM Mono", monospace; }
 .result-allocation > div > span.theory { color: #85cfba; background: rgba(81,167,142,.13); }
 .result-allocation > div > span.ai { color: #e5b485; background: rgba(194,140,92,.13); }
+.result-allocation > div > span.systems { color: #72d3d0; background: rgba(67,168,164,.14); }
 .result-allocation > div > span.career { color: #84b9df; background: rgba(83,146,190,.14); }
 .result-allocation > div > span.review { color: #c3a1eb; background: rgba(154,117,199,.13); }
 .result-allocation p { margin: 0; }
@@ -301,6 +302,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .allocation-row em { display: block; height: 100%; background: #7787e6; }
 .allocation-row i.theory, .allocation-row em.theory { background: #51a78e; }
 .allocation-row i.ai, .allocation-row em.ai { background: #c28c5c; }
+.allocation-row i.systems, .allocation-row em.systems { background: #43a8a4; }
 .allocation-row i.career, .allocation-row em.career { background: #5791ba; }
 .allocation-row i.review, .allocation-row em.review { background: #9a75c7; }
 .today-grid { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 52px; }
@@ -414,10 +416,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .empty-state h3 { color: var(--text); margin: 18px 0 8px; }
 .empty-state p { margin: 0; font-size: 11px; }
 .learning-layout { display: grid; grid-template-columns: 320px 1fr; gap: 56px; }
-.topic-list { border-top: 1px solid var(--border-strong); }
+.topic-list { max-height: calc(100vh - 185px); overflow-y: auto; border-top: 1px solid var(--border-strong); scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
 .topic-list button { width: 100%; min-height: 92px; display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 17px 12px; border: 0; border-bottom: 1px solid var(--border); background: transparent; text-align: left; }
 .topic-list button:hover, .topic-list button.active { background: var(--surface); }
 .topic-list button.active { box-shadow: inset 3px 0 var(--accent); }
+.topic-list button.complete > span { color: var(--green); font-weight: 700; }
 .topic-list button > span { color: var(--text-faint); font: 500 9px "DM Mono"; }
 .topic-list button small, .topic-list button strong, .topic-list button p { display: block; }
 .topic-list button small { color: var(--accent); font: 500 8px "DM Mono"; }
@@ -428,8 +431,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .track-priority-note > span { display: grid; place-items: center; width: 34px; height: 34px; flex: none; border-radius: 50%; color: #3979a6; background: color-mix(in srgb, #5791ba 16%, var(--surface)); font: 600 9px "DM Mono"; }
 .track-priority-note p { margin: 0; font-size: 9px; line-height: 1.6; }
 .track-priority-note strong { display: block; color: var(--text); }
+.track-priority-note.systems { border-left-color: #43a8a4; background: color-mix(in srgb, #43a8a4 9%, var(--surface)); }
+.track-priority-note.systems > span { color: #278b87; background: color-mix(in srgb, #43a8a4 16%, var(--surface)); }
 .lesson-meta { display: flex; gap: 8px; }
 .lesson-meta span { padding: 5px 9px; color: var(--text-soft); background: var(--surface-hover); font-size: 9px; }
+.lesson-meta span.completed { color: var(--green); background: var(--green-soft); }
 .lesson h1 { margin: 17px 0 10px; font-size: 27px; letter-spacing: -.04em; }
 .lesson-intro { color: var(--text-soft); line-height: 1.7; }
 .thought-question { margin-top: 34px; padding: 35px; background: var(--surface); border-top: 2px solid var(--accent); box-shadow: 0 8px 35px rgba(20,25,45,.04); }
@@ -442,6 +448,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .thought-answer small { color: var(--green); }
 .thought-answer label { margin-top: 20px; color: var(--text); }
 .thought-answer textarea { min-height: 75px; padding: 12px; resize: vertical; border: 1px solid var(--border); background: var(--surface); }
+.learning-complete { width: 100%; min-height: 42px; margin-top: 12px; border: 0; border-radius: 7px; color: #fff; background: var(--green); font-size: 11px; font-weight: 700; }
+.learning-complete.done { color: var(--green); background: var(--surface); border: 1px solid color-mix(in srgb, var(--green) 35%, var(--border)); }
+.learning-complete span { margin-left: 18px; }
 
 /* Notes, analytics, settings */
 .notes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -709,6 +718,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .table-head, .table-row { grid-template-columns: 100px 1fr 90px; }
   .table-head > :not(:first-child):not(:nth-child(3)):not(:nth-child(5)), .table-row > :not(:first-child):not(:nth-child(3)):not(:nth-child(5)) { display: none; }
   .roadmap-layout, .analytics-grid, .learning-layout { grid-template-columns: 1fr; }
+  .topic-list { max-height: 330px; }
   .mastery-panel, .weak-panel { order: -1; }
   .notes-grid { grid-template-columns: 1fr 1fr; }
   .solver { min-height: 100vh; height: auto; overflow: visible; }

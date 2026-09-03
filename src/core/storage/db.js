@@ -54,7 +54,7 @@ export const storage = {
   async exportAll() {
     const result = { version: 1, exportedAt: new Date().toISOString(), local: {} };
     for (const store of STORES) result[store] = await this.getAll(store);
-    for (const key of ['loopin-profile', 'loopin-settings']) result.local[key] = localStorage.getItem(key);
+    for (const key of ['loopin-profile', 'loopin-settings', 'loopin-learning-progress']) result.local[key] = localStorage.getItem(key);
     return result;
   },
   async importAll(data) {
