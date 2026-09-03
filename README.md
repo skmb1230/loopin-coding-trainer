@@ -33,7 +33,70 @@ npm run install:app
 - JDK를 나중에 설치했다면 `Loopin.app`을 완전히 종료한 뒤 다시 실행합니다. Settings에서 Java 실행 환경 상태를 확인할 수 있습니다.
 - 실행에 실패하면 `~/Library/Logs/Loopin.log`에서 기록을 확인할 수 있습니다.
 
-### 2-B. Windows·Linux 또는 터미널로 실행하기
+### 2-B. Windows에서 실행하기
+
+Windows 10/11에서는 PowerShell 또는 Windows 터미널로 실행하면 됩니다. 별도의 서버 계정은 필요하지 않습니다.
+
+#### 1) 필요한 프로그램 설치
+
+1. [Node.js 공식 사이트](https://nodejs.org/)에서 Node.js 22.12 이상(LTS 권장)을 설치합니다.
+2. Java 문제도 풀려면 [Eclipse Temurin](https://adoptium.net/temurin/releases/?version=21)에서 Windows용 JDK 21 이상을 설치합니다.
+   - 설치 화면에서 `Add to PATH`와 `JAVA_HOME` 설정 항목을 켜는 것을 권장합니다.
+3. 설치가 끝나면 열려 있던 PowerShell을 닫고 새로 연 뒤 아래 명령으로 확인합니다.
+
+```powershell
+node -v
+npm -v
+java -version
+javac -version
+```
+
+JavaScript 학습만 할 때는 `java`와 `javac`가 없어도 됩니다.
+
+#### 2) 프로젝트 받기
+
+Git이 설치되어 있다면 PowerShell에서 다음 명령을 실행합니다.
+
+```powershell
+git clone https://github.com/skmb1230/loopin-coding-trainer.git
+cd loopin-coding-trainer
+npm install
+```
+
+Git이 없다면 GitHub 저장소의 `Code` → `Download ZIP`을 누르고 압축을 푼 뒤, 해당 폴더를 Windows 터미널로 엽니다. 압축 파일 안에서 바로 실행하지 말고 반드시 먼저 압축을 풀어 주세요.
+
+#### 3) 앱 실행 및 종료
+
+프로젝트 폴더에서 다음 명령을 실행합니다.
+
+```powershell
+npm run dev
+```
+
+터미널에 `Local: http://localhost:5173/`가 표시되면 브라우저에서 [http://localhost:5173](http://localhost:5173)을 엽니다. 학습 중에는 터미널 창을 닫지 말고, 종료할 때는 터미널에서 `Ctrl+C`를 누릅니다.
+
+Windows에서도 진도, 작성 코드, 오답 노트는 현재 사용 중인 브라우저 프로필에 로컬 저장됩니다. 다른 PC나 브라우저로 옮기기 전에는 앱의 `설정 → 데이터 백업`에서 JSON 파일을 내려받아 주세요.
+
+#### 4) Windows에서 업데이트하기
+
+Git으로 받은 경우 프로젝트 폴더에서 다음 명령을 실행합니다.
+
+```powershell
+git pull
+npm install
+npm run dev
+```
+
+ZIP으로 받은 경우에는 GitHub에서 새 ZIP을 다시 내려받아 압축을 풀면 됩니다. 기존 학습 데이터는 프로젝트 폴더가 아니라 브라우저에 저장되지만, 안전을 위해 먼저 JSON 백업을 권장합니다.
+
+#### Windows 문제 해결
+
+- `'node' 또는 'npm'을 찾을 수 없습니다`: Node.js를 다시 설치한 뒤 PowerShell을 완전히 닫고 새로 여세요.
+- `'javac'을 찾을 수 없습니다` 또는 설정에서 JDK가 없다고 나옵니다: JDK 21 이상을 설치하면서 PATH 옵션을 켠 뒤 PowerShell과 앱을 다시 실행하세요.
+- `npm.ps1 ... 스크립트를 실행할 수 없습니다`: PowerShell 실행 정책을 바꾸지 않고 `npm.cmd install`, `npm.cmd run dev`처럼 `npm.cmd`를 사용하면 됩니다.
+- 5173 포트를 이미 사용 중이라고 나옵니다: 이전에 실행한 Loopin 터미널을 찾아 `Ctrl+C`로 종료한 뒤 다시 실행하세요.
+
+### 2-C. Linux 또는 일반 터미널에서 실행하기
 
 프로젝트 폴더에서 실행합니다.
 
