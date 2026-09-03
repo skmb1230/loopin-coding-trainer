@@ -79,7 +79,8 @@ npm run validate:problems
 - 5단계 질문형 힌트, 상황별 `막혔어요`, 단계형 풀이 포기·복기
 - 막힌 이유 선택 → 내 기억 꺼내기 → 작은 단서 → 다음 시도 기록 → 다음 날 복습으로 이어지는 막힘 코치
 - 문제·개념별 숙련도, 1·3·7·14일 복습 큐
-- Roadmap, JavaScript/브라우저 이론, FE × AI 사고 문제, Analytics
+- Roadmap, JavaScript/브라우저 이론, FE × AI 사고 문제, Git·AWS 면접 보조 트랙, Analytics
+- 기본 배분 55% 코테 · 20% 이론 · 15% AI · 5% Git/AWS · 5% 복습이며, 2시간 미만인 날에는 Git/AWS를 자동 생략
 - 이론·문제·힌트의 어려운 용어를 자동 표시하는 마우스 오버·탭 용어 설명
 - IndexedDB 저장과 JSON 백업/복구, 항목별 초기화
 - Light/Dark, 집중 모드, 문제 타이머, 반응형 레이아웃

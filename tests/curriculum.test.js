@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateStudyAllocation, buildStudySessions } from '../src/core/curriculum/calculateStudyAllocation.js';
+import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate } from '../src/core/curriculum/calculateStudyAllocation.js';
 import { adjustDifficulty } from '../src/core/curriculum/adjustDifficulty.js';
 import { selectDailyProblems } from '../src/core/curriculum/selectDailyProblems.js';
 
@@ -8,7 +8,25 @@ test('초보자 4시간 학습 배분의 총합은 240분이다', () => {
   const allocation = calculateStudyAllocation(240, 'beginner');
   assert.equal(Object.values(allocation).reduce((sum, value) => sum + value, 0), 240);
   assert.ok(allocation.problems > allocation.theory);
+  assert.ok(allocation.theory > allocation.career);
+  assert.ok(allocation.career > 0);
   assert.ok(buildStudySessions(allocation, 50).every((session) => session.duration <= 50));
+});
+
+test('2시간 미만인 날은 Git·AWS를 생략하고 핵심 학습을 유지한다', () => {
+  const allocation = calculateStudyAllocation(60, 'beginner');
+
+  assert.equal(Object.values(allocation).reduce((sum, value) => sum + value, 0), 60);
+  assert.equal(allocation.career, 0);
+  assert.ok(allocation.review > 0);
+});
+
+test('Git과 AWS 보조 트랙은 날짜에 따라 번갈아 배정된다', () => {
+  const tracks = [0, 1].map((offset) => getCareerTrackForDate(new Date(2026, 8, 1 + offset)).id);
+  const sessions = buildStudySessions({ career: 10 }, 50, new Date(2026, 8, 1));
+
+  assert.deepEqual(new Set(tracks), new Set(['git', 'aws']));
+  assert.equal(sessions[0].track, tracks[0]);
 });
 
 test('최근 성과가 안정적이면 난이도를 한 단계 올린다', () => {

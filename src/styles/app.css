@@ -185,6 +185,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .result-allocation > div > span { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: #aab3ff; background: rgba(119,135,230,.14); font: 500 9px "DM Mono", monospace; }
 .result-allocation > div > span.theory { color: #85cfba; background: rgba(81,167,142,.13); }
 .result-allocation > div > span.ai { color: #e5b485; background: rgba(194,140,92,.13); }
+.result-allocation > div > span.career { color: #84b9df; background: rgba(83,146,190,.14); }
 .result-allocation > div > span.review { color: #c3a1eb; background: rgba(154,117,199,.13); }
 .result-allocation p { margin: 0; }
 .result-allocation strong, .result-allocation small { display: block; }
@@ -286,6 +287,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .allocation-row em { display: block; height: 100%; background: #7787e6; }
 .allocation-row i.theory, .allocation-row em.theory { background: #51a78e; }
 .allocation-row i.ai, .allocation-row em.ai { background: #c28c5c; }
+.allocation-row i.career, .allocation-row em.career { background: #5791ba; }
 .allocation-row i.review, .allocation-row em.review { background: #9a75c7; }
 .today-grid { margin-top: 48px; display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 52px; }
 .section-title { min-height: 52px; display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 17px; }
@@ -402,6 +404,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .topic-list button strong { margin: 6px 0; font-size: 12px; }
 .topic-list button p { margin: 0; color: var(--text-faint); font-size: 9px; }
 .lesson { max-width: 700px; padding: 4px 0; }
+.track-priority-note { min-height: 58px; margin-bottom: 12px; padding: 11px 14px; display: flex; align-items: center; gap: 12px; border-left: 3px solid #5791ba; color: var(--text-soft); background: color-mix(in srgb, #5791ba 9%, var(--surface)); }
+.track-priority-note > span { display: grid; place-items: center; width: 34px; height: 34px; flex: none; border-radius: 50%; color: #3979a6; background: color-mix(in srgb, #5791ba 16%, var(--surface)); font: 600 9px "DM Mono"; }
+.track-priority-note p { margin: 0; font-size: 9px; line-height: 1.6; }
+.track-priority-note strong { display: block; color: var(--text); }
 .lesson-meta { display: flex; gap: 8px; }
 .lesson-meta span { padding: 5px 9px; color: var(--text-soft); background: var(--surface-hover); font-size: 9px; }
 .lesson h1 { margin: 17px 0 10px; font-size: 27px; letter-spacing: -.04em; }
