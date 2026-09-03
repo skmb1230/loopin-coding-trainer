@@ -255,6 +255,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .daily-setup-backdrop { z-index: 60; }
 .daily-setup { width: min(580px, 100%); }
 .daily-setup h2 { margin-top: 13px; font-size: 28px; }
+.language-start-backdrop { z-index: 70; }
+.language-start { width: min(650px, 100%); }
+.language-start h2 { margin: 13px 0 10px; font-size: 30px; letter-spacing: -.045em; }
+.language-start-options { display: grid; gap: 10px; margin-top: 27px; }
+.language-start-options > button { min-height: 142px; display: grid; grid-template-columns: 52px 1fr 22px; align-items: center; gap: 17px; padding: 20px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-subtle); color: var(--text); text-align: left; }
+.language-start-options > button:hover, .language-start-options > button.selected { border-color: var(--accent); background: var(--accent-soft); }
+.language-start-options > button > span { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 12px; color: #fff; background: var(--accent); font: 700 13px "DM Mono"; }
+.language-start-options > button:nth-child(2) > span { background: #d66b42; }
+.language-start-options small, .language-start-options strong, .language-start-options p, .language-start-options em { display: block; }
+.language-start-options small { color: var(--accent); font: 600 8px "DM Mono"; letter-spacing: .08em; }
+.language-start-options strong { margin-top: 5px; font-size: 16px; }
+.language-start-options p { margin: 7px 0; color: var(--text-soft); font-size: 10px; line-height: 1.6; }
+.language-start-options em { color: var(--text-faint); font-size: 9px; font-style: normal; }
+.language-start-options > button > b { color: var(--accent); font-size: 16px; }
 .daily-time-options { margin: 25px 0 15px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
 .daily-time-options button { min-height: 61px; padding: 9px; border: 1px solid var(--border); background: var(--surface-subtle); }
 .daily-time-options button strong, .daily-time-options button small { display: block; }
@@ -746,6 +760,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .time-popover { position: fixed; top: 148px; left: 15px; right: 15px; width: auto; }
   .daily-time-options { grid-template-columns: repeat(2, 1fr); }
   .daily-plan-preview { gap: 9px; }
+  .language-start-options > button { grid-template-columns: 42px 1fr; padding: 16px; }
+  .language-start-options > button > span { width: 40px; height: 40px; }
+  .language-start-options > button > b { display: none; }
   .level-analytics > div { grid-template-columns: 62px 1fr 64px; }
   .level-analytics > div em { display: none; }
   .coach-progress > span { font-size: 8px; }
