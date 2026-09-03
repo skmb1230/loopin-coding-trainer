@@ -29,6 +29,11 @@ test('Git과 AWS 보조 트랙은 날짜에 따라 번갈아 배정된다', () =
   assert.equal(sessions[0].track, tracks[0]);
 });
 
+test('이론 세션 이름은 선택한 학습 언어를 따른다', () => {
+  const sessions = buildStudySessions({ theory: 20 }, 50, new Date(2026, 8, 1), 'Java');
+  assert.equal(sessions[0].title, '알고리즘 · Java');
+});
+
 test('최근 성과가 안정적이면 난이도를 한 단계 올린다', () => {
   const attempts = Array.from({ length: 10 }, () => ({ solved: true, hintsUsed: 0 }));
   assert.equal(adjustDifficulty(attempts, 2), 3);

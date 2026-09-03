@@ -17,6 +17,12 @@ for (const problem of problems) {
   if (!Array.isArray(problem.hints) || problem.hints.length < 3 || problem.hints.length > 5) errors.push(`${problem.id}: 힌트는 3~5개여야 함`);
   if (!problem.starterCode.includes('function solution')) errors.push(`${problem.id}: starterCode에 solution 함수 없음`);
   if (!problem.solutionExplanation?.code) errors.push(`${problem.id}: 최종 풀이 코드 없음`);
+  const javaVariant = problem.languageVariants?.java;
+  if (!problem.supportedLanguages?.includes('java')) errors.push(`${problem.id}: Java 지원 언어 등록 없음`);
+  if (!javaVariant?.starterCode?.includes('class Solution')) errors.push(`${problem.id}: Java 시작 코드 없음`);
+  if (!javaVariant?.referenceSolution?.includes('class Solution')) errors.push(`${problem.id}: Java 기준 풀이 없음`);
+  if (!Array.isArray(javaVariant?.javaSpec?.argTypes)) errors.push(`${problem.id}: Java 인자 타입 명세 없음`);
+  if (!javaVariant?.javaSpec?.returnType) errors.push(`${problem.id}: Java 반환 타입 명세 없음`);
   try {
     const solution = new Function(`${problem.referenceSolution}; return solution;`)();
     for (const [index, test] of problem.tests.entries()) {
@@ -36,3 +42,4 @@ if (errors.length) {
 
 console.log(`✓ ${problems.length}개 문제 검증 완료`);
 console.log(`✓ ${problems.reduce((sum, problem) => sum + problem.tests.length, 0)}개 테스트의 reference solution 결과 일치`);
+console.log(`✓ ${problems.length}개 문제의 Java 코드·타입 명세 확인`);

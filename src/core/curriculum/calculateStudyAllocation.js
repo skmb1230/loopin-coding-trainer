@@ -39,9 +39,9 @@ export function calculateStudyAllocation(totalMinutes, stage = 'beginner', custo
   return result;
 }
 
-export function buildStudySessions(allocation, focusMinutes = 50, date = new Date()) {
+export function buildStudySessions(allocation, focusMinutes = 50, date = new Date(), languageLabel = 'JavaScript') {
   const careerTrack = getCareerTrackForDate(date);
-  const labels = { problems: '코딩테스트', theory: '알고리즘 · JavaScript', ai: 'AI · 프론트엔드', career: careerTrack.sessionTitle, review: '오답 복습' };
+  const labels = { problems: '코딩테스트', theory: `알고리즘 · ${languageLabel}`, ai: 'AI · 프론트엔드', career: careerTrack.sessionTitle, review: '오답 복습' };
   const sessions = [];
   for (const key of allocationKeys) {
     let remaining = allocation[key] || 0;

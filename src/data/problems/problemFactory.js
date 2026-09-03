@@ -5,10 +5,20 @@ export function createProblem(definition) {
   const hiddenTests = definition.hiddenTests.map((test) => ({ ...test, visibility: 'hidden' }));
   const pseudocode = definition.pseudocode;
 
+  const javascriptVariant = {
+    starterCode: definition.starterCode || starterByArgs(definition.args),
+    referenceSolution: definition.referenceSolution,
+    prerequisites: definition.prerequisites || ['JavaScript 함수', '배열과 문자열 기초'],
+    algorithmHint: definition.algorithmHint,
+    pseudocode,
+  };
+  const languageVariants = { javascript: javascriptVariant, ...definition.languageVariants };
+
   return {
     id: definition.id,
     language: definition.language || 'javascript',
-    supportedLanguages: definition.supportedLanguages || [definition.language || 'javascript'],
+    supportedLanguages: definition.supportedLanguages || Object.keys(languageVariants),
+    languageVariants,
     title: definition.title,
     level: 0,
     difficulty: definition.difficulty,
@@ -17,9 +27,9 @@ export function createProblem(definition) {
     description: definition.description,
     constraints: definition.constraints,
     examples: publicTests.slice(0, 2).map(({ args, expected }) => ({ args, expected })),
-    starterCode: definition.starterCode || starterByArgs(definition.args),
+    starterCode: javascriptVariant.starterCode,
     estimatedMinutes: definition.estimatedMinutes || 12,
-    prerequisites: definition.prerequisites || ['JavaScript 함수', '배열과 문자열 기초'],
+    prerequisites: javascriptVariant.prerequisites,
     concepts: definition.concepts,
     hints: [
       `최종적으로 반환해야 하는 값과 입력 ${definition.args.join(', ')}의 역할을 한 문장으로 말해볼까요?`,

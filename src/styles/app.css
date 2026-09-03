@@ -455,6 +455,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .setting-row strong { font-size: 12px; }
 .setting-row p { margin: 5px 0 0; color: var(--text-faint); font-size: 10px; }
 .setting-row select { width: 130px; height: 37px; }
+.java-runtime-status { display: flex; align-items: center; gap: 13px; margin-top: 14px; padding: 15px 17px; border: 1px solid var(--border); border-radius: 9px; background: var(--surface-subtle); }
+.java-runtime-status > span { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font: 700 11px "DM Mono"; }
+.java-runtime-status.ready > span { color: var(--green); background: var(--green-soft); }
+.java-runtime-status.missing > span { color: var(--amber); background: var(--amber-soft); }
+.java-runtime-status strong { display: block; font-size: 11px; }
+.java-runtime-status p { margin: 4px 0 0; color: var(--text-faint); font-size: 10px; }
+.java-runtime-status a { color: var(--accent); font-weight: 600; }
 .toggle-group { padding: 3px; border: 1px solid var(--border); }
 .toggle-group button { min-width: 70px; height: 30px; border: 0; background: transparent; font-size: 10px; }
 .toggle-group button.active { color: var(--accent); background: var(--accent-soft); }
@@ -510,6 +517,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .editor-toolbar button { border: 0; background: transparent; color: var(--text-soft); }
 .editor-toolbar label { color: var(--text-faint); }
 .editor-toolbar select { border: 0; background: transparent; font-size: 9px; }
+.language-picker { display: flex; align-items: center; min-width: 0; }
+.language-picker select { color: var(--text); font-weight: 700; cursor: pointer; }
+.language-picker em { margin-left: 8px; padding: 3px 5px; border-radius: 4px; color: var(--amber); background: var(--amber-soft); font: 600 7px "DM Mono"; font-style: normal; }
 .editor-host { min-height: 0; overflow: hidden; }
 .editor-loading { height: 100%; display: flex; align-items: center; justify-content: center; gap: 9px; color: var(--text-faint); font-size: 9px; }
 .code-editor, .code-editor .cm-editor { height: 100%; }

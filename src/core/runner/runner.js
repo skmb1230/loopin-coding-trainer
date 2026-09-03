@@ -1,4 +1,24 @@
-export function runCode({ code, tests, timeout = 2000, language = 'javascript' }) {
+async function runJava({ code, tests, timeout, javaSpec }) {
+  const controller = new AbortController();
+  const clientTimeout = setTimeout(() => controller.abort(), Math.max(15_000, timeout + 13_000));
+  try {
+    const response = await fetch('/api/java/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, tests, timeout, javaSpec }),
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error(`Java 실행 요청에 실패했어요. (${response.status})`);
+    return await response.json();
+  } catch (error) {
+    return { status: error.name === 'AbortError' ? 'timeout' : 'error', error: error.message, results: [] };
+  } finally {
+    clearTimeout(clientTimeout);
+  }
+}
+
+export function runCode({ code, tests, timeout = 2000, language = 'javascript', javaSpec }) {
+  if (language === 'java') return runJava({ code, tests, timeout, javaSpec });
   return new Promise((resolve) => {
     if (language !== 'javascript') {
       resolve({ status: 'error', error: `${language} 실행기는 아직 설치되지 않았어요.`, results: [] });

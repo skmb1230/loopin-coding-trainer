@@ -21,7 +21,8 @@ export const languageRegistry = {
     extension: 'java',
     editorLanguage: 'java',
     runtime: 'java-runner',
-    available: false,
+    available: true,
+    runtimeRequirement: 'JDK 21+',
   },
 };
 
@@ -35,4 +36,21 @@ export function getAvailableLanguages() {
 
 export function getCodeStorageKey(problemId, languageId = 'javascript') {
   return `${problemId}:${languageId}`;
+}
+
+export function getProgressStorageKey(problemId, languageId = 'javascript') {
+  return `${problemId}:${languageId}`;
+}
+
+export function getProblemLanguageVariant(problem, languageId = 'javascript') {
+  return problem.languageVariants?.[languageId] || problem.languageVariants?.javascript || {
+    starterCode: problem.starterCode,
+    referenceSolution: problem.referenceSolution,
+    prerequisites: problem.prerequisites,
+    pseudocode: problem.solutionExplanation?.pseudocode,
+  };
+}
+
+export function getDisplayProblemId(problemId, languageId = 'javascript') {
+  return languageId === 'java' ? problemId.replace(/^JS/, 'JAVA') : problemId;
 }

@@ -1,11 +1,11 @@
-import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { runCode } from '../../core/runner/runner.js';
 import { analyzeFailure } from '../../core/runner/analyzeFailure.js';
 import { storage } from '../../core/storage/db.js';
 import { calculateMastery } from '../../core/mastery/calculateMastery.js';
 import { calculateNextReview } from '../../core/review/calculateNextReview.js';
 import { createStruggleProgress, createStruggleRecord } from '../../core/review/createStruggleReview.js';
-import { getCodeStorageKey, getLanguage } from '../../core/languages/registry.js';
+import { getAvailableLanguages, getCodeStorageKey, getDisplayProblemId, getLanguage, getProblemLanguageVariant } from '../../core/languages/registry.js';
 import GlossaryText, { GlossaryGuide } from '../glossary/GlossaryText.jsx';
 
 const CodeEditor = lazy(() => import('../editor/CodeEditor.jsx'));
@@ -63,7 +63,7 @@ const stuckGuidance = {
   },
 };
 
-function StuckDialog({ problem, onClose, onSave }) {
+function StuckDialog({ problem, languageLabel, onClose, onSave }) {
   const [selected, setSelected] = useState('');
   const [step, setStep] = useState(0);
   const [recall, setRecall] = useState('');
@@ -97,7 +97,7 @@ function StuckDialog({ problem, onClose, onSave }) {
 
         {step === 1 && guide && <div className="coach-screen"><button className="coach-back" onClick={()=>setStep(0)}>← 막힌 지점 다시 선택</button><span className="coach-label">먼저 내 기억 사용하기</span><h3><GlossaryText text={guide.prompt} /></h3><p>완벽한 답이 아니어도 괜찮아요. 지금 떠오르는 것부터 적는 과정이 기억을 만듭니다.</p><textarea value={recall} onChange={(event)=>setRecall(event.target.value)} placeholder={guide.placeholder} autoFocus /><div className="coach-actions"><small>{recall.trim().length < 5 ? '5자 이상 적으면 작은 단서가 열려요.' : '좋아요. 이제 작은 단서만 확인해보세요.'}</small><button className="primary-button" disabled={recall.trim().length < 5} onClick={()=>setStep(2)}>작은 단서 보기 <span>→</span></button></div></div>}
 
-        {step === 2 && guide && <div className="coach-screen"><button className="coach-back" onClick={()=>setStep(1)}>← 내 생각 수정하기</button><div className="recall-echo"><small>내가 먼저 떠올린 것</small><p>{recall}</p></div><div className="guided-answer"><span>정답이 아닌 작은 단서</span><p><GlossaryText text={guide.clue} /></p></div><label className="next-attempt-field"><span>코드로 돌아가 가장 먼저 시도할 한 단계는?</span><textarea value={nextAttempt} onChange={(event)=>setNextAttempt(event.target.value)} placeholder="예: 빈 배열 테스트를 먼저 추가한다." autoFocus /></label><div className="memory-schedule"><span>↻</span><p><strong>내일 다시 떠올리도록 복습 큐에 넣을게요.</strong>지금 적은 내용은 답을 가린 기억 카드로 저장됩니다.</p></div><button className="primary-button full" disabled={nextAttempt.trim().length < 5 || saving} onClick={save}>{saving ? '기억 카드 저장 중…' : '기억 카드 저장하고 다시 풀기'} <span>→</span></button></div>}
+        {step === 2 && guide && <div className="coach-screen"><button className="coach-back" onClick={()=>setStep(1)}>← 내 생각 수정하기</button><div className="recall-echo"><small>내가 먼저 떠올린 것</small><p>{recall}</p></div><div className="guided-answer"><span>정답이 아닌 작은 단서</span><p><GlossaryText text={guide.clue.replace('JavaScript', languageLabel)} /></p></div><label className="next-attempt-field"><span>코드로 돌아가 가장 먼저 시도할 한 단계는?</span><textarea value={nextAttempt} onChange={(event)=>setNextAttempt(event.target.value)} placeholder="예: 빈 배열 테스트를 먼저 추가한다." autoFocus /></label><div className="memory-schedule"><span>↻</span><p><strong>내일 다시 떠올리도록 복습 큐에 넣을게요.</strong>지금 적은 내용은 답을 가린 기억 카드로 저장됩니다.</p></div><button className="primary-button full" disabled={nextAttempt.trim().length < 5 || saving} onClick={save}>{saving ? '기억 카드 저장 중…' : '기억 카드 저장하고 다시 풀기'} <span>→</span></button></div>}
       </section>
     </div>
   );
@@ -133,10 +133,24 @@ function Retrospective({ problem, onDone }) {
   return <div className="modal-backdrop"><section className="modal retrospective" role="dialog" aria-modal="true"><div className="success-orbit">✓</div><span className="eyebrow">SOLVED · 짧은 복기</span><h2>좋아요. 이제 풀이를<br />내 것으로 만들 차례예요.</h2><label>이 문제의 핵심 아이디어는?<textarea value={idea} onChange={(event)=>setIdea(event.target.value)} placeholder="예: 이미 본 값을 Set에 저장했다." /></label><fieldset><legend><GlossaryText text="시간복잡도는?" /></legend><div className="complexity-grid">{['O(1)','O(log N)','O(N)','O(N log N)','O(N²)'].map((item)=><button type="button" className={complexity===item?'selected':''} onClick={()=>setComplexity(item)} key={item}>{item}</button>)}</div></fieldset><label>비슷한 문제를 다시 만나면 어떤 신호를 볼까요?<textarea value={signal} onChange={(event)=>setSignal(event.target.value)} placeholder="예: 같은 값을 여러 번 찾고 있는지 본다." /></label><button disabled={!ready} className="primary-button full" onClick={()=>onDone({idea,complexity,signal})}>복기 저장하고 다음 문제 <span>→</span></button></section></div>;
 }
 
-export default function ProblemSolver({ problem, initialProgress, settings, onClose, onProgress, onNext }) {
-  const language = getLanguage(problem.language);
+export default function ProblemSolver({ problem, languageId, initialProgress, settings, onClose, onProgress, onNext }) {
+  const language = getLanguage(languageId || problem.language);
+  const variant = getProblemLanguageVariant(problem, language.id);
+  const displayProblemId = getDisplayProblemId(problem.id, language.id);
   const codeStorageKey = getCodeStorageKey(problem.id, language.id);
-  const [code, setCode] = useState(problem.starterCode);
+  const noteStorageKey = `${problem.id}:${language.id}`;
+  const localizedProblem = useMemo(() => ({
+    ...problem,
+    id: displayProblemId,
+    prerequisites: variant.prerequisites || problem.prerequisites,
+    hints: [problem.hints[0], problem.hints[1], problem.hints[2], variant.algorithmHint || problem.hints[3], variant.pseudocode || problem.hints[4]],
+    solutionExplanation: {
+      ...problem.solutionExplanation,
+      pseudocode: variant.pseudocode || problem.solutionExplanation.pseudocode,
+      code: variant.referenceSolution || problem.solutionExplanation.code,
+    },
+  }), [displayProblemId, problem, variant]);
+  const [code, setCode] = useState(variant.starterCode);
   const [note, setNote] = useState('');
   const [result, setResult] = useState(null);
   const [runMode, setRunMode] = useState('run');
@@ -154,13 +168,18 @@ export default function ProblemSolver({ problem, initialProgress, settings, onCl
 
   useEffect(() => {
     let alive = true;
-    Promise.all([storage.get('code', codeStorageKey), storage.get('code', problem.id), storage.get('notes', problem.id)]).then(([savedCode, legacyCode, savedNote]) => {
+    Promise.all([
+      storage.get('code', codeStorageKey),
+      language.id === 'javascript' ? storage.get('code', problem.id) : null,
+      storage.get('notes', noteStorageKey),
+      language.id === 'javascript' ? storage.get('notes', problem.id) : null,
+    ]).then(([savedCode, legacyCode, savedNote, legacyNote]) => {
       if (!alive) return;
-      setCode(savedCode || legacyCode || problem.starterCode);
-      setNote(savedNote || '');
+      setCode(savedCode || legacyCode || variant.starterCode);
+      setNote(savedNote || legacyNote || '');
     });
     return () => { alive = false; };
-  }, [codeStorageKey, problem.id, problem.starterCode]);
+  }, [codeStorageKey, language.id, noteStorageKey, problem.id, variant.starterCode]);
 
   useEffect(() => {
     if (!timerRunning) return undefined;
@@ -196,7 +215,7 @@ export default function ProblemSolver({ problem, initialProgress, settings, onCl
     setResult({ status: 'running' });
     await storage.set('code', codeStorageKey, code);
     const tests = mode === 'run' ? problem.tests.filter((test) => test.visibility === 'public') : problem.tests;
-    const nextResult = await runCode({ code, tests, language: language.id, timeout: problem.difficulty >= 4 ? 5000 : 2000 });
+    const nextResult = await runCode({ code, tests, language: language.id, javaSpec: variant.javaSpec, timeout: problem.difficulty >= 4 ? 5000 : 2000 });
     setResult(nextResult);
     setRunning(false);
     if (mode !== 'submit') return;
@@ -210,41 +229,41 @@ export default function ProblemSolver({ problem, initialProgress, settings, onCl
       nextReview: solved && hintLevel === 0 && !initialProgress?.nextReview ? null : calculateNextReview(new Date(), solved && initialProgress?.nextReview ? (initialProgress?.reviewCount || 0) + 1 : (initialProgress?.reviewCount || 0)),
       failureType: solved ? null : nextResult.status,
     };
-    onProgress(problem.id, patch);
+    onProgress(problem.id, patch, language.id);
     if (solved) { setTimerRunning(false); setRetrospective(true); }
-  }, [code, codeStorageKey, hintLevel, initialProgress, language.id, onProgress, problem, running, seconds]);
+  }, [code, codeStorageKey, hintLevel, initialProgress, language.id, onProgress, problem, running, seconds, variant.javaSpec]);
 
   const useHint = () => {
     setHintLevel((level) => {
       const next = Math.min(5, Math.max(1, level + 1));
-      onProgress(problem.id, { status: 'TRYING', hintsUsed: next, timeSpent: seconds });
+      onProgress(problem.id, { status: 'TRYING', hintsUsed: next, timeSpent: seconds }, language.id);
       return next;
     });
   };
 
   const saveStruggle = async ({ blockage, prompt, recall, nextAttempt }) => {
-    const record = createStruggleRecord({ problemId: problem.id, blockage, prompt, recall, nextAttempt });
+    const record = { ...createStruggleRecord({ problemId: problem.id, blockage, prompt, recall, nextAttempt }), language: language.id };
     const progressPatch = createStruggleProgress(initialProgress, record, hintLevel);
-    await storage.set('notes', `${problem.id}-struggle-${Date.now()}`, record);
+    await storage.set('notes', `${noteStorageKey}-struggle-${Date.now()}`, record);
     setHintLevel(progressPatch.hintsUsed);
-    onProgress(problem.id, progressPatch);
+    onProgress(problem.id, progressPatch, language.id);
     setStuckOpen(false);
     setHintOpen(false);
     setTimerRunning(true);
   };
 
   const finishReview = async (review) => {
-    const record = { ...review, problemId: problem.id, createdAt: new Date().toISOString() };
-    await storage.set('notes', `${problem.id}-review-${Date.now()}`, record);
+    const record = { ...review, problemId: problem.id, language: language.id, createdAt: new Date().toISOString() };
+    await storage.set('notes', `${noteStorageKey}-review-${Date.now()}`, record);
     setRetrospective(false);
-    onProgress(problem.id, { reflection: review });
+    onProgress(problem.id, { reflection: review }, language.id);
     onNext();
   };
 
   const resetCode = () => {
     if (window.confirm('작성한 코드를 시작 코드로 되돌릴까요?')) {
-      setCode(problem.starterCode);
-      storage.set('code', codeStorageKey, problem.starterCode);
+      setCode(variant.starterCode);
+      storage.set('code', codeStorageKey, variant.starterCode);
       setResult(null);
     }
   };
@@ -252,11 +271,11 @@ export default function ProblemSolver({ problem, initialProgress, settings, onCl
   const difficultyLabel = ['','입문','기초','도전','심화','고급'][problem.difficulty];
   return (
     <main className={`solver ${focusMode ? 'focus-mode' : ''}`}>
-      <header className="solver-header"><div className="solver-brand"><button className="back-button" onClick={onClose} aria-label="문제 목록으로">←</button><span className="brand-mark small">L</span><div><span>{problem.id}</span><strong>{problem.title}</strong></div></div><div className="problem-meta"><span>Level {problem.level}</span><span>·</span><span>{difficultyLabel}</span><span>·</span><span>약 {problem.estimatedMinutes}분</span></div><div className="solver-tools"><button className="timer" onClick={()=>setTimerRunning((value)=>!value)} aria-label={timerRunning?'타이머 일시정지':'타이머 시작'}><i className={timerRunning?'live':''} />{formatTime(seconds)} <span>{timerRunning?'Ⅱ':'▶'}</span></button><button className="timer-reset" onClick={()=>{setTimerRunning(false);setSeconds(0);}} aria-label="타이머 초기화">↺</button><button className="tool-button" onClick={()=>setFocusMode((value)=>!value)}>{focusMode?'집중 모드 종료':'집중 모드'}</button><button className={`tool-button hint-trigger ${hintOpen?'active':''}`} onClick={()=>setHintOpen((value)=>!value)}>💡 조금만 도와줘 {hintLevel > 0 && <b>{hintLevel}</b>}</button></div></header>
-      <div className="solver-body"><section className="problem-pane"><div className="pane-tabs"><button className="active">문제</button><button onClick={()=>document.querySelector('.memo-area')?.focus()}>내 메모</button></div><article className="problem-copy"><div className="problem-title-row"><span className="level-chip">LEVEL {problem.level}</span><span>{difficultyLabel}</span></div><h1>{problem.title}</h1><GlossaryGuide compact />{initialProgress?.recallCard && <MemoryRecall card={initialProgress.recallCard} />}<p className="problem-description"><GlossaryText text={problem.description} /></p><h3>제한사항</h3><ul>{problem.constraints.map((item)=><li key={item}><GlossaryText text={item} /></li>)}</ul><h3>입출력 예</h3>{problem.examples.map((example,index)=><div className="example" key={index}><span>예제 {index+1}</span><div><small>입력</small><code>{example.args.map(stringify).join(', ')}</code></div><div><small>출력</small><code>{stringify(example.expected)}</code></div></div>)}<h3>내 메모</h3><textarea className="memo-area" value={note} onChange={(event)=>{setNote(event.target.value);storage.set('notes',problem.id,event.target.value);}} placeholder="떠오른 관찰, 시도할 방법, 놓치기 쉬운 조건을 적어보세요." /></article></section><section className="workspace-pane"><div className="editor-toolbar"><div><span className="language-dot" /> {language.label} <small>solution()</small></div><div><button onClick={()=>setCode(problem.starterCode)} title="Undo starter">↶</button><label>글자 <select value={settings.editorFontSize} onChange={(event)=>settings.onChange('editorFontSize',Number(event.target.value))}>{[13,14,15,16,18].map((size)=><option key={size}>{size}</option>)}</select></label></div></div><div className="editor-host"><Suspense fallback={<div className="editor-loading"><span className="spinner" /> 에디터 불러오는 중</div>}><CodeEditor value={code} problemId={`${problem.id}:${language.id}`} onChange={updateCode} onRun={()=>execute('run')} onSubmit={()=>execute('submit')} onSave={saveCode} theme={settings.theme} fontSize={settings.editorFontSize} /></Suspense></div><div className="result-pane"><div className="result-head"><div><strong>Test Result</strong>{result && result.status!=='running' && <span className={`run-status ${result.status}`}>{result.status}</span>}</div><button onClick={()=>setResult(null)}>비우기</button></div><div className="result-content"><TestResults result={result} mode={runMode} /></div><div className="action-bar"><button className="text-button danger" onClick={resetCode}>초기화</button><div><span className="shortcut-help">⌘ ↵ 실행 · ⇧ ⌘ ↵ 제출</span><button className="secondary-button" disabled={running} onClick={()=>execute('run')}>실행</button><button className="primary-button" disabled={running} onClick={()=>execute('submit')}>제출하기 <span>→</span></button></div></div></div></section></div>
-      {hintOpen && <HintDrawer problem={problem} hintLevel={hintLevel} onNext={useHint} onClose={()=>setHintOpen(false)} onStuck={()=>setStuckOpen(true)} onGiveUp={()=>setGiveUpOpen(true)} />}
-      {stuckOpen && <StuckDialog problem={problem} onClose={()=>setStuckOpen(false)} onSave={saveStruggle} />}
-      {giveUpOpen && <GiveUpDialog problem={problem} onClose={()=>setGiveUpOpen(false)} />}
+      <header className="solver-header"><div className="solver-brand"><button className="back-button" onClick={onClose} aria-label="문제 목록으로">←</button><span className="brand-mark small">L</span><div><span>{displayProblemId}</span><strong>{problem.title}</strong></div></div><div className="problem-meta"><span>Level {problem.level}</span><span>·</span><span>{difficultyLabel}</span><span>·</span><span>약 {problem.estimatedMinutes}분</span></div><div className="solver-tools"><button className="timer" onClick={()=>setTimerRunning((value)=>!value)} aria-label={timerRunning?'타이머 일시정지':'타이머 시작'}><i className={timerRunning?'live':''} />{formatTime(seconds)} <span>{timerRunning?'Ⅱ':'▶'}</span></button><button className="timer-reset" onClick={()=>{setTimerRunning(false);setSeconds(0);}} aria-label="타이머 초기화">↺</button><button className="tool-button" onClick={()=>setFocusMode((value)=>!value)}>{focusMode?'집중 모드 종료':'집중 모드'}</button><button className={`tool-button hint-trigger ${hintOpen?'active':''}`} onClick={()=>setHintOpen((value)=>!value)}>💡 조금만 도와줘 {hintLevel > 0 && <b>{hintLevel}</b>}</button></div></header>
+      <div className="solver-body"><section className="problem-pane"><div className="pane-tabs"><button className="active">문제</button><button onClick={()=>document.querySelector('.memo-area')?.focus()}>내 메모</button></div><article className="problem-copy"><div className="problem-title-row"><span className="level-chip">LEVEL {problem.level}</span><span>{difficultyLabel}</span></div><h1>{problem.title}</h1><GlossaryGuide compact />{initialProgress?.recallCard && <MemoryRecall card={initialProgress.recallCard} />}<p className="problem-description"><GlossaryText text={problem.description} /></p><h3>제한사항</h3><ul>{problem.constraints.map((item)=><li key={item}><GlossaryText text={item} /></li>)}</ul><h3>입출력 예</h3>{problem.examples.map((example,index)=><div className="example" key={index}><span>예제 {index+1}</span><div><small>입력</small><code>{example.args.map(stringify).join(', ')}</code></div><div><small>출력</small><code>{stringify(example.expected)}</code></div></div>)}<h3>내 메모</h3><textarea className="memo-area" value={note} onChange={(event)=>{setNote(event.target.value);storage.set('notes',noteStorageKey,event.target.value);}} placeholder="떠오른 관찰, 시도할 방법, 놓치기 쉬운 조건을 적어보세요." /></article></section><section className="workspace-pane"><div className="editor-toolbar"><div className="language-picker"><span className="language-dot" /><select aria-label="풀이 언어" value={language.id} onChange={(event)=>settings.onChange('learningLanguage',event.target.value)}>{getAvailableLanguages().filter((item)=>problem.supportedLanguages.includes(item.id)).map((item)=><option value={item.id} key={item.id}>{item.label}</option>)}</select><small>solution()</small>{language.runtimeRequirement&&<em>{language.runtimeRequirement}</em>}</div><div><button onClick={()=>setCode(variant.starterCode)} title="시작 코드로 되돌리기">↶</button><label>글자 <select value={settings.editorFontSize} onChange={(event)=>settings.onChange('editorFontSize',Number(event.target.value))}>{[13,14,15,16,18].map((size)=><option key={size}>{size}</option>)}</select></label></div></div><div className="editor-host"><Suspense fallback={<div className="editor-loading"><span className="spinner" /> 에디터 불러오는 중</div>}><CodeEditor value={code} problemId={`${problem.id}:${language.id}`} language={language.id} languageLabel={language.label} onChange={updateCode} onRun={()=>execute('run')} onSubmit={()=>execute('submit')} onSave={saveCode} theme={settings.theme} fontSize={settings.editorFontSize} /></Suspense></div><div className="result-pane"><div className="result-head"><div><strong>Test Result</strong>{result && result.status!=='running' && <span className={`run-status ${result.status}`}>{result.status}</span>}</div><button onClick={()=>setResult(null)}>비우기</button></div><div className="result-content"><TestResults result={result} mode={runMode} /></div><div className="action-bar"><button className="text-button danger" onClick={resetCode}>초기화</button><div><span className="shortcut-help">⌘ ↵ 실행 · ⇧ ⌘ ↵ 제출</span><button className="secondary-button" disabled={running} onClick={()=>execute('run')}>실행</button><button className="primary-button" disabled={running} onClick={()=>execute('submit')}>제출하기 <span>→</span></button></div></div></div></section></div>
+      {hintOpen && <HintDrawer problem={localizedProblem} hintLevel={hintLevel} onNext={useHint} onClose={()=>setHintOpen(false)} onStuck={()=>setStuckOpen(true)} onGiveUp={()=>setGiveUpOpen(true)} />}
+      {stuckOpen && <StuckDialog problem={localizedProblem} languageLabel={language.label} onClose={()=>setStuckOpen(false)} onSave={saveStruggle} />}
+      {giveUpOpen && <GiveUpDialog problem={localizedProblem} onClose={()=>setGiveUpOpen(false)} />}
       {retrospective && <Retrospective problem={problem} onDone={finishReview} />}
     </main>
   );

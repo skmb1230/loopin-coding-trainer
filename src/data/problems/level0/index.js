@@ -1,4 +1,5 @@
 import { createProblem } from '../problemFactory.js';
+import { javaLevel0Variants } from '../java/level0.js';
 
 const definitions = [
   {
@@ -183,5 +184,8 @@ const definitions = [
   },
 ];
 
-export const level0Problems = definitions.map(createProblem);
+export const level0Problems = definitions.map((definition) => createProblem({
+  ...definition,
+  languageVariants: { java: javaLevel0Variants[definition.id] },
+}));
 export default level0Problems;

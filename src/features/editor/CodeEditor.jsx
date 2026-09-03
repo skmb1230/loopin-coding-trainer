@@ -3,9 +3,10 @@ import { minimalSetup } from 'codemirror';
 import { EditorState } from '@codemirror/state';
 import { EditorView, keymap } from '@codemirror/view';
 import { javascript } from '@codemirror/lang-javascript';
+import { java } from '@codemirror/lang-java';
 import { oneDark } from '@codemirror/theme-one-dark';
 
-export default function CodeEditor({ value, problemId, onChange, onRun, onSubmit, onSave, theme = 'light', fontSize = 14 }) {
+export default function CodeEditor({ value, problemId, language = 'javascript', languageLabel = 'JavaScript', onChange, onRun, onSubmit, onSave, theme = 'light', fontSize = 14 }) {
   const hostRef = useRef(null);
   const viewRef = useRef(null);
   const syncingRef = useRef(false);
@@ -31,7 +32,7 @@ export default function CodeEditor({ value, problemId, onChange, onRun, onSubmit
       doc: value,
       extensions: [
         minimalSetup,
-        javascript(),
+        language === 'java' ? java() : javascript(),
         customKeys,
         EditorView.lineWrapping,
         editorTheme,
@@ -54,5 +55,5 @@ export default function CodeEditor({ value, problemId, onChange, onRun, onSubmit
     syncingRef.current = false;
   }, [value]);
 
-  return <div className="code-editor" ref={hostRef} aria-label="JavaScript 코드 에디터" />;
+  return <div className="code-editor" ref={hostRef} aria-label={`${languageLabel} 코드 에디터`} />;
 }

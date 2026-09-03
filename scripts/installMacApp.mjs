@@ -49,6 +49,7 @@ const launcher = `#!/bin/zsh
 PROJECT_DIR=${JSON.stringify(projectDir)}
 LOOPIN_URL="http://localhost:5173"
 LOOPIN_LOG=${JSON.stringify(logFile)}
+NODE_BIN=${JSON.stringify(process.execPath)}
 export PATH=${JSON.stringify(process.env.PATH)}
 
 if /usr/bin/curl -fsS "$LOOPIN_URL" >/dev/null 2>&1; then
@@ -62,15 +63,18 @@ if [[ ! -d node_modules ]]; then
   /usr/bin/env npm install >>"$LOOPIN_LOG" 2>&1 || exit 1
 fi
 
-/usr/bin/nohup /usr/bin/env npm run dev -- --host localhost --port 5173 --strictPort >>"$LOOPIN_LOG" 2>&1 </dev/null &
+"$NODE_BIN" "$PROJECT_DIR/scripts/startLocalServer.mjs" >>"$LOOPIN_LOG" 2>&1 </dev/null &
+SERVER_PID=$!
 for attempt in {1..60}; do
   if /usr/bin/curl -fsS "$LOOPIN_URL" >/dev/null 2>&1; then
     /usr/bin/open "$LOOPIN_URL"
-    exit 0
+    wait "$SERVER_PID"
+    exit $?
   fi
   /bin/sleep 0.25
 done
 
+/bin/kill "$SERVER_PID" >/dev/null 2>&1
 /usr/bin/osascript -e 'display alert "Loopin을 시작하지 못했어요" message "~/Library/Logs/Loopin.log를 확인해주세요."'
 exit 1
 `;

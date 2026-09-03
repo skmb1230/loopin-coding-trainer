@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { calculateStudyAllocation } from '../../core/curriculum/calculateStudyAllocation.js';
+import { getLanguage } from '../../core/languages/registry.js';
 
-const diagnostics = [
+const javascriptDiagnostics = [
   { area: '문자열', question: "'hello'.slice(1, 4)의 결과는?", options: ['ell', 'ello', 'hel'], answer: 0 },
   { area: '배열', question: '[1, 2, 3].map(x => x * 2)의 결과는?', options: ['[2, 4, 6]', '6', '[1, 2, 3, 2]'], answer: 0 },
   { area: 'Map/Set', question: '중복 없는 값의 존재 여부를 빠르게 확인할 때 알맞은 것은?', options: ['Set', 'Array.shift', 'JSON.stringify'], answer: 0 },
@@ -11,6 +12,19 @@ const diagnostics = [
   { area: '완전탐색', question: '후보 수가 작을 때 모든 경우를 확인하는 접근은?', options: ['완전탐색', '이진탐색', '위상정렬'], answer: 0 },
   { area: '시간복잡도', question: '길이 N 배열을 한 번 순회할 때 복잡도는?', options: ['O(1)', 'O(log N)', 'O(N)'], answer: 2 },
 ];
+
+const javaDiagnostics = [
+  { area: '문자열', question: '"hello".substring(1, 4)의 결과는?', options: ['ell', 'ello', 'hel'], answer: 0 },
+  { area: '배열', question: 'int[] numbers = {1, 2, 3}; 배열 길이를 읽는 표현은?', options: ['numbers.length', 'numbers.length()', 'numbers.size()'], answer: 0 },
+  { area: 'Map/Set', question: '중복 없는 값의 존재 여부를 빠르게 확인할 때 알맞은 것은?', options: ['HashSet', 'ArrayList.remove', 'StringBuilder'], answer: 0 },
+  { area: '구현', question: '배열의 마지막 유효 인덱스는?', options: ['length', 'length - 1', 'length + 1'], answer: 1 },
+  { area: '정렬', question: 'int[]를 오름차순 정렬하는 표준 메서드는?', options: ['Arrays.sort(numbers)', 'numbers.sort()', 'Collections.sort(numbers)'], answer: 0 },
+  { area: 'Stack', question: 'Java에서 스택·큐를 구현할 때 자주 권장되는 인터페이스는?', options: ['Deque', 'String', 'TreeMap'], answer: 0 },
+  { area: '완전탐색', question: '후보 수가 작을 때 모든 경우를 확인하는 접근은?', options: ['완전탐색', '이진탐색', '위상정렬'], answer: 0 },
+  { area: '시간복잡도', question: '길이 N 배열을 한 번 순회할 때 복잡도는?', options: ['O(1)', 'O(log N)', 'O(N)'], answer: 2 },
+];
+
+const diagnosticsForLanguage = (languageId) => languageId === 'java' ? javaDiagnostics : javascriptDiagnostics;
 
 const steps = ['기본 정보', '학습 목표', '시작점'];
 
@@ -23,6 +37,8 @@ const experienceDepth = (years = '') => {
 };
 
 export function OnboardingResult({ profile, onComplete }) {
+  const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
+  const language = getLanguage(profile.learningLanguage);
   const score = profile.diagnosticScore || 0;
   const tookDiagnostic = profile.diagnosticTaken ?? score > 0;
   const answers = profile.diagnosticAnswers || [];
@@ -41,7 +57,7 @@ export function OnboardingResult({ profile, onComplete }) {
         <div className="result-heading">
           <span className="eyebrow">YOUR STARTING POINT</span>
           <h1>시작할 준비가 됐어요.</h1>
-          <p>실무 경력과 코딩테스트 실력을 분리해 첫 학습 경로를 만들었습니다.</p>
+          <p>{language.label} 학습과 실무 경력, 코딩테스트 실력을 분리해 첫 경로를 만들었습니다.</p>
         </div>
 
         <div className="assessment-summary">
@@ -51,7 +67,7 @@ export function OnboardingResult({ profile, onComplete }) {
 
         <div className="separate-tracks">
           <article><span>01</span><small>ALGORITHM TRACK</small><h3>{algorithmTrack}</h3><p>문제 난이도는 오직 진단과 실제 풀이 기록으로 조정</p></article>
-          <article><span>02</span><small>FE THEORY TRACK</small><h3>{experienceDepth(profile.frontendYears)}</h3><p>{profile.frontendYears} 경력을 반영해 JS·브라우저·React 깊이를 조정</p></article>
+          <article><span>02</span><small>{language.label.toUpperCase()} THEORY TRACK</small><h3>{experienceDepth(profile.frontendYears)}</h3><p>{profile.frontendYears} 경력을 반영해 {language.label} 이론 깊이를 조정</p></article>
         </div>
 
         <div className="result-focus"><div><small>FIRST FOCUS</small><strong>{firstFocus.length ? firstFocus.join(' · ') : 'Map/Set · 구현 심화'}</strong></div><div><small>WEEKLY RHYTHM</small><strong>주 {formatResultTime((profile.dailyMinutes || 120) * (profile.daysPerWeek || 5))}</strong></div><div><small>TARGET</small><strong>{profile.targetWeeks}주 · {profile.goal}</strong></div></div>
@@ -65,7 +81,7 @@ export function OnboardingResult({ profile, onComplete }) {
         <div className="result-allocation">
           {[
             ['problems', '코딩테스트 문제', '55%'],
-            ['theory', 'JS · 알고리즘 이론', '20%'],
+            ['theory', `${language.label} · 알고리즘 이론`, '20%'],
             ['ai', 'AI · FE 학습', '15%'],
             ['career', 'Git · AWS 면접', '5%'],
             ['review', '오답 복습', '5%'],
@@ -91,12 +107,13 @@ export default function Onboarding({ onComplete }) {
   const [resultProfile, setResultProfile] = useState(null);
   const [profile, setProfile] = useState({
     careerYears: '6~7년', frontendYears: '6~7년', codingTestLevel: '처음', dailyMinutes: 240,
-    daysPerWeek: 5, targetWeeks: 12, goal: '일반 FE 이직', focusMinutes: 50,
+    daysPerWeek: 5, targetWeeks: 12, goal: '일반 FE 이직', focusMinutes: 50, learningLanguage: 'javascript',
   });
   const canContinue = useMemo(() => profile.dailyMinutes > 0 && profile.daysPerWeek > 0, [profile]);
   const update = (key, value) => setProfile((current) => ({ ...current, [key]: value }));
 
   const answerDiagnostic = (answer) => {
+    const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
     const nextAnswers = [...answers, answer];
     if (diagnosticIndex === diagnostics.length - 1) {
       const score = nextAnswers.reduce((sum, value, index) => sum + (value === diagnostics[index].answer ? 1 : 0), 0);
@@ -110,6 +127,7 @@ export default function Onboarding({ onComplete }) {
   if (resultProfile) return <OnboardingResult profile={resultProfile} onComplete={onComplete} />;
 
   if (diagnosticMode) {
+    const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
     const item = diagnostics[diagnosticIndex];
     return (
       <main className="onboarding-shell">
@@ -136,7 +154,7 @@ export default function Onboarding({ onComplete }) {
           {steps.map((label, index) => <div key={label} className={index <= step ? 'active' : ''}><span>{index + 1}</span>{label}</div>)}
         </div>
 
-        {step === 0 && <div className="onboarding-content"><div className="eyebrow">나에게 맞는 출발점</div><h1>경력과 코테 실력은<br />따로 보고 시작할게요.</h1><p className="support-copy">개발 경력은 이론 깊이에만, 문제 난이도는 별도의 진단 결과에만 반영합니다.</p><div className="form-grid"><label>전체 개발 경력<select value={profile.careerYears} onChange={(event) => update('careerYears', event.target.value)}>{['0~1년','2~3년','4~5년','6~7년','8~10년','10년+'].map((item)=><option key={item}>{item}</option>)}</select></label><label>프론트엔드 경력<select value={profile.frontendYears} onChange={(event) => update('frontendYears', event.target.value)}>{['0~1년','2~3년','4~5년','6~7년','8~10년','10년+'].map((item)=><option key={item}>{item}</option>)}</select></label><label className="wide">코딩테스트 경험<select value={profile.codingTestLevel} onChange={(event) => update('codingTestLevel', event.target.value)}>{['처음','Level 0','Level 1','Level 2','Level 3+'].map((item)=><option key={item}>{item}</option>)}</select></label></div></div>}
+        {step === 0 && <div className="onboarding-content"><div className="eyebrow">나에게 맞는 출발점</div><h1>경력과 코테 실력은<br />따로 보고 시작할게요.</h1><p className="support-copy">개발 경력은 이론 깊이에만, 문제 난이도는 별도의 진단 결과에만 반영합니다.</p><div className="form-grid"><label className="wide">먼저 학습할 언어<select value={profile.learningLanguage} onChange={(event) => update('learningLanguage', event.target.value)}><option value="javascript">JavaScript</option><option value="java">Java</option></select></label><label>전체 개발 경력<select value={profile.careerYears} onChange={(event) => update('careerYears', event.target.value)}>{['0~1년','2~3년','4~5년','6~7년','8~10년','10년+'].map((item)=><option key={item}>{item}</option>)}</select></label><label>프론트엔드 경력<select value={profile.frontendYears} onChange={(event) => update('frontendYears', event.target.value)}>{['0~1년','2~3년','4~5년','6~7년','8~10년','10년+'].map((item)=><option key={item}>{item}</option>)}</select></label><label className="wide">코딩테스트 경험<select value={profile.codingTestLevel} onChange={(event) => update('codingTestLevel', event.target.value)}>{['처음','Level 0','Level 1','Level 2','Level 3+'].map((item)=><option key={item}>{item}</option>)}</select></label></div></div>}
         {step === 1 && <div className="onboarding-content"><div className="eyebrow">현실적인 학습 리듬</div><h1>꾸준히 지킬 수 있는<br />시간을 알려주세요.</h1><p className="support-copy">하루 시간을 문제풀이·이론·AI·복습 중심으로 나누고, 여유 있는 날에만 Git·AWS 면접 학습을 짧게 넣습니다.</p><div className="form-grid"><label>하루 학습 시간<select value={profile.dailyMinutes} onChange={(event) => update('dailyMinutes', Number(event.target.value))}>{[[30,'30분'],[60,'1시간'],[120,'2시간'],[180,'3시간'],[240,'4시간'],[300,'5시간'],[360,'6시간']].map(([value,label])=><option value={value} key={value}>{label}</option>)}</select></label><label>주당 학습일<select value={profile.daysPerWeek} onChange={(event) => update('daysPerWeek', Number(event.target.value))}>{[2,3,4,5,6,7].map((item)=><option value={item} key={item}>{item}일</option>)}</select></label><label>목표 기간<select value={profile.targetWeeks} onChange={(event) => update('targetWeeks', Number(event.target.value))}>{[4,8,12,16].map((item)=><option value={item} key={item}>{item}주</option>)}</select></label><label>집중 세션<select value={profile.focusMinutes} onChange={(event) => update('focusMinutes', Number(event.target.value))}>{[25,40,50,60,90].map((item)=><option value={item} key={item}>{item}분</option>)}</select></label><label className="wide">목표<select value={profile.goal} onChange={(event) => update('goal', event.target.value)}>{['이직 준비','대기업 코테','일반 FE 이직','알고리즘 기초','개인 공부'].map((item)=><option key={item}>{item}</option>)}</select></label></div></div>}
         {step === 2 && <div className="onboarding-content start-choice"><div className="eyebrow">마지막 선택</div><h1>어디서부터 시작할까요?</h1><p className="support-copy">8개의 짧은 질문으로 시작점을 찾거나, 부담 없이 Level 0부터 시작할 수 있어요.</p><button className="start-card recommended" onClick={() => setDiagnosticMode(true)}><span className="tag">추천</span><strong>8문제 진단으로 시작</strong><small>약 5분 · 문자열부터 시간복잡도까지</small><span>진단 시작 →</span></button><button className="start-card" onClick={() => setResultProfile({ ...profile, diagnosticScore: 0, diagnosticTaken: false, startLevel: 0 })}><strong>그냥 Level 0부터 시작</strong><small>기초 사고 과정부터 차근차근</small><span>결과 확인 →</span></button></div>}
 
