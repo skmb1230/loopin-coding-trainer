@@ -25,6 +25,7 @@ const javaDiagnostics = [
 ];
 
 const diagnosticsForLanguage = (languageId) => languageId === 'java' ? javaDiagnostics : javascriptDiagnostics;
+export const diagnosticStartLevel = (score) => score >= 7 ? 1 : 0;
 
 const steps = ['기본 정보', '학습 목표', '시작점'];
 
@@ -45,7 +46,7 @@ export function OnboardingResult({ profile, onComplete }) {
   const allocation = calculateStudyAllocation(profile.dailyMinutes || 120, 'beginner');
   const algorithmTrack = !tookDiagnostic
     ? 'Level 0 · 차근차근'
-    : score >= 7 ? 'Level 0 · 빠른 트랙' : score >= 4 ? 'Level 0 · 핵심 트랙' : 'Level 0 · 기초 강화';
+    : profile.startLevel >= 1 ? 'Level 1 · 기초 확인 병행' : score >= 4 ? 'Level 0 · 핵심 트랙' : 'Level 0 · 기초 강화';
   const firstFocus = tookDiagnostic
     ? diagnostics.filter((item, index) => answers[index] !== item.answer).map((item) => item.area).slice(0, 3)
     : ['배열', '문자열', '반복문'];
@@ -117,7 +118,7 @@ export default function Onboarding({ onComplete }) {
     const nextAnswers = [...answers, answer];
     if (diagnosticIndex === diagnostics.length - 1) {
       const score = nextAnswers.reduce((sum, value, index) => sum + (value === diagnostics[index].answer ? 1 : 0), 0);
-      setResultProfile({ ...profile, diagnosticScore: score, diagnosticTaken: true, diagnosticAnswers: nextAnswers, startLevel: 0 });
+      setResultProfile({ ...profile, diagnosticScore: score, diagnosticTaken: true, diagnosticAnswers: nextAnswers, startLevel: diagnosticStartLevel(score) });
       return;
     }
     setAnswers(nextAnswers);

@@ -4,4043 +4,5645 @@
   "generatedAt": "1970-01-01T00:00:00.000Z",
   "strategy": "validated-template-and-parameter-variants",
   "targetCount": 800,
+  "uniqueTemplateCount": 362,
+  "coreBlueprintCount": 72,
   "levels": [
     {
       "level": 0,
       "target": 200,
       "implemented": 200,
-      "generatedTemplates": 5
+      "generatedTemplates": 63
     },
     {
       "level": 1,
       "target": 220,
       "implemented": 220,
-      "generatedTemplates": 5
+      "generatedTemplates": 63
     },
     {
       "level": 2,
       "target": 180,
       "implemented": 180,
-      "generatedTemplates": 5
+      "generatedTemplates": 63
     },
     {
       "level": 3,
       "target": 120,
       "implemented": 120,
-      "generatedTemplates": 5
+      "generatedTemplates": 63
     },
     {
       "level": 4,
       "target": 60,
       "implemented": 60,
-      "generatedTemplates": 5
+      "generatedTemplates": 60
     },
     {
       "level": 5,
       "target": 20,
       "implemented": 20,
-      "generatedTemplates": 5
+      "generatedTemplates": 20
     }
   ],
   "templateOrder": [
     {
       "id": "JS4015",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:even-edges",
       "seed": 31794785
     },
     {
       "id": "JS5001",
+      "level": 5,
       "category": "Maximum Flow",
+      "templateId": "5:scaled-max-flow:direct",
       "seed": 39602919
     },
     {
       "id": "JS0146",
-      "category": "반복문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:rotate",
       "seed": 1156174
     },
     {
       "id": "JS4007",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:direct",
       "seed": 31731433
     },
     {
       "id": "JS0050",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:even-index",
       "seed": 395950
     },
     {
       "id": "JS0051",
-      "category": "반복문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:even-index",
       "seed": 403869
     },
     {
       "id": "JS0087",
-      "category": "조건문",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:filtered",
       "seed": 688953
     },
     {
       "id": "JS1124",
-      "category": "문자열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:zero-diagonal",
       "seed": 8900956
     },
     {
       "id": "JS3082",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:even-edges",
       "seed": 24406358
     },
     {
       "id": "JS4040",
+      "level": 4,
       "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:double-grid",
       "seed": 31992760
     },
     {
       "id": "JS1132",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:direct",
       "seed": 8964308
     },
     {
       "id": "JS0193",
-      "category": "배열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:prefix",
       "seed": 1528367
     },
     {
       "id": "JS0148",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:prefix-sums:rotate",
       "seed": 1172012
     },
     {
       "id": "JS2114",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:transpose",
       "seed": 16740766
     },
     {
       "id": "JS4017",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:even-edges",
       "seed": 31810623
     },
     {
       "id": "JS2075",
+      "level": 2,
       "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:reverse",
       "seed": 16431925
     },
     {
       "id": "JS3063",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:filtered",
       "seed": 24255897
     },
     {
       "id": "JS4022",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:odd-edges",
       "seed": 31850218
     },
     {
       "id": "JS1162",
-      "category": "Set",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:prefix",
       "seed": 9201878
     },
     {
       "id": "JS3064",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:direct",
       "seed": 24263816
     },
     {
       "id": "JS1176",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:rotate",
       "seed": 9312744
     },
     {
       "id": "JS2157",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:normalize",
       "seed": 17081283
     },
     {
       "id": "JS4033",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:absolute-grid",
       "seed": 31937327
     },
     {
       "id": "JS3096",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:reverse-directions",
       "seed": 24517224
     },
     {
       "id": "JS0083",
-      "category": "배열",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:rotate",
       "seed": 657277
     },
     {
       "id": "JS2074",
+      "level": 2,
       "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:reverse",
       "seed": 16424006
     },
     {
       "id": "JS2152",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:odd-index",
       "seed": 17041688
     },
     {
       "id": "JS3025",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:even-grid",
       "seed": 23954975
     },
     {
       "id": "JS0192",
-      "category": "조건문",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:prefix",
       "seed": 1520448
     },
     {
       "id": "JS1208",
-      "category": "배열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-columns",
       "seed": 9566152
     },
     {
       "id": "JS4013",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:reverse",
       "seed": 31778947
     },
     {
       "id": "JS2090",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:odd-index",
       "seed": 16550710
     },
     {
       "id": "JS0125",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:normalize",
       "seed": 989875
     },
     {
       "id": "JS0160",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:direct",
       "seed": 1267040
     },
     {
       "id": "JS1115",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:rotate",
       "seed": 8829685
     },
     {
       "id": "JS0118",
-      "category": "배열",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:odd-index",
       "seed": 934442
     },
     {
       "id": "JS0014",
+      "level": 0,
       "category": "Set",
+      "templateId": "JS0014",
       "seed": 110866
     },
     {
       "id": "JS1003",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:direct",
       "seed": 7942757
     },
     {
       "id": "JS1203",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:reverse",
       "seed": 9526557
     },
     {
       "id": "JS1092",
-      "category": "Set",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:normalize",
       "seed": 8647548
     },
     {
       "id": "JS0200",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:duplicate",
       "seed": 1583800
     },
     {
       "id": "JS1064",
-      "category": "문자열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:direct",
       "seed": 8425816
     },
     {
       "id": "JS4003",
+      "level": 4,
       "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:direct",
       "seed": 31699757
     },
     {
       "id": "JS1135",
-      "category": "행렬",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:reverse",
       "seed": 8988065
     },
     {
       "id": "JS0068",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:affine-transform:prefix",
       "seed": 538492
     },
     {
       "id": "JS1010",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:reverse",
       "seed": 7998190
     },
     {
       "id": "JS3116",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:transpose",
       "seed": 24675604
     },
     {
       "id": "JS4026",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:even-grid",
       "seed": 31881894
     },
     {
       "id": "JS0069",
+      "level": 0,
       "category": "문자열",
+      "templateId": "0:character-step:prefix",
       "seed": 546411
     },
     {
       "id": "JS3040",
+      "level": 3,
       "category": "DAG · DP",
+      "templateId": "3:dag-path-count:drop-last-edge",
       "seed": 24073760
     },
     {
       "id": "JS3066",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:direct",
       "seed": 24279654
     },
     {
       "id": "JS2012",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:reverse",
       "seed": 15933028
     },
     {
       "id": "JS1014",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:reverse",
       "seed": 8029866
     },
     {
       "id": "JS2124",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:filtered",
       "seed": 16819956
     },
     {
       "id": "JS0103",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:affine-transform:reverse",
       "seed": 815657
     },
     {
       "id": "JS1191",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:direct",
       "seed": 9431529
     },
     {
       "id": "JS0114",
-      "category": "문자열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:even-index",
       "seed": 902766
     },
     {
       "id": "JS0145",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:rotate",
       "seed": 1148255
     },
     {
       "id": "JS0165",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:reverse",
       "seed": 1306635
     },
     {
       "id": "JS2053",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:rotate",
       "seed": 16257707
     },
     {
       "id": "JS3026",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:odd-edges",
       "seed": 23962894
     },
     {
       "id": "JS0154",
-      "category": "문자열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:nonzero",
       "seed": 1219526
     },
     {
       "id": "JS3047",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:duplicate-edges",
       "seed": 24129193
     },
     {
       "id": "JS2059",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:filtered",
       "seed": 16305221
     },
     {
       "id": "JS2077",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:reverse",
       "seed": 16447763
     },
     {
       "id": "JS1068",
-      "category": "배열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:direct",
       "seed": 8457492
     },
     {
       "id": "JS3058",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:remove-zero-edge",
       "seed": 24216302
     },
     {
       "id": "JS0004",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0004",
       "seed": 31676
     },
     {
       "id": "JS3068",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:direct",
       "seed": 24295492
     },
     {
       "id": "JS2149",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:even-grid",
       "seed": 17017931
     },
     {
       "id": "JS0189",
-      "category": "문자열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:half",
       "seed": 1496691
     },
     {
       "id": "JS1116",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:rotate",
       "seed": 8837604
     },
     {
       "id": "JS0038",
-      "category": "배열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:reverse",
       "seed": 300922
     },
     {
       "id": "JS0155",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:filtered",
       "seed": 1227445
     },
     {
       "id": "JS1169",
-      "category": "문자열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:duplicate",
       "seed": 9257311
     },
     {
       "id": "JS4014",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:reverse",
       "seed": 31786866
     },
     {
       "id": "JS0075",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:duplicate",
       "seed": 593925
     },
     {
       "id": "JS1144",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:even-index",
       "seed": 9059336
     },
     {
       "id": "JS2016",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:reverse-columns",
       "seed": 15964704
     },
     {
       "id": "JS5008",
-      "category": "Tree · LCA",
+      "level": 5,
+      "category": "Maximum Flow",
+      "templateId": "5:scaled-max-flow:reverse-edge-order",
       "seed": 39658352
     },
     {
       "id": "JS0020",
+      "level": 0,
       "category": "완전탐색",
+      "templateId": "JS0020",
       "seed": 158380
     },
     {
       "id": "JS1086",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:odd-index",
       "seed": 8600034
     },
     {
       "id": "JS0130",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:prefix",
       "seed": 1029470
     },
     {
       "id": "JS2131",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:direct",
       "seed": 16875389
     },
     {
       "id": "JS2004",
+      "level": 2,
       "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:direct",
       "seed": 15869676
     },
     {
       "id": "JS3041",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:prefix",
       "seed": 24081679
     },
     {
       "id": "JS0079",
-      "category": "문자열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:duplicate",
       "seed": 625601
     },
     {
       "id": "JS3065",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:direct",
       "seed": 24271735
     },
     {
       "id": "JS3045",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:duplicate",
       "seed": 24113355
     },
     {
       "id": "JS1002",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:direct",
       "seed": 7934838
     },
     {
       "id": "JS2110",
+      "level": 2,
       "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:duplicate",
       "seed": 16709090
     },
     {
       "id": "JS3048",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:duplicate",
       "seed": 24137112
     },
     {
       "id": "JS2040",
+      "level": 2,
       "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:prefix",
       "seed": 16154760
     },
     {
       "id": "JS2103",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:prefix",
       "seed": 16653657
     },
     {
       "id": "JS1156",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:normalize",
       "seed": 9154364
     },
     {
       "id": "JS4030",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:normalize",
       "seed": 31913570
     },
     {
       "id": "JS2133",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:direct",
       "seed": 16891227
     },
     {
       "id": "JS1168",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:prefix",
       "seed": 9249392
     },
     {
       "id": "JS0176",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:even-index",
       "seed": 1393744
     },
     {
       "id": "JS3097",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:normalize",
       "seed": 24525143
     },
     {
       "id": "JS2169",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:duplicate",
       "seed": 17176311
     },
     {
       "id": "JS2151",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:odd-index",
       "seed": 17033769
     },
     {
       "id": "JS0180",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:odd-index",
       "seed": 1425420
     },
     {
       "id": "JS3044",
-      "category": "BFS",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:duplicate-edges",
       "seed": 24105436
     },
     {
       "id": "JS2041",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:prefix",
       "seed": 16162679
     },
     {
       "id": "JS1143",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:even-index",
       "seed": 9051417
     },
     {
       "id": "JS1001",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:direct",
       "seed": 7926919
     },
     {
       "id": "JS2106",
+      "level": 2,
       "category": "Binary Search",
+      "templateId": "2:lower-bound:duplicate",
       "seed": 16677414
     },
     {
       "id": "JS1152",
-      "category": "Set",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:even-grid",
       "seed": 9122688
     },
     {
       "id": "JS4008",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:reverse-edge-order",
       "seed": 31739352
     },
     {
       "id": "JS3013",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:reverse",
       "seed": 23859947
     },
     {
       "id": "JS1021",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:even-index",
       "seed": 8085299
     },
     {
       "id": "JS0009",
+      "level": 0,
       "category": "정렬",
+      "templateId": "JS0009",
       "seed": 71271
     },
     {
       "id": "JS4038",
+      "level": 4,
       "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:drop-last-edge",
       "seed": 31976922
     },
     {
       "id": "JS0082",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:rotate",
       "seed": 649358
     },
     {
       "id": "JS2052",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:rotate",
       "seed": 16249788
     },
     {
       "id": "JS0151",
-      "category": "반복문",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:filtered",
       "seed": 1195769
     },
     {
       "id": "JS2017",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:even-index",
       "seed": 15972623
     },
     {
       "id": "JS2062",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:filtered",
       "seed": 16328978
     },
     {
       "id": "JS2166",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:prefix",
       "seed": 17152554
     },
     {
       "id": "JS3107",
+      "level": 3,
       "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:duplicate-edges",
       "seed": 24604333
     },
     {
       "id": "JS1170",
-      "category": "행렬",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:duplicate",
       "seed": 9265230
     },
     {
       "id": "JS1084",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:even-index",
       "seed": 8584196
     },
     {
       "id": "JS2021",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:even-index",
       "seed": 16004299
     },
     {
       "id": "JS5005",
+      "level": 5,
       "category": "Bitmask DP",
+      "templateId": "5:limited-assignment:direct",
       "seed": 39634595
     },
     {
       "id": "JS3002",
+      "level": 3,
       "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:direct",
       "seed": 23772838
     },
     {
       "id": "JS2160",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:normalize",
       "seed": 17105040
     },
     {
       "id": "JS0045",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:even-index",
       "seed": 356355
     },
     {
       "id": "JS3069",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:direct",
       "seed": 24303411
     },
     {
       "id": "JS1210",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:even-index",
       "seed": 9581990
     },
     {
       "id": "JS2026",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:odd-index",
       "seed": 16043894
     },
     {
       "id": "JS2139",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:reverse",
       "seed": 16938741
     },
     {
       "id": "JS2134",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:reverse",
       "seed": 16899146
     },
     {
       "id": "JS1094",
-      "category": "문자열",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:normalize",
       "seed": 8663386
     },
     {
       "id": "JS1076",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:reverse",
       "seed": 8520844
     },
     {
       "id": "JS0126",
-      "category": "반복문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:half",
       "seed": 997794
     },
     {
       "id": "JS3092",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:normalize",
       "seed": 24485548
     },
     {
       "id": "JS2138",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:reverse",
       "seed": 16930822
     },
     {
       "id": "JS2018",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:even-index",
       "seed": 15980542
     },
     {
       "id": "JS2070",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:direct",
       "seed": 16392330
     },
     {
       "id": "JS0096",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:direct",
       "seed": 760224
     },
     {
       "id": "JS0028",
+      "level": 0,
       "category": "조건문",
+      "templateId": "JS0028",
       "seed": 221732
     },
     {
       "id": "JS2125",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:filtered",
       "seed": 16827875
     },
     {
       "id": "JS0018",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0018",
       "seed": 142542
     },
     {
       "id": "JS1040",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:double-grid",
       "seed": 8235760
     },
     {
       "id": "JS2042",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:prefix",
       "seed": 16170598
     },
     {
       "id": "JS0109",
-      "category": "문자열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:even-index",
       "seed": 863171
     },
     {
       "id": "JS2164",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:prefix",
       "seed": 17136716
     },
     {
       "id": "JS3094",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:normalize",
       "seed": 24501386
     },
     {
       "id": "JS3034",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:normalize",
       "seed": 24026246
     },
     {
       "id": "JS0175",
+      "level": 0,
       "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:negate",
       "seed": 1385825
     },
     {
       "id": "JS1059",
-      "category": "문자열",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:filtered",
       "seed": 8386221
     },
     {
       "id": "JS1102",
-      "category": "Set",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:prefix",
       "seed": 8726738
     },
     {
       "id": "JS2088",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:odd-index",
       "seed": 16534872
     },
     {
       "id": "JS2168",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:prefix",
       "seed": 17168392
     },
     {
       "id": "JS1082",
-      "category": "Set",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-columns",
       "seed": 8568358
     },
     {
       "id": "JS4016",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:even-index",
       "seed": 31802704
     },
     {
       "id": "JS0015",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0015",
       "seed": 118785
     },
     {
       "id": "JS0097",
-      "category": "조건문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:direct",
       "seed": 768143
     },
     {
       "id": "JS1139",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:reverse",
       "seed": 9019741
     },
     {
       "id": "JS3083",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:even-index",
       "seed": 24414277
     },
     {
       "id": "JS4028",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:odd-index",
       "seed": 31897732
     },
     {
       "id": "JS1150",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:odd-index",
       "seed": 9106850
     },
     {
       "id": "JS1141",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:even-index",
       "seed": 9035579
     },
     {
       "id": "JS2111",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:duplicate",
       "seed": 16717009
     },
     {
       "id": "JS1066",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:direct",
       "seed": 8441654
     },
     {
       "id": "JS1160",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:normalize",
       "seed": 9186040
     },
     {
       "id": "JS3084",
-      "category": "BFS",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:even-index",
       "seed": 24422196
     },
     {
       "id": "JS1215",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:even-grid",
       "seed": 9621585
     },
     {
       "id": "JS2072",
+      "level": 2,
       "category": "DFS · BFS",
+      "templateId": "2:weighted-components:reverse-rows",
       "seed": 16408168
     },
     {
       "id": "JS2170",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:shift-grid",
       "seed": 17184230
     },
     {
       "id": "JS1083",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:even-index",
       "seed": 8576277
     },
     {
       "id": "JS1043",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:duplicate",
       "seed": 8259517
     },
     {
       "id": "JS1031",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:normalize",
       "seed": 8164489
     },
     {
       "id": "JS2002",
+      "level": 2,
       "category": "DFS · BFS",
+      "templateId": "2:weighted-components:direct",
       "seed": 15853838
     },
     {
       "id": "JS0078",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:prefix-sums:duplicate",
       "seed": 617682
     },
     {
       "id": "JS3077",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:reverse",
       "seed": 24366763
     },
     {
       "id": "JS1080",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:even-index",
       "seed": 8552520
     },
     {
       "id": "JS4036",
+      "level": 4,
       "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:drop-last-edge",
       "seed": 31961084
     },
     {
       "id": "JS3062",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:filtered",
       "seed": 24247978
     },
     {
       "id": "JS5013",
-      "category": "Tree · LCA",
+      "level": 5,
+      "category": "Backtracking · DP",
+      "templateId": "5:palindrome-partitions:reverse",
       "seed": 39697947
     },
     {
       "id": "JS0012",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0012",
       "seed": 95028
     },
     {
       "id": "JS3067",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:direct",
       "seed": 24287573
     },
     {
       "id": "JS3046",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:shift-grid",
       "seed": 24121274
     },
     {
       "id": "JS2143",
+      "level": 2,
       "category": "Dynamic Programming",
+      "templateId": "2:coin-change:even-index",
       "seed": 16970417
     },
     {
       "id": "JS0137",
+      "level": 0,
       "category": "조건문",
+      "templateId": "0:threshold-count:duplicate",
       "seed": 1084903
     },
     {
       "id": "JS2069",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:direct",
       "seed": 16384411
     },
     {
       "id": "JS2144",
+      "level": 2,
       "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:even-index",
       "seed": 16978336
     },
     {
       "id": "JS4011",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:reverse",
       "seed": 31763109
     },
     {
       "id": "JS2156",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:absolute-grid",
       "seed": 17073364
     },
     {
       "id": "JS3059",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:filtered",
       "seed": 24224221
     },
     {
       "id": "JS1171",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:duplicate",
       "seed": 9273149
     },
     {
       "id": "JS1017",
-      "category": "Set",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:even-index",
       "seed": 8053623
     },
     {
       "id": "JS0179",
-      "category": "문자열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:odd-index",
       "seed": 1417501
     },
     {
       "id": "JS3119",
-      "category": "BFS",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:rotate",
       "seed": 24699361
     },
     {
       "id": "JS3110",
+      "level": 3,
       "category": "DAG · DP",
+      "templateId": "3:dag-path-count:duplicate-edges",
       "seed": 24628090
     },
     {
       "id": "JS1167",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:prefix",
       "seed": 9241473
     },
     {
       "id": "JS2145",
+      "level": 2,
       "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:even-index",
       "seed": 16986255
     },
     {
       "id": "JS4039",
+      "level": 4,
       "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:prefix",
       "seed": 31984841
     },
     {
       "id": "JS2132",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:direct",
       "seed": 16883308
     },
     {
       "id": "JS0092",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:filtered",
       "seed": 728548
     },
     {
       "id": "JS1034",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:normalize",
       "seed": 8188246
     },
     {
       "id": "JS3098",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:normalize",
       "seed": 24533062
     },
     {
       "id": "JS0007",
+      "level": 0,
       "category": "Set",
+      "templateId": "JS0007",
       "seed": 55433
     },
     {
       "id": "JS1027",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:odd-index",
       "seed": 8132813
     },
     {
       "id": "JS2101",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:prefix",
       "seed": 16637819
     },
     {
       "id": "JS0041",
-      "category": "반복문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:reverse",
       "seed": 324679
     },
     {
       "id": "JS3071",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:reverse",
       "seed": 24319249
     },
     {
       "id": "JS1128",
-      "category": "배열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:direct",
       "seed": 8932632
     },
     {
       "id": "JS3118",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:rotate",
       "seed": 24691442
     },
     {
       "id": "JS1206",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:even-index",
       "seed": 9550314
     },
     {
       "id": "JS0140",
+      "level": 0,
       "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:minus-one",
       "seed": 1108660
     },
     {
       "id": "JS4060",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:filtered",
       "seed": 32151140
     },
     {
       "id": "JS1098",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:normalize",
       "seed": 8695062
     },
     {
       "id": "JS1007",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:direct",
       "seed": 7974433
     },
     {
       "id": "JS2080",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:even-index",
       "seed": 16471520
     },
     {
       "id": "JS3038",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:prefix",
       "seed": 24057922
     },
     {
       "id": "JS1127",
-      "category": "Set",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:direct",
       "seed": 8924713
     },
     {
       "id": "JS1093",
-      "category": "배열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:normalize",
       "seed": 8655467
     },
     {
       "id": "JS1195",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:direct",
       "seed": 9463205
     },
     {
       "id": "JS0135",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:prefix",
       "seed": 1069065
     },
     {
       "id": "JS3004",
+      "level": 3,
       "category": "BFS",
+      "templateId": "3:grid-limit-bfs:direct",
       "seed": 23788676
     },
     {
       "id": "JS4001",
+      "level": 4,
       "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:direct",
       "seed": 31683919
     },
     {
       "id": "JS1095",
-      "category": "행렬",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:normalize",
       "seed": 8671305
     },
     {
       "id": "JS0185",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:normalize",
       "seed": 1465015
     },
     {
       "id": "JS3050",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:rotate",
       "seed": 24152950
     },
     {
       "id": "JS1205",
-      "category": "행렬",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:even-index",
       "seed": 9542395
     },
     {
       "id": "JS0086",
-      "category": "반복문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:rotate",
       "seed": 681034
     },
     {
       "id": "JS1122",
-      "category": "Set",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:filtered",
       "seed": 8885118
     },
     {
       "id": "JS0036",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:direct",
       "seed": 285084
     },
     {
       "id": "JS0061",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:normalize",
       "seed": 483059
     },
     {
       "id": "JS2171",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:duplicate",
       "seed": 17192149
     },
     {
       "id": "JS2098",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:normalize",
       "seed": 16614062
     },
     {
       "id": "JS2071",
+      "level": 2,
       "category": "Binary Search",
+      "templateId": "2:lower-bound:reverse",
       "seed": 16400249
     },
     {
       "id": "JS1213",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:odd-index",
       "seed": 9605747
     },
     {
       "id": "JS2121",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:zero-diagonal",
       "seed": 16796199
     },
     {
       "id": "JS2094",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:normalize",
       "seed": 16582386
     },
     {
       "id": "JS4002",
+      "level": 4,
       "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:direct",
       "seed": 31691838
     },
     {
       "id": "JS2109",
+      "level": 2,
       "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:duplicate",
       "seed": 16701171
     },
     {
       "id": "JS2159",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:normalize",
       "seed": 17097121
     },
     {
       "id": "JS3051",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:rotate-edges",
       "seed": 24160869
     },
     {
       "id": "JS0084",
-      "category": "문자열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:bounded-square",
       "seed": 665196
     },
     {
       "id": "JS1217",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:odd-index",
       "seed": 9637423
     },
     {
       "id": "JS0191",
-      "category": "반복문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:normalize",
       "seed": 1512529
     },
     {
       "id": "JS0033",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:affine-transform:direct",
       "seed": 261327
     },
     {
       "id": "JS1201",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-rows",
       "seed": 9510719
     },
     {
       "id": "JS3072",
+      "level": 3,
       "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:reverse-edge-order",
       "seed": 24327168
     },
     {
       "id": "JS0186",
-      "category": "반복문",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:normalize",
       "seed": 1472934
     },
     {
       "id": "JS4019",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:reverse-columns",
       "seed": 31826461
     },
     {
       "id": "JS0116",
-      "category": "반복문",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:odd-index",
       "seed": 918604
     },
     {
       "id": "JS4031",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:reverse-directions",
       "seed": 31921489
     },
     {
       "id": "JS0182",
-      "category": "조건문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:double",
       "seed": 1441258
     },
     {
       "id": "JS3090",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:odd-index",
       "seed": 24469710
     },
     {
       "id": "JS2107",
+      "level": 2,
       "category": "DFS · BFS",
+      "templateId": "2:weighted-components:shift-grid",
       "seed": 16685333
     },
     {
       "id": "JS1118",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:rotate",
       "seed": 8853442
     },
     {
       "id": "JS2087",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:odd-index",
       "seed": 16526953
     },
     {
       "id": "JS0021",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0021",
       "seed": 166299
     },
     {
       "id": "JS5004",
+      "level": 5,
       "category": "분할 정복",
+      "templateId": "5:matrix-power:direct",
       "seed": 39626676
     },
     {
       "id": "JS1025",
-      "category": "행렬",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:odd-index",
       "seed": 8116975
     },
     {
       "id": "JS2095",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:normalize",
       "seed": 16590305
     },
     {
       "id": "JS3049",
-      "category": "BFS",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:duplicate",
       "seed": 24145031
     },
     {
       "id": "JS3102",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:double-grid",
       "seed": 24564738
     },
     {
       "id": "JS0065",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:normalize",
       "seed": 514735
     },
     {
       "id": "JS2029",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:normalize",
       "seed": 16067651
     },
     {
       "id": "JS0117",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:odd-index",
       "seed": 926523
     },
     {
       "id": "JS2031",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:normalize",
       "seed": 16083489
     },
     {
       "id": "JS0101",
+      "level": 0,
       "category": "반복문",
+      "templateId": "0:divisible-sum:reverse",
       "seed": 799819
     },
     {
       "id": "JS0153",
-      "category": "배열",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:filtered",
       "seed": 1211607
     },
     {
       "id": "JS2082",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:even-index",
       "seed": 16487358
     },
     {
       "id": "JS2089",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:odd-index",
       "seed": 16542791
     },
     {
       "id": "JS5015",
-      "category": "Bitmask DP",
+      "level": 5,
+      "category": "Maximum Flow",
+      "templateId": "5:scaled-max-flow:even-edges",
       "seed": 39713785
     },
     {
       "id": "JS1130",
-      "category": "행렬",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:direct",
       "seed": 8948470
     },
     {
       "id": "JS1100",
-      "category": "행렬",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:prefix",
       "seed": 8710900
     },
     {
       "id": "JS3027",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:odd-index",
       "seed": 23970813
     },
     {
       "id": "JS0090",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:filtered",
       "seed": 712710
     },
     {
       "id": "JS2091",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:odd-index",
       "seed": 16558629
     },
     {
       "id": "JS5020",
-      "category": "Bitmask DP",
+      "level": 5,
+      "category": "Backtracking · DP",
+      "templateId": "5:palindrome-partitions:even-index",
       "seed": 39753380
     },
     {
       "id": "JS2019",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:even-index",
       "seed": 15988461
     },
     {
       "id": "JS0104",
+      "level": 0,
       "category": "문자열",
+      "templateId": "0:character-step:reverse",
       "seed": 823576
     },
     {
       "id": "JS2176",
+      "level": 2,
       "category": "Binary Search",
+      "templateId": "2:lower-bound:rotate",
       "seed": 17231744
     },
     {
       "id": "JS3029",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:normalize",
       "seed": 23986651
     },
     {
       "id": "JS2044",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:shift-grid",
       "seed": 16186436
     },
     {
       "id": "JS0171",
+      "level": 0,
       "category": "반복문",
+      "templateId": "0:divisible-sum:even-index",
       "seed": 1354149
     },
     {
       "id": "JS4020",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:even-index",
       "seed": 31834380
     },
     {
       "id": "JS0198",
-      "category": "배열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:prefix",
       "seed": 1567962
     },
     {
       "id": "JS3117",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:rotate-edges",
       "seed": 24683523
     },
     {
       "id": "JS2140",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:reverse",
       "seed": 16946660
     },
     {
       "id": "JS4029",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:reverse-directions",
       "seed": 31905651
     },
     {
       "id": "JS1090",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:odd-index",
       "seed": 8631710
     },
     {
       "id": "JS1202",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:reverse",
       "seed": 9518638
     },
     {
       "id": "JS4052",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:rotate-edges",
       "seed": 32087788
     },
     {
       "id": "JS5018",
-      "category": "Tree · LCA",
+      "level": 5,
+      "category": "분할 정복",
+      "templateId": "5:matrix-power:reverse-columns",
       "seed": 39737542
     },
     {
       "id": "JS1198",
-      "category": "배열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:reverse",
       "seed": 9486962
     },
     {
       "id": "JS2039",
+      "level": 2,
       "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:prefix",
       "seed": 16146841
     },
     {
       "id": "JS1023",
-      "category": "배열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:odd-index",
       "seed": 8101137
     },
     {
       "id": "JS2115",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:rotate",
       "seed": 16748685
     },
     {
       "id": "JS4045",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:duplicate-edges",
       "seed": 32032355
     },
     {
       "id": "JS2167",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:prefix",
       "seed": 17160473
     },
     {
       "id": "JS0144",
-      "category": "문자열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:rotate",
       "seed": 1140336
     },
     {
       "id": "JS0062",
-      "category": "조건문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:normalize",
       "seed": 490978
     },
     {
       "id": "JS0188",
-      "category": "배열",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:normalize",
       "seed": 1488772
     },
     {
       "id": "JS5003",
+      "level": 5,
       "category": "Tree · LCA",
+      "templateId": "5:rooted-lca:direct",
       "seed": 39618757
     },
     {
       "id": "JS0063",
-      "category": "배열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:half",
       "seed": 498897
     },
     {
       "id": "JS3037",
+      "level": 3,
       "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:drop-last-edge",
       "seed": 24050003
     },
     {
       "id": "JS3031",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:normalize",
       "seed": 24002489
     },
     {
       "id": "JS4012",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:reverse-rows",
       "seed": 31771028
     },
     {
       "id": "JS3009",
-      "category": "BFS",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:reverse-edge-order",
       "seed": 23828271
     },
     {
       "id": "JS1119",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:rotate",
       "seed": 8861361
     },
     {
       "id": "JS1207",
-      "category": "Set",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:even-index",
       "seed": 9558233
     },
     {
       "id": "JS1123",
-      "category": "배열",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:filtered",
       "seed": 8893037
     },
     {
       "id": "JS2136",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:reverse",
       "seed": 16914984
     },
     {
       "id": "JS0054",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:odd-index",
       "seed": 427626
     },
     {
       "id": "JS2014",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:reverse",
       "seed": 15948866
     },
     {
       "id": "JS1194",
-      "category": "문자열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:direct",
       "seed": 9455286
     },
     {
       "id": "JS0072",
-      "category": "조건문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:prefix",
       "seed": 570168
     },
     {
       "id": "JS1048",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:duplicate",
       "seed": 8299112
     },
     {
       "id": "JS3106",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:duplicate",
       "seed": 24596414
     },
     {
       "id": "JS1012",
-      "category": "Set",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-rows",
       "seed": 8014028
     },
     {
       "id": "JS1054",
-      "category": "문자열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:transpose",
       "seed": 8346626
     },
     {
       "id": "JS3095",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:absolute-grid",
       "seed": 24509305
     },
     {
       "id": "JS2104",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:prefix",
       "seed": 16661576
     },
     {
       "id": "JS1035",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:normalize",
       "seed": 8196165
     },
     {
       "id": "JS0010",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0010",
       "seed": 79190
     },
     {
       "id": "JS1164",
-      "category": "문자열",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:prefix",
       "seed": 9217716
     },
     {
       "id": "JS2056",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:rotate",
       "seed": 16281464
     },
     {
       "id": "JS1071",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:reverse",
       "seed": 8481249
     },
     {
       "id": "JS3019",
-      "category": "BFS",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:even-edges",
       "seed": 23907461
     },
     {
       "id": "JS1157",
-      "category": "Set",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:normalize",
       "seed": 9162283
     },
     {
       "id": "JS0152",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:filtered",
       "seed": 1203688
     },
     {
       "id": "JS0128",
-      "category": "배열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:normalize",
       "seed": 1013632
     },
     {
       "id": "JS0106",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:reverse",
       "seed": 839414
     },
     {
       "id": "JS1106",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:duplicate",
       "seed": 8758414
     },
     {
       "id": "JS3073",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:reverse",
       "seed": 24335087
     },
     {
       "id": "JS2097",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:normalize",
       "seed": 16606143
     },
     {
       "id": "JS1112",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:duplicate",
       "seed": 8805928
     },
     {
       "id": "JS0112",
-      "category": "조건문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:negate",
       "seed": 886928
     },
     {
       "id": "JS1037",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:prefix",
       "seed": 8212003
     },
     {
       "id": "JS1120",
-      "category": "행렬",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:filtered",
       "seed": 8869280
     },
     {
       "id": "JS0003",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0003",
       "seed": 23757
     },
     {
       "id": "JS0122",
-      "category": "조건문",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:normalize",
       "seed": 966118
     },
     {
       "id": "JS1188",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:filtered",
       "seed": 9407772
     },
     {
       "id": "JS1079",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:even-index",
       "seed": 8544601
     },
     {
       "id": "JS1019",
-      "category": "문자열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-columns",
       "seed": 8069461
     },
     {
       "id": "JS2037",
+      "level": 2,
       "category": "DFS · BFS",
+      "templateId": "2:weighted-components:double-grid",
       "seed": 16131003
     },
     {
       "id": "JS1181",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:rotate",
       "seed": 9352339
     },
     {
       "id": "JS3113",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:rotate",
       "seed": 24651847
     },
     {
       "id": "JS0070",
+      "level": 0,
       "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:plus-one",
       "seed": 554330
     },
     {
       "id": "JS2086",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:even-grid",
       "seed": 16519034
     },
     {
       "id": "JS4004",
+      "level": 4,
       "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:direct",
       "seed": 31707676
     },
     {
       "id": "JS0149",
-      "category": "문자열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:rotate",
       "seed": 1179931
     },
     {
       "id": "JS0055",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:odd-index",
       "seed": 435545
     },
     {
       "id": "JS1018",
-      "category": "배열",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:even-index",
       "seed": 8061542
     },
     {
       "id": "JS2028",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:odd-index",
       "seed": 16059732
     },
     {
       "id": "JS0169",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:reverse",
       "seed": 1338311
     },
     {
       "id": "JS1187",
-      "category": "Set",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:zero-diagonal",
       "seed": 9399853
     },
     {
       "id": "JS1062",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:filtered",
       "seed": 8409978
     },
     {
       "id": "JS0163",
-      "category": "배열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:direct",
       "seed": 1290797
     },
     {
       "id": "JS0077",
-      "category": "조건문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:minus-one",
       "seed": 609763
     },
     {
       "id": "JS1108",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:duplicate",
       "seed": 8774252
     },
     {
       "id": "JS0136",
+      "level": 0,
       "category": "반복문",
+      "templateId": "0:divisible-sum:duplicate",
       "seed": 1076984
     },
     {
       "id": "JS1097",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:normalize",
       "seed": 8687143
     },
     {
       "id": "JS1182",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:rotate",
       "seed": 9360258
     },
     {
       "id": "JS1186",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:filtered",
       "seed": 9391934
     },
     {
       "id": "JS0139",
+      "level": 0,
       "category": "문자열",
+      "templateId": "0:character-step:duplicate",
       "seed": 1100741
     },
     {
       "id": "JS2050",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:rotate",
       "seed": 16233950
     },
     {
       "id": "JS0034",
+      "level": 0,
       "category": "문자열",
+      "templateId": "0:character-step:direct",
       "seed": 269246
     },
     {
       "id": "JS0071",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:prefix",
       "seed": 562249
     },
     {
       "id": "JS2079",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:reverse-columns",
       "seed": 16463601
     },
     {
       "id": "JS2005",
+      "level": 2,
       "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:direct",
       "seed": 15877595
     },
     {
       "id": "JS3056",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:rotate",
       "seed": 24200464
     },
     {
       "id": "JS2105",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:prefix",
       "seed": 16669495
     },
     {
       "id": "JS1173",
-      "category": "배열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:shift-grid",
       "seed": 9288987
     },
     {
       "id": "JS4027",
+      "level": 4,
       "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:odd-index",
       "seed": 31889813
     },
     {
       "id": "JS2093",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:absolute-grid",
       "seed": 16574467
     },
     {
       "id": "JS2119",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:rotate",
       "seed": 16780361
     },
     {
       "id": "JS3010",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:reverse",
       "seed": 23836190
     },
     {
       "id": "JS1133",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:direct",
       "seed": 8972227
     },
     {
       "id": "JS1070",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:direct",
       "seed": 8473330
     },
     {
       "id": "JS1179",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:rotate",
       "seed": 9336501
     },
     {
       "id": "JS0121",
-      "category": "반복문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:odd-index",
       "seed": 958199
     },
     {
       "id": "JS2067",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:direct",
       "seed": 16368573
     },
     {
       "id": "JS0141",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:duplicate",
       "seed": 1116579
     },
     {
       "id": "JS1052",
-      "category": "Set",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:rotate",
       "seed": 8330788
     },
     {
       "id": "JS5019",
-      "category": "분할 정복",
+      "level": 5,
+      "category": "Bitmask DP",
+      "templateId": "5:limited-assignment:reverse-columns",
       "seed": 39745461
     },
     {
       "id": "JS0187",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:normalize",
       "seed": 1480853
     },
     {
       "id": "JS1147",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:even-index",
       "seed": 9083093
     },
     {
       "id": "JS3093",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:reverse-directions",
       "seed": 24493467
     },
     {
       "id": "JS0053",
-      "category": "배열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:odd-index",
       "seed": 419707
     },
     {
       "id": "JS0066",
+      "level": 0,
       "category": "반복문",
+      "templateId": "0:divisible-sum:prefix",
       "seed": 522654
     },
     {
       "id": "JS0005",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0005",
       "seed": 39595
     },
     {
       "id": "JS2158",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:normalize",
       "seed": 17089202
     },
     {
       "id": "JS1044",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:duplicate",
       "seed": 8267436
     },
     {
       "id": "JS0040",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:reverse",
       "seed": 316760
     },
     {
       "id": "JS4051",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:rotate",
       "seed": 32079869
     },
     {
       "id": "JS2099",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:prefix",
       "seed": 16621981
     },
     {
       "id": "JS1158",
-      "category": "배열",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:normalize",
       "seed": 9170202
     },
     {
       "id": "JS1183",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:filtered",
       "seed": 9368177
     },
     {
       "id": "JS2024",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:odd-index",
       "seed": 16028056
     },
     {
       "id": "JS1087",
-      "category": "Set",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:odd-index",
       "seed": 8607953
     },
     {
       "id": "JS5017",
-      "category": "Strongly Connected Components",
+      "level": 5,
+      "category": "Tree · LCA",
+      "templateId": "5:rooted-lca:even-index",
       "seed": 39729623
     },
     {
       "id": "JS0076",
-      "category": "반복문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:duplicate",
       "seed": 601844
     },
     {
       "id": "JS1077",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:reverse",
       "seed": 8528763
     },
     {
       "id": "JS4018",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:even-index",
       "seed": 31818542
     },
     {
       "id": "JS1028",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:odd-index",
       "seed": 8140732
     },
     {
       "id": "JS3052",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:rotate",
       "seed": 24168788
     },
     {
       "id": "JS0195",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:prefix",
       "seed": 1544205
     },
     {
       "id": "JS0108",
-      "category": "배열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:even-index",
       "seed": 855252
     },
     {
       "id": "JS1199",
-      "category": "문자열",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:reverse",
       "seed": 9494881
     },
     {
       "id": "JS3035",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:normalize",
       "seed": 24034165
     },
     {
       "id": "JS2092",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:normalize",
       "seed": 16566548
     },
     {
       "id": "JS0172",
+      "level": 0,
       "category": "조건문",
+      "templateId": "0:threshold-count:even-index",
       "seed": 1362068
     },
     {
       "id": "JS3091",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:odd-index",
       "seed": 24477629
     },
     {
       "id": "JS2161",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:normalize",
       "seed": 17112959
     },
     {
       "id": "JS3016",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:even-edges",
       "seed": 23883704
     },
     {
       "id": "JS1137",
-      "category": "Set",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:reverse",
       "seed": 9003903
     },
     {
       "id": "JS2058",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:zero-diagonal",
       "seed": 16297302
     },
     {
       "id": "JS1134",
-      "category": "문자열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:reverse",
       "seed": 8980146
     },
     {
       "id": "JS0194",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:prefix",
       "seed": 1536286
     },
     {
       "id": "JS1030",
-      "category": "행렬",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:normalize",
       "seed": 8156570
     },
     {
       "id": "JS0048",
-      "category": "배열",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:even-index",
       "seed": 380112
     },
     {
       "id": "JS2128",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:direct",
       "seed": 16851632
     },
     {
       "id": "JS0166",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:reverse",
       "seed": 1314554
     },
     {
       "id": "JS2006",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:direct",
       "seed": 15885514
     },
     {
       "id": "JS0035",
+      "level": 0,
       "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:direct",
       "seed": 277165
     },
     {
       "id": "JS2068",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:direct",
       "seed": 16376492
     },
     {
       "id": "JS2046",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:duplicate",
       "seed": 16202274
     },
     {
       "id": "JS2064",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:direct",
       "seed": 16344816
     },
     {
       "id": "JS0190",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:normalize",
       "seed": 1504610
     },
     {
       "id": "JS3076",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:reverse",
       "seed": 24358844
     },
     {
       "id": "JS1029",
-      "category": "문자열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:normalize",
       "seed": 8148651
     },
     {
       "id": "JS0133",
-      "category": "배열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:plus-one",
       "seed": 1053227
     },
     {
       "id": "JS3089",
-      "category": "BFS",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:odd-edges",
       "seed": 24461791
     },
     {
       "id": "JS0098",
-      "category": "배열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:direct",
       "seed": 776062
     },
     {
       "id": "JS2108",
+      "level": 2,
       "category": "Dynamic Programming",
+      "templateId": "2:coin-change:duplicate",
       "seed": 16693252
     },
     {
       "id": "JS1085",
-      "category": "행렬",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:odd-index",
       "seed": 8592115
     },
     {
       "id": "JS1103",
-      "category": "배열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:double-grid",
       "seed": 8734657
     },
     {
       "id": "JS2123",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:filtered",
       "seed": 16812037
     },
     {
       "id": "JS2066",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:direct",
       "seed": 16360654
     },
     {
       "id": "JS3039",
+      "level": 3,
       "category": "BFS",
+      "templateId": "3:grid-limit-bfs:double-grid",
       "seed": 24065841
     },
     {
       "id": "JS3018",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:reverse-columns",
       "seed": 23899542
     },
     {
       "id": "JS1038",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:prefix",
       "seed": 8219922
     },
     {
       "id": "JS0132",
-      "category": "조건문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:prefix",
       "seed": 1045308
     },
     {
       "id": "JS1060",
-      "category": "행렬",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:filtered",
       "seed": 8394140
     },
     {
       "id": "JS1166",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:double-grid",
       "seed": 9233554
     },
     {
       "id": "JS0067",
+      "level": 0,
       "category": "조건문",
+      "templateId": "0:threshold-count:prefix",
       "seed": 530573
     },
     {
       "id": "JS1136",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:reverse",
       "seed": 8995984
     },
     {
       "id": "JS0095",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:direct",
       "seed": 752305
     },
     {
       "id": "JS1042",
-      "category": "Set",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:prefix",
       "seed": 8251598
     },
     {
       "id": "JS2150",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:odd-index",
       "seed": 17025850
     },
     {
       "id": "JS2126",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:filtered",
       "seed": 16835794
     },
     {
       "id": "JS1091",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:odd-index",
       "seed": 8639629
     },
     {
       "id": "JS0131",
-      "category": "반복문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:prefix",
       "seed": 1037389
     },
     {
       "id": "JS2122",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:filtered",
       "seed": 16804118
     },
     {
       "id": "JS4058",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:filtered",
       "seed": 32135302
     },
     {
       "id": "JS0052",
-      "category": "조건문",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:odd-index",
       "seed": 411788
     },
     {
       "id": "JS3023",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:odd-edges",
       "seed": 23939137
     },
     {
       "id": "JS3079",
-      "category": "BFS",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:even-edges",
       "seed": 24382601
     },
     {
       "id": "JS3111",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:duplicate",
       "seed": 24636009
     },
     {
       "id": "JS0060",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:normalize",
       "seed": 475140
     },
     {
       "id": "JS1072",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:reverse",
       "seed": 8489168
     },
     {
       "id": "JS0147",
-      "category": "조건문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:bounded-square",
       "seed": 1164093
     },
     {
       "id": "JS4046",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:duplicate",
       "seed": 32040274
     },
     {
       "id": "JS1190",
-      "category": "행렬",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:direct",
       "seed": 9423610
     },
     {
       "id": "JS2141",
+      "level": 2,
       "category": "Binary Search",
+      "templateId": "2:lower-bound:even-index",
       "seed": 16954579
     },
     {
       "id": "JS2009",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:reverse-rows",
       "seed": 15909271
     },
     {
       "id": "JS2153",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:odd-index",
       "seed": 17049607
     },
     {
       "id": "JS1117",
-      "category": "Set",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:transpose",
       "seed": 8845523
     },
     {
       "id": "JS2147",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:even-index",
       "seed": 17002093
     },
     {
       "id": "JS1024",
-      "category": "문자열",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:odd-index",
       "seed": 8109056
     },
     {
       "id": "JS1096",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:absolute-grid",
       "seed": 8679224
     },
     {
       "id": "JS3036",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:prefix",
       "seed": 24042084
     },
     {
       "id": "JS0013",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0013",
       "seed": 102947
     },
     {
       "id": "JS0001",
+      "level": 0,
       "category": "숫자 연산",
+      "templateId": "JS0001",
       "seed": 7919
     },
     {
       "id": "JS1109",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:duplicate",
       "seed": 8782171
     },
     {
       "id": "JS3043",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:duplicate",
       "seed": 24097517
     },
     {
       "id": "JS0074",
-      "category": "문자열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:duplicate",
       "seed": 586006
     },
     {
       "id": "JS1015",
-      "category": "행렬",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:even-index",
       "seed": 8037785
     },
     {
       "id": "JS1138",
-      "category": "배열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-rows",
       "seed": 9011822
     },
     {
       "id": "JS1051",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:rotate",
       "seed": 8322869
     },
     {
       "id": "JS0177",
-      "category": "조건문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:even-index",
       "seed": 1401663
     },
     {
       "id": "JS0173",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:affine-transform:even-index",
       "seed": 1369987
     },
     {
       "id": "JS1151",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:odd-index",
       "seed": 9114769
     },
     {
       "id": "JS1149",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:odd-index",
       "seed": 9098931
     },
     {
       "id": "JS1006",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:direct",
       "seed": 7966514
     },
     {
       "id": "JS3001",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:direct",
       "seed": 23764919
     },
     {
       "id": "JS0093",
-      "category": "배열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:filtered",
       "seed": 736467
     },
     {
       "id": "JS3011",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:reverse-rows",
       "seed": 23844109
     },
     {
       "id": "JS1067",
-      "category": "Set",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:direct",
       "seed": 8449573
     },
     {
       "id": "JS0006",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0006",
       "seed": 47514
     },
     {
       "id": "JS4057",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:remove-zero-edge",
       "seed": 32127383
     },
     {
       "id": "JS0042",
-      "category": "조건문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:absolute",
       "seed": 332598
     },
     {
       "id": "JS1088",
-      "category": "배열",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:odd-index",
       "seed": 8615872
     },
     {
       "id": "JS1045",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:duplicate",
       "seed": 8275355
     },
     {
       "id": "JS0081",
-      "category": "반복문",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:rotate",
       "seed": 641439
     },
     {
       "id": "JS3053",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:transpose",
       "seed": 24176707
     },
     {
       "id": "JS2116",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:rotate",
       "seed": 16756604
     },
     {
       "id": "JS0156",
-      "category": "반복문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:filtered",
       "seed": 1235364
     },
     {
       "id": "JS1142",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:even-index",
       "seed": 9043498
     },
     {
       "id": "JS0115",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:odd-index",
       "seed": 910685
     },
     {
       "id": "JS5002",
+      "level": 5,
       "category": "Strongly Connected Components",
+      "templateId": "5:large-scc:direct",
       "seed": 39610838
     },
     {
       "id": "JS2055",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:rotate",
       "seed": 16273545
     },
     {
       "id": "JS5016",
-      "category": "Maximum Flow",
+      "level": 5,
+      "category": "Strongly Connected Components",
+      "templateId": "5:large-scc:even-edges",
       "seed": 39721704
     },
     {
       "id": "JS1061",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:zero-diagonal",
       "seed": 8402059
     },
     {
       "id": "JS2003",
+      "level": 2,
       "category": "Dynamic Programming",
+      "templateId": "2:coin-change:direct",
       "seed": 15861757
     },
     {
       "id": "JS4037",
+      "level": 4,
       "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:prefix",
       "seed": 31969003
     },
     {
       "id": "JS0157",
-      "category": "조건문",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:direct",
       "seed": 1243283
     },
     {
       "id": "JS0168",
-      "category": "배열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:absolute",
       "seed": 1330392
     },
     {
       "id": "JS3030",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:reverse-directions",
       "seed": 23994570
     },
     {
       "id": "JS1111",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:duplicate",
       "seed": 8798009
     },
     {
       "id": "JS2022",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:odd-index",
       "seed": 16012218
     },
     {
       "id": "JS3008",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:reverse",
       "seed": 23820352
     },
     {
       "id": "JS1204",
-      "category": "문자열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:even-index",
       "seed": 9534476
     },
     {
       "id": "JS2148",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:odd-index",
       "seed": 17010012
     },
     {
       "id": "JS4054",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:transpose",
       "seed": 32103626
     },
     {
       "id": "JS3105",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:prefix",
       "seed": 24588495
     },
     {
       "id": "JS1020",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:even-index",
       "seed": 8077380
     },
     {
       "id": "JS3075",
+      "level": 3,
       "category": "DAG · DP",
+      "templateId": "3:dag-path-count:reverse-edge-order",
       "seed": 24350925
     },
     {
       "id": "JS1075",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-rows",
       "seed": 8512925
     },
     {
       "id": "JS1104",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:prefix",
       "seed": 8742576
     },
     {
       "id": "JS3015",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:even-index",
       "seed": 23875785
     },
     {
       "id": "JS1216",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:odd-index",
       "seed": 9629504
     },
     {
       "id": "JS1101",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:prefix",
       "seed": 8718819
     },
     {
       "id": "JS2135",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:reverse-rows",
       "seed": 16907065
     },
     {
       "id": "JS0158",
-      "category": "배열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:direct",
       "seed": 1251202
     },
     {
       "id": "JS0174",
+      "level": 0,
       "category": "문자열",
+      "templateId": "0:character-step:even-index",
       "seed": 1377906
     },
     {
       "id": "JS0127",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:normalize",
       "seed": 1005713
     },
     {
       "id": "JS5012",
-      "category": "Strongly Connected Components",
+      "level": 5,
+      "category": "Bitmask DP",
+      "templateId": "5:limited-assignment:reverse-rows",
       "seed": 39690028
     },
     {
       "id": "JS1047",
-      "category": "Set",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:shift-grid",
       "seed": 8291193
     },
     {
       "id": "JS1008",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:reverse",
       "seed": 7982352
     },
     {
       "id": "JS3033",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:reverse-directions",
       "seed": 24018327
     },
     {
       "id": "JS0017",
+      "level": 0,
       "category": "Stack",
+      "templateId": "JS0017",
       "seed": 134623
     },
     {
       "id": "JS2076",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:reverse",
       "seed": 16439844
     },
     {
       "id": "JS2051",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:transpose",
       "seed": 16241869
     },
     {
       "id": "JS2061",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:filtered",
       "seed": 16321059
     },
     {
       "id": "JS2063",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:filtered",
       "seed": 16336897
     },
     {
       "id": "JS4041",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:prefix",
       "seed": 32000679
     },
     {
       "id": "JS0143",
-      "category": "배열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:rotate",
       "seed": 1132417
     },
     {
       "id": "JS3114",
-      "category": "BFS",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:rotate-edges",
       "seed": 24659766
     },
     {
       "id": "JS2013",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:reverse",
       "seed": 15940947
     },
     {
       "id": "JS2118",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:rotate",
       "seed": 16772442
     },
     {
       "id": "JS1219",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:normalize",
       "seed": 9653261
     },
     {
       "id": "JS0016",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0016",
       "seed": 126704
     },
     {
       "id": "JS2102",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:prefix",
       "seed": 16645738
     },
     {
       "id": "JS4009",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:reverse",
       "seed": 31747271
     },
     {
       "id": "JS1159",
-      "category": "문자열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:absolute-grid",
       "seed": 9178121
     },
     {
       "id": "JS0183",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:prefix-sums:odd-index",
       "seed": 1449177
     },
     {
       "id": "JS2177",
+      "level": 2,
       "category": "DFS · BFS",
+      "templateId": "2:weighted-components:transpose",
       "seed": 17239663
     },
     {
       "id": "JS0184",
-      "category": "문자열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:odd-index",
       "seed": 1457096
     },
     {
       "id": "JS0049",
-      "category": "문자열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:negate",
       "seed": 388031
     },
     {
       "id": "JS0170",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:reverse",
       "seed": 1346230
     },
     {
       "id": "JS0178",
-      "category": "배열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:odd-index",
       "seed": 1409582
     },
     {
       "id": "JS1050",
-      "category": "행렬",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:rotate",
       "seed": 8314950
     },
     {
       "id": "JS3028",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:odd-index",
       "seed": 23978732
     },
     {
       "id": "JS1022",
-      "category": "Set",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:odd-index",
       "seed": 8093218
     },
     {
       "id": "JS0026",
+      "level": 0,
       "category": "Map",
+      "templateId": "JS0026",
       "seed": 205894
     },
     {
       "id": "JS0142",
-      "category": "조건문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:duplicate",
       "seed": 1124498
     },
     {
       "id": "JS2036",
+      "level": 2,
       "category": "Binary Search",
+      "templateId": "2:lower-bound:prefix",
       "seed": 16123084
     },
     {
       "id": "JS0124",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:normalize",
       "seed": 981956
     },
     {
       "id": "JS3120",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:filtered",
       "seed": 24707280
     },
     {
       "id": "JS3112",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:duplicate",
       "seed": 24643928
     },
     {
       "id": "JS0057",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:odd-index",
       "seed": 451383
     },
     {
       "id": "JS4025",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:odd-index",
       "seed": 31873975
     },
     {
       "id": "JS1153",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:odd-index",
       "seed": 9130607
     },
     {
       "id": "JS1009",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:reverse",
       "seed": 7990271
     },
     {
       "id": "JS2015",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:even-index",
       "seed": 15956785
     },
     {
       "id": "JS1211",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:odd-index",
       "seed": 9589909
     },
     {
       "id": "JS2142",
+      "level": 2,
       "category": "DFS · BFS",
+      "templateId": "2:weighted-components:reverse-columns",
       "seed": 16962498
     },
     {
       "id": "JS3003",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:direct",
       "seed": 23780757
     },
     {
       "id": "JS3057",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:filtered",
       "seed": 24208383
     },
     {
       "id": "JS2096",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:normalize",
       "seed": 16598224
     },
     {
       "id": "JS2155",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:normalize",
       "seed": 17065445
     },
     {
       "id": "JS0023",
+      "level": 0,
       "category": "문자열",
+      "templateId": "JS0023",
       "seed": 182137
     },
     {
       "id": "JS4044",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:duplicate",
       "seed": 32024436
     },
     {
       "id": "JS0002",
+      "level": 0,
       "category": "반복문",
+      "templateId": "JS0002",
       "seed": 15838
     },
     {
       "id": "JS2048",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:duplicate",
       "seed": 16218112
     },
     {
       "id": "JS0197",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:prefix",
       "seed": 1560043
     },
     {
       "id": "JS1073",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:reverse",
       "seed": 8497087
     },
     {
       "id": "JS5006",
-      "category": "Maximum Flow",
+      "level": 5,
+      "category": "Backtracking · DP",
+      "templateId": "5:palindrome-partitions:direct",
       "seed": 39642514
     },
     {
       "id": "JS1105",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:prefix",
       "seed": 8750495
     },
     {
       "id": "JS3032",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:absolute-grid",
       "seed": 24010408
     },
     {
       "id": "JS4050",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:rotate-edges",
       "seed": 32071950
     },
     {
       "id": "JS0161",
-      "category": "반복문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:direct",
       "seed": 1274959
     },
     {
       "id": "JS3055",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:rotate",
       "seed": 24192545
     },
     {
       "id": "JS0031",
+      "level": 0,
       "category": "반복문",
+      "templateId": "0:divisible-sum:direct",
       "seed": 245489
     },
     {
       "id": "JS0159",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:direct",
       "seed": 1259121
     },
     {
       "id": "JS2073",
+      "level": 2,
       "category": "Dynamic Programming",
+      "templateId": "2:coin-change:reverse",
       "seed": 16416087
     },
     {
       "id": "JS1053",
-      "category": "배열",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:rotate",
       "seed": 8338707
     },
     {
       "id": "JS1154",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:odd-index",
       "seed": 9138526
     },
     {
       "id": "JS4023",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:weighted-lcs:odd-index",
       "seed": 31858137
     },
     {
       "id": "JS4032",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:normalize",
       "seed": 31929408
     },
     {
       "id": "JS2030",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:absolute-grid",
       "seed": 16075570
     },
     {
       "id": "JS1081",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:even-index",
       "seed": 8560439
     },
     {
       "id": "JS0199",
-      "category": "문자열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:duplicate",
       "seed": 1575881
     },
     {
       "id": "JS2010",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:reverse",
       "seed": 15917190
     },
     {
       "id": "JS3085",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:odd-index",
       "seed": 24430115
     },
     {
       "id": "JS1126",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:filtered",
       "seed": 8916794
     },
     {
       "id": "JS2054",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:rotate",
       "seed": 16265626
     },
     {
       "id": "JS5011",
-      "category": "Maximum Flow",
+      "level": 5,
+      "category": "분할 정복",
+      "templateId": "5:matrix-power:reverse-rows",
       "seed": 39682109
     },
     {
       "id": "JS0110",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:even-index",
       "seed": 871090
     },
     {
       "id": "JS2057",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:filtered",
       "seed": 16289383
     },
     {
       "id": "JS1013",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:reverse",
       "seed": 8021947
     },
     {
       "id": "JS1218",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:normalize",
       "seed": 9645342
     },
     {
       "id": "JS0091",
-      "category": "반복문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:nonzero",
       "seed": 720629
     },
     {
       "id": "JS2137",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:reverse",
       "seed": 16922903
     },
     {
       "id": "JS3014",
-      "category": "BFS",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:reverse",
       "seed": 23867866
     },
     {
       "id": "JS1174",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:duplicate",
       "seed": 9296906
     },
     {
       "id": "JS0024",
+      "level": 0,
       "category": "Greedy",
+      "templateId": "JS0024",
       "seed": 190056
     },
     {
       "id": "JS3087",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:odd-index",
       "seed": 24445953
     },
     {
       "id": "JS0150",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:filtered",
       "seed": 1187850
     },
     {
       "id": "JS1161",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:normalize",
       "seed": 9193959
     },
     {
       "id": "JS1016",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:even-index",
       "seed": 8045704
     },
     {
       "id": "JS2043",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:duplicate",
       "seed": 16178517
     },
     {
       "id": "JS0162",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:direct",
       "seed": 1282878
     },
     {
       "id": "JS4006",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:direct",
       "seed": 31723514
     },
     {
       "id": "JS1175",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:duplicate",
       "seed": 9304825
     },
     {
       "id": "JS4047",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:shift-grid",
       "seed": 32048193
     },
     {
       "id": "JS3080",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:even-index",
       "seed": 24390520
     },
     {
       "id": "JS2100",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:double-grid",
       "seed": 16629900
     },
     {
       "id": "JS3103",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:drop-last-edge",
       "seed": 24572657
     },
     {
       "id": "JS4059",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:remove-zero-edge",
       "seed": 32143221
     },
     {
       "id": "JS2049",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:duplicate",
       "seed": 16226031
     },
     {
       "id": "JS0119",
-      "category": "문자열",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:double",
       "seed": 942361
     },
     {
       "id": "JS2175",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:duplicate",
       "seed": 17223825
     },
     {
       "id": "JS1049",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:duplicate",
       "seed": 8307031
     },
     {
       "id": "JS5010",
-      "category": "Bitmask DP",
+      "level": 5,
+      "category": "Tree · LCA",
+      "templateId": "5:rooted-lca:reverse",
       "seed": 39674190
     },
     {
       "id": "JS2113",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:rotate",
       "seed": 16732847
     },
     {
       "id": "JS1131",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:direct",
       "seed": 8956389
     },
     {
       "id": "JS1180",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:transpose",
       "seed": 9344420
     },
     {
       "id": "JS2112",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:duplicate",
       "seed": 16724928
     },
     {
       "id": "JS0032",
+      "level": 0,
       "category": "조건문",
+      "templateId": "0:threshold-count:direct",
       "seed": 253408
     },
     {
       "id": "JS1089",
-      "category": "문자열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:even-grid",
       "seed": 8623791
     },
     {
       "id": "JS0196",
-      "category": "반복문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:plus-one",
       "seed": 1552124
     },
     {
       "id": "JS2085",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:odd-index",
       "seed": 16511115
     },
     {
       "id": "JS1110",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:shift-grid",
       "seed": 8790090
     },
     {
       "id": "JS2146",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:even-index",
       "seed": 16994174
     },
     {
       "id": "JS0008",
+      "level": 0,
       "category": "Map",
+      "templateId": "JS0008",
       "seed": 63352
     },
     {
       "id": "JS2084",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:even-index",
       "seed": 16503196
     },
     {
       "id": "JS2033",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:normalize",
       "seed": 16099327
     },
     {
       "id": "JS3099",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:prefix",
       "seed": 24540981
     },
     {
       "id": "JS4048",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:duplicate",
       "seed": 32056112
     },
     {
       "id": "JS1155",
-      "category": "행렬",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:normalize",
       "seed": 9146445
     },
     {
       "id": "JS3078",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:even-index",
       "seed": 24374682
     },
     {
       "id": "JS4005",
+      "level": 4,
       "category": "Bitmask DP",
+      "templateId": "4:tsp-fee:direct",
       "seed": 31715595
     },
     {
       "id": "JS0037",
-      "category": "조건문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:direct",
       "seed": 293003
     },
     {
       "id": "JS4043",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "최단 경로",
+      "templateId": "4:limited-bellman-ford:duplicate-edges",
       "seed": 32016517
     },
     {
       "id": "JS3054",
-      "category": "BFS",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:rotate-edges",
       "seed": 24184626
     },
     {
       "id": "JS1197",
-      "category": "Set",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:reverse",
       "seed": 9479043
     },
     {
       "id": "JS1165",
-      "category": "행렬",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:prefix",
       "seed": 9225635
     },
     {
       "id": "JS0120",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:odd-index",
       "seed": 950280
     },
     {
       "id": "JS5009",
-      "category": "분할 정복",
+      "level": 5,
+      "category": "Strongly Connected Components",
+      "templateId": "5:large-scc:reverse-edge-order",
       "seed": 39666271
     },
     {
       "id": "JS1078",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:even-index",
       "seed": 8536682
     },
     {
       "id": "JS1005",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:direct",
       "seed": 7958595
     },
     {
       "id": "JS0138",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:affine-transform:duplicate",
       "seed": 1092822
     },
     {
       "id": "JS1036",
+      "level": 1,
       "category": "Sliding Window",
+      "templateId": "1:fixed-window:prefix",
       "seed": 8204084
     },
     {
       "id": "JS4049",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:duplicate",
       "seed": 32064031
     },
     {
       "id": "JS1114",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:rotate",
       "seed": 8821766
     },
     {
       "id": "JS2065",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:direct",
       "seed": 16352735
     },
     {
       "id": "JS0111",
-      "category": "반복문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:even-index",
       "seed": 879009
     },
     {
       "id": "JS0044",
-      "category": "문자열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:reverse",
       "seed": 348436
     },
     {
       "id": "JS3086",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:odd-edges",
       "seed": 24438034
     },
     {
       "id": "JS1145",
+      "level": 1,
       "category": "행렬",
+      "templateId": "1:offset-diagonal:reverse-columns",
       "seed": 9067255
     },
     {
       "id": "JS1209",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:even-index",
       "seed": 9574071
     },
     {
       "id": "JS1046",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:duplicate",
       "seed": 8283274
     },
     {
       "id": "JS1129",
-      "category": "문자열",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:direct",
       "seed": 8940551
     },
     {
       "id": "JS2020",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:even-index",
       "seed": 15996380
     },
     {
       "id": "JS2165",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:prefix",
       "seed": 17144635
     },
     {
       "id": "JS3115",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:rotate",
       "seed": 24667685
     },
     {
       "id": "JS1011",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:reverse",
       "seed": 8006109
     },
     {
       "id": "JS1125",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:filtered",
       "seed": 8908875
     },
     {
       "id": "JS4010",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:reverse-edge-order",
       "seed": 31755190
     },
     {
       "id": "JS3020",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:even-index",
       "seed": 23915380
     },
     {
       "id": "JS1107",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:duplicate",
       "seed": 8766333
     },
     {
       "id": "JS3022",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:knapsack-capacity:odd-index",
       "seed": 23931218
     },
     {
       "id": "JS0043",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:prefix-sums:reverse",
       "seed": 340517
     },
     {
       "id": "JS2120",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:filtered",
       "seed": 16788280
     },
     {
       "id": "JS2154",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:odd-index",
       "seed": 17057526
     },
     {
       "id": "JS0064",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:normalize",
       "seed": 506816
     },
     {
       "id": "JS1185",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:filtered",
       "seed": 9384015
     },
     {
       "id": "JS0085",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:rotate",
       "seed": 673115
     },
     {
       "id": "JS1172",
-      "category": "Set",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:duplicate",
       "seed": 9281068
     },
     {
       "id": "JS3061",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:remove-zero-edge",
       "seed": 24240059
     },
     {
       "id": "JS1220",
-      "category": "행렬",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:normalize",
       "seed": 9661180
     },
     {
       "id": "JS1065",
-      "category": "행렬",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:direct",
       "seed": 8433735
     },
     {
       "id": "JS0134",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:prefix",
       "seed": 1061146
     },
     {
       "id": "JS1033",
-      "category": "배열",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:absolute-grid",
       "seed": 8180327
     },
     {
       "id": "JS2130",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:direct",
       "seed": 16867470
     },
     {
       "id": "JS4034",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:normalize",
       "seed": 31945246
     },
     {
       "id": "JS4053",
-      "category": "Minimum Spanning Tree",
+      "level": 4,
+      "category": "문자열 탐색",
+      "templateId": "4:kmp-stride:rotate",
       "seed": 32095707
     },
     {
       "id": "JS1121",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:filtered",
       "seed": 8877199
     },
     {
       "id": "JS3108",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:duplicate",
       "seed": 24612252
     },
     {
       "id": "JS2178",
+      "level": 2,
       "category": "Dynamic Programming",
+      "templateId": "2:coin-change:rotate",
       "seed": 17247582
     },
     {
       "id": "JS2034",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:normalize",
       "seed": 16107246
     },
     {
       "id": "JS0080",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:rotate",
       "seed": 633520
     },
     {
       "id": "JS2060",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:filtered",
       "seed": 16313140
     },
     {
       "id": "JS0039",
-      "category": "문자열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:reverse",
       "seed": 308841
     },
     {
       "id": "JS0019",
+      "level": 0,
       "category": "Map",
+      "templateId": "JS0019",
       "seed": 150461
     },
     {
       "id": "JS3012",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "DAG · DP",
+      "templateId": "3:dag-path-count:reverse-edge-order",
       "seed": 23852028
     },
     {
       "id": "JS2081",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:even-index",
       "seed": 16479439
     },
     {
       "id": "JS2025",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:odd-index",
       "seed": 16035975
     },
     {
       "id": "JS1140",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:reverse",
       "seed": 9027660
     },
     {
       "id": "JS3070",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:direct",
       "seed": 24311330
     },
     {
       "id": "JS2129",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:direct",
       "seed": 16859551
     },
     {
       "id": "JS5007",
-      "category": "Strongly Connected Components",
+      "level": 5,
+      "category": "Dynamic Programming",
+      "templateId": "5:palindrome-min-cut:direct",
       "seed": 39650433
     },
     {
       "id": "JS2078",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:even-index",
       "seed": 16455682
     },
     {
       "id": "JS2174",
-      "category": "Two Pointers",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:duplicate",
       "seed": 17215906
     },
     {
       "id": "JS1041",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:prefix",
       "seed": 8243679
     },
     {
       "id": "JS2032",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:normalize",
       "seed": 16091408
     },
     {
       "id": "JS4035",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:normalize",
       "seed": 31953165
     },
     {
       "id": "JS1196",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:direct",
       "seed": 9471124
     },
     {
       "id": "JS0088",
-      "category": "배열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:filtered",
       "seed": 696872
     },
     {
       "id": "JS2162",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:prefix",
       "seed": 17120878
     },
     {
       "id": "JS1193",
-      "category": "배열",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:direct",
       "seed": 9447367
     },
     {
       "id": "JS1063",
-      "category": "배열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:filtered",
       "seed": 8417897
     },
     {
       "id": "JS2008",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:reverse",
       "seed": 15901352
     },
     {
       "id": "JS1113",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:rotate",
       "seed": 8813847
     },
     {
       "id": "JS1163",
-      "category": "배열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:prefix",
       "seed": 9209797
     },
     {
       "id": "JS0107",
-      "category": "조건문",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:reverse",
       "seed": 847333
     },
     {
       "id": "JS0105",
+      "level": 0,
       "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:absolute",
       "seed": 831495
     },
     {
       "id": "JS4042",
-      "category": "문자열 DP",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:prefix",
       "seed": 32008598
     },
     {
       "id": "JS0047",
-      "category": "조건문",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:even-index",
       "seed": 372193
     },
     {
       "id": "JS3005",
+      "level": 3,
       "category": "DAG · DP",
+      "templateId": "3:dag-path-count:direct",
       "seed": 23796595
     },
     {
       "id": "JS0027",
+      "level": 0,
       "category": "Sliding Window",
+      "templateId": "JS0027",
       "seed": 213813
     },
     {
       "id": "JS2023",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:even-grid",
       "seed": 16020137
     },
     {
       "id": "JS2045",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Dynamic Programming",
+      "templateId": "2:coin-change:duplicate",
       "seed": 16194355
     },
     {
       "id": "JS2038",
+      "level": 2,
       "category": "Dynamic Programming",
+      "templateId": "2:coin-change:prefix",
       "seed": 16138922
     },
     {
       "id": "JS2011",
-      "category": "Binary Search",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:reverse",
       "seed": 15925109
     },
     {
       "id": "JS0164",
-      "category": "문자열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:reverse",
       "seed": 1298716
     },
     {
       "id": "JS1148",
-      "category": "배열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:odd-index",
       "seed": 9091012
     },
     {
       "id": "JS3006",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:direct",
       "seed": 23804514
     },
     {
       "id": "JS0094",
-      "category": "문자열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:direct",
       "seed": 744386
     },
     {
       "id": "JS1146",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:even-index",
       "seed": 9075174
     },
     {
       "id": "JS2173",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:duplicate",
       "seed": 17207987
     },
     {
       "id": "JS1214",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:odd-index",
       "seed": 9613666
     },
     {
       "id": "JS1184",
-      "category": "문자열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:filtered",
       "seed": 9376096
     },
     {
       "id": "JS0025",
+      "level": 0,
       "category": "Set",
+      "templateId": "JS0025",
       "seed": 197975
     },
     {
       "id": "JS3100",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "최단 경로",
+      "templateId": "3:dijkstra-toll:drop-last-edge",
       "seed": 24548900
     },
     {
       "id": "JS2127",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Binary Search",
+      "templateId": "2:lower-bound:direct",
       "seed": 16843713
     },
     {
       "id": "JS1212",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:odd-index",
       "seed": 9597828
     },
     {
       "id": "JS0059",
-      "category": "문자열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:normalize",
       "seed": 467221
     },
     {
       "id": "JS0022",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0022",
       "seed": 174218
     },
     {
       "id": "JS3109",
+      "level": 3,
       "category": "BFS",
+      "templateId": "3:grid-limit-bfs:shift-grid",
       "seed": 24620171
     },
     {
       "id": "JS1069",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:direct",
       "seed": 8465411
     },
     {
       "id": "JS3101",
+      "level": 3,
       "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:prefix",
       "seed": 24556819
     },
     {
       "id": "JS4055",
-      "category": "Bitmask DP",
+      "level": 4,
+      "category": "문자열 DP",
+      "templateId": "4:edit-distance-fixed:rotate",
       "seed": 32111545
     },
     {
       "id": "JS0181",
-      "category": "반복문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:odd-index",
       "seed": 1433339
     },
     {
       "id": "JS2001",
+      "level": 2,
       "category": "Binary Search",
+      "templateId": "2:lower-bound:direct",
       "seed": 15845919
     },
     {
       "id": "JS2007",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:direct",
       "seed": 15893433
     },
     {
       "id": "JS2035",
-      "category": "정렬 · 구간",
+      "level": 2,
+      "category": "Prefix Sum",
+      "templateId": "2:divisible-subarrays:normalize",
       "seed": 16115165
     },
     {
       "id": "JS3042",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:prefix",
       "seed": 24089598
     },
     {
       "id": "JS0030",
+      "level": 0,
       "category": "Queue",
+      "templateId": "JS0030",
       "seed": 237570
     },
     {
       "id": "JS0046",
-      "category": "반복문",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:even-index",
       "seed": 364274
     },
     {
       "id": "JS1200",
-      "category": "행렬",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:reverse",
       "seed": 9502800
     },
     {
       "id": "JS1192",
-      "category": "Set",
+      "level": 1,
+      "category": "배열",
+      "templateId": "1:threshold-streak:direct",
       "seed": 9439448
     },
     {
       "id": "JS1055",
-      "category": "행렬",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:next-greater-distance:rotate",
       "seed": 8354545
     },
     {
       "id": "JS3021",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:even-index",
       "seed": 23923299
     },
     {
       "id": "JS5014",
-      "category": "분할 정복",
+      "level": 5,
+      "category": "Dynamic Programming",
+      "templateId": "5:palindrome-min-cut:reverse",
       "seed": 39705866
     },
     {
       "id": "JS2163",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "DFS · BFS",
+      "templateId": "2:weighted-components:double-grid",
       "seed": 17128797
     },
     {
       "id": "JS0123",
-      "category": "배열",
+      "level": 0,
+      "category": "조건문",
+      "templateId": "0:threshold-count:normalize",
       "seed": 974037
     },
     {
       "id": "JS0129",
-      "category": "문자열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:prefix",
       "seed": 1021551
     },
     {
       "id": "JS1032",
-      "category": "Set",
+      "level": 1,
+      "category": "문자열",
+      "templateId": "1:run-filter:normalize",
       "seed": 8172408
     },
     {
       "id": "JS1074",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:reverse",
       "seed": 8505006
     },
     {
       "id": "JS1178",
+      "level": 1,
       "category": "배열",
+      "templateId": "1:threshold-streak:rotate",
       "seed": 9328582
     },
     {
       "id": "JS1099",
-      "category": "문자열",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:prefix",
       "seed": 8702981
     },
     {
       "id": "JS0167",
-      "category": "조건문",
+      "level": 0,
+      "category": "문자열",
+      "templateId": "0:character-step:reverse",
       "seed": 1322473
     },
     {
       "id": "JS3074",
+      "level": 3,
       "category": "BFS",
+      "templateId": "3:grid-limit-bfs:reverse-rows",
       "seed": 24343006
     },
     {
       "id": "JS1004",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:direct",
       "seed": 7950676
     },
     {
       "id": "JS4056",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:rotate",
       "seed": 32119464
     },
     {
       "id": "JS3024",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:odd-index",
       "seed": 23947056
     },
     {
       "id": "JS0011",
+      "level": 0,
       "category": "배열",
+      "templateId": "JS0011",
       "seed": 87109
     },
     {
       "id": "JS2047",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:duplicate",
       "seed": 16210193
     },
     {
       "id": "JS3017",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:lis-gap:even-index",
       "seed": 23891623
     },
     {
       "id": "JS1057",
-      "category": "Set",
+      "level": 1,
+      "category": "Sliding Window",
+      "templateId": "1:fixed-window:filtered",
       "seed": 8370383
     },
     {
       "id": "JS0073",
-      "category": "배열",
+      "level": 0,
+      "category": "반복문",
+      "templateId": "0:divisible-sum:duplicate",
       "seed": 578087
     },
     {
       "id": "JS0100",
-      "category": "숫자 연산",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:direct",
       "seed": 791900
     },
     {
       "id": "JS1056",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:rotate",
       "seed": 8362464
     },
     {
       "id": "JS2027",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:odd-index",
       "seed": 16051813
     },
     {
       "id": "JS3104",
-      "category": "BFS",
+      "level": 3,
+      "category": "Dynamic Programming",
+      "templateId": "3:max-subarray-delete-one:prefix",
       "seed": 24580576
     },
     {
       "id": "JS3007",
-      "category": "최단 경로",
+      "level": 3,
+      "category": "Divide and Conquer",
+      "templateId": "3:inversion-count:direct",
       "seed": 23812433
     },
     {
       "id": "JS0089",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:affine-transform:filtered",
       "seed": 704791
     },
     {
       "id": "JS1189",
-      "category": "문자열",
+      "level": 1,
+      "category": "Stack",
+      "templateId": "1:balanced-parentheses:filtered",
       "seed": 9415691
     },
     {
       "id": "JS3088",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:even-grid",
       "seed": 24453872
     },
     {
       "id": "JS0113",
+      "level": 0,
       "category": "배열",
+      "templateId": "0:prefix-sums:even-index",
       "seed": 894847
     },
     {
       "id": "JS2083",
-      "category": "Dynamic Programming",
+      "level": 2,
+      "category": "Heap",
+      "templateId": "2:kth-largest:even-index",
       "seed": 16495277
     },
     {
       "id": "JS0056",
-      "category": "반복문",
+      "level": 0,
+      "category": "숫자 연산",
+      "templateId": "0:weighted-digit-sum:double",
       "seed": 443464
     },
     {
       "id": "JS0099",
-      "category": "문자열",
+      "level": 0,
+      "category": "배열",
+      "templateId": "0:prefix-sums:direct",
       "seed": 783981
     },
     {
       "id": "JS1058",
-      "category": "배열",
+      "level": 1,
+      "category": "Set",
+      "templateId": "1:pair-target:filtered",
       "seed": 8378302
     },
     {
       "id": "JS3060",
-      "category": "DAG · DP",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:zero-diagonal",
       "seed": 24232140
     },
     {
       "id": "JS0058",
-      "category": "배열",
+      "level": 0,
+      "category": "정렬",
+      "templateId": "0:sorted-unique:odd-index",
       "seed": 459302
     },
     {
       "id": "JS4021",
-      "category": "최단 경로",
+      "level": 4,
+      "category": "Monotonic Stack",
+      "templateId": "4:largest-histogram:even-index",
       "seed": 31842299
     },
     {
       "id": "JS2172",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:duplicate",
       "seed": 17200068
     },
     {
       "id": "JS2179",
+      "level": 2,
       "category": "Two Pointers",
+      "templateId": "2:bounded-positive-window:rotate",
       "seed": 17255501
     },
     {
       "id": "JS3081",
-      "category": "Dynamic Programming",
+      "level": 3,
+      "category": "BFS",
+      "templateId": "3:grid-limit-bfs:reverse-columns",
       "seed": 24398439
     },
     {
       "id": "JS2180",
+      "level": 2,
       "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:rotate",
       "seed": 17263420
     },
     {
       "id": "JS1177",
+      "level": 1,
       "category": "Set",
+      "templateId": "1:pair-target:rotate",
       "seed": 9320663
     },
     {
       "id": "JS0102",
+      "level": 0,
       "category": "조건문",
+      "templateId": "0:threshold-count:reverse",
       "seed": 807738
     },
     {
       "id": "JS1026",
-      "category": "Sliding Window",
+      "level": 1,
+      "category": "행렬",
+      "templateId": "1:offset-diagonal:even-grid",
       "seed": 8124894
     },
     {
       "id": "JS2117",
-      "category": "DFS · BFS",
+      "level": 2,
+      "category": "정렬 · 구간",
+      "templateId": "2:merge-nearby-intervals:rotate",
       "seed": 16764523
     },
     {
       "id": "JS4024",
-      "category": "문자열 탐색",
+      "level": 4,
+      "category": "Minimum Spanning Tree",
+      "templateId": "4:mst-surcharge:odd-edges",
       "seed": 31866056
     },
     {
       "id": "JS0029",
+      "level": 0,
       "category": "정렬",
+      "templateId": "JS0029",
       "seed": 229651
     },
     {
       "id": "JS1039",
+      "level": 1,
       "category": "문자열",
+      "templateId": "1:run-filter:prefix",
       "seed": 8227841
     }
   ]

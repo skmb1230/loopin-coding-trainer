@@ -28,6 +28,9 @@ const seed = Number(process.argv[2] || 10482);
 const random = seededRandom(seed);
 const targets = problemTargets;
 const problemLevels = [level0Problems, level1Problems, level2Problems, level3Problems, level4Problems, level5Problems];
+const allProblems = problemLevels.flat();
+const uniqueTemplateCount = new Set(allProblems.map((problem) => problem.templateId || problem.id)).size;
+const coreBlueprintCount = new Set(allProblems.map((problem) => problem.templateId ? problem.templateId.split(':').slice(0, 2).join(':') : problem.id)).size;
 const generatedAt = new Date(0).toISOString();
 const manifest = {
   schemaVersion: 1,
@@ -35,13 +38,15 @@ const manifest = {
   generatedAt,
   strategy: 'validated-template-and-parameter-variants',
   targetCount: Object.values(targets).reduce((sum, value) => sum + value, 0),
+  uniqueTemplateCount,
+  coreBlueprintCount,
   levels: Object.entries(targets).map(([level, target]) => ({
     level: Number(level),
     target,
     implemented: problemLevels[Number(level)].length,
     generatedTemplates: generatedTemplateCounts[level],
   })),
-  templateOrder: shuffled(problemLevels.flat().map((problem) => ({ id: problem.id, category: problem.category, seed: problem.testGenerator.seed })), random),
+  templateOrder: shuffled(allProblems.map((problem) => ({ id: problem.id, level: problem.level, category: problem.category, templateId: problem.templateId || problem.id, seed: problem.testGenerator.seed })), random),
 };
 
 const targetDirectory = new URL('../src/data/problems/generated/', import.meta.url);
@@ -49,4 +54,5 @@ await mkdir(targetDirectory, { recursive: true });
 await writeFile(new URL('manifest.json', targetDirectory), `${JSON.stringify(manifest, null, 2)}\n`);
 console.log(`✓ seed ${seed}로 문제 생성 manifest를 만들었습니다.`);
 console.log(`✓ Level 0~5에 총 ${problemLevels.flat().length}개 문제가 등록되었습니다.`);
+console.log(`✓ ${coreBlueprintCount}개 핵심 설계 유형과 ${uniqueTemplateCount}개 학습 목표 템플릿을 확인했습니다.`);
 console.log('✓ 같은 seed는 항상 같은 template order를 만듭니다.');

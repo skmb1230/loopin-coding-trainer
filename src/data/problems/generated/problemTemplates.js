@@ -1,4 +1,5 @@
 import { createProblem } from '../problemFactory.js';
+import { supplementalFamiliesByLevel } from './supplementalTemplates.js';
 
 export const problemTargets = Object.freeze({ 0: 200, 1: 220, 2: 180, 3: 120, 4: 60, 5: 20 });
 
@@ -45,8 +46,174 @@ function makeTests(spec) {
   }));
 }
 
-function buildGeneratedProblem({ family, level, sequence, variant }) {
-  const spec = family.make(variant);
+const inputProfiles = [
+  { key: 'direct', label: '기본형', instruction: '' },
+  { key: 'reverse', label: '역순 입력', instruction: '주 입력의 순서를 뒤집은 뒤 핵심 규칙을 적용합니다.' },
+  { key: 'even-index', label: '짝수 위치', instruction: '주 입력에서 0부터 센 짝수 인덱스의 데이터만 사용합니다.' },
+  { key: 'odd-index', label: '홀수 위치', instruction: '주 입력에서 0부터 센 홀수 인덱스의 데이터만 사용합니다.' },
+  { key: 'normalize', label: '정규화 입력', instruction: '주 입력의 값이나 표현을 정규화한 뒤 핵심 규칙을 적용합니다.' },
+  { key: 'prefix', label: '마지막 제외', instruction: '주 입력의 마지막 데이터를 제외한 범위에 핵심 규칙을 적용합니다.' },
+  { key: 'duplicate', label: '두 번 기록', instruction: '주 입력의 각 데이터를 두 번씩 이어 붙인 뒤 핵심 규칙을 적용합니다.' },
+  { key: 'rotate', label: '한 칸 회전', instruction: '주 입력을 왼쪽으로 한 칸 회전한 뒤 핵심 규칙을 적용합니다.' },
+  { key: 'filtered', label: '0 제외', instruction: '주 입력에서 값 0 또는 빈 문자를 제외한 뒤 핵심 규칙을 적용합니다.' },
+];
+
+function profileKind(family) {
+  if (family.profileKind) return family.profileKind;
+  if (family.key === 'merge-nearby-intervals') return 'intervals';
+  if (family.key === 'rooted-lca') return 'tree-queries';
+  if (family.javaArgs.length >= 2 && family.javaArgs[1]?.type === 'int[][]') return 'graph';
+  if (family.javaArgs.length === 2 && family.javaArgs.every((arg) => arg.type === 'int[]')) return 'paired-arrays';
+  if (family.javaArgs.length === 2 && family.javaArgs.every((arg) => arg.type === 'String')) return 'paired-strings';
+  if (family.javaArgs.length === 1) return family.javaArgs[0].type;
+  return 'direct';
+}
+
+function transformForProfile(family, profileIndex) {
+  const names = family.javaArgs.map((arg) => arg.name);
+  const primary = names[0];
+  const kind = profileKind(family);
+  if (profileIndex === 0 || kind === 'direct') return null;
+
+  const sequenceTransforms = {
+    1: { js: `[...${primary}].reverse()`, java: `reverse(${primary})` },
+    2: { js: `${primary}.filter((_, index) => index % 2 === 0)`, java: `pickParity(${primary}, 0)` },
+    3: { js: `${primary}.filter((_, index) => index % 2 === 1)`, java: `pickParity(${primary}, 1)` },
+    4: { js: `${primary}.map((value) => Math.abs(value))`, java: `absolute(${primary})` },
+    5: { js: `${primary}.slice(0, -1)`, java: `dropLast(${primary})` },
+    6: { js: `${primary}.flatMap((value) => [value, value])`, java: `duplicate(${primary})` },
+    7: { js: `${primary}.length ? [...${primary}.slice(1), ${primary}[0]] : []`, java: `rotate(${primary})` },
+    8: { js: `${primary}.filter((value) => value !== 0)`, java: `withoutZero(${primary})` },
+  };
+  const stringTransforms = {
+    1: { js: `Array.from(${primary}).reverse().join('')`, java: `reverse(${primary})` },
+    2: { js: `Array.from(${primary}).filter((_, index) => index % 2 === 0).join('')`, java: `pickParity(${primary}, 0)` },
+    3: { js: `Array.from(${primary}).filter((_, index) => index % 2 === 1).join('')`, java: `pickParity(${primary}, 1)` },
+    4: { js: `Array.from(new Set(${primary})).join('')`, java: `unique(${primary})` },
+    5: { js: `${primary}.slice(0, -1)`, java: `${primary}.isEmpty() ? ${primary} : ${primary}.substring(0, ${primary}.length() - 1)` },
+    6: { js: `Array.from(${primary}).map((value) => value + value).join('')`, java: `duplicate(${primary})` },
+    7: { js: `${primary}.length ? ${primary}.slice(1) + ${primary}[0] : ''`, java: `rotate(${primary})` },
+    8: { js: `${primary}.replaceAll(' ', '')`, java: `${primary}.replace(" ", "")` },
+  };
+  const matrixTransforms = {
+    1: { js: `[...${primary}].reverse().map((row) => [...row])`, java: `reverseRows(${primary})` },
+    2: { js: `${primary}.map((row) => [...row].reverse())`, java: `reverseColumns(${primary})` },
+    3: { js: `${primary}.filter((_, index) => index % 2 === 0).map((row) => row.filter((_, index) => index % 2 === 0))`, java: `pickEvenGrid(${primary})` },
+    4: { js: `${primary}.map((row) => row.map((value) => Math.abs(value)))`, java: `absolute(${primary})` },
+    5: { js: `${primary}.map((row) => row.map((value) => value * 2))`, java: `scale(${primary}, 2)` },
+    6: { js: `${primary}.map((row) => row.map((value) => value === 0 ? 0 : value + 1))`, java: `shiftNonZero(${primary})` },
+    7: { js: `${primary}.length ? ${primary}[0].map((_, column) => ${primary}.map((row) => row[column])) : []`, java: `transpose(${primary})` },
+    8: { js: `${primary}.map((row, i) => row.map((value, j) => i === j ? 0 : value))`, java: `zeroDiagonal(${primary})` },
+  };
+  const intervalTransforms = {
+    1: { js: `[...${primary}].reverse().map((row) => [...row])`, java: `reverseRows(${primary})` },
+    2: { js: `${primary}.filter((_, index) => index % 2 === 0).map((row) => [...row])`, java: `pickRows(${primary}, 0)` },
+    3: { js: `${primary}.filter((_, index) => index % 2 === 1).map((row) => [...row])`, java: `pickRows(${primary}, 1)` },
+    4: { js: `${primary}.map(([start, end]) => [Math.min(start, end), Math.max(start, end)])`, java: `normalizeIntervals(${primary})` },
+    5: { js: `${primary}.slice(0, -1).map((row) => [...row])`, java: `dropLastRows(${primary})` },
+    6: { js: `${primary}.flatMap((row) => [[...row], [...row]])`, java: `duplicateRows(${primary})` },
+    7: { js: `${primary}.length ? [...${primary}.slice(1), ${primary}[0]].map((row) => [...row]) : []`, java: `rotateRows(${primary})` },
+    8: { js: `${primary}.filter(([start, end]) => start !== 0 || end !== 0).map((row) => [...row])`, java: `withoutZeroRows(${primary})` },
+  };
+
+  if (kind === 'int') {
+    const jsExpressions = [primary, `Math.abs(${primary})`, `-${primary}`, `${primary} * 2`, `Math.trunc(${primary} / 2)`, `${primary} + 1`, `${primary} - 1`, `Math.abs(${primary} % 1000) ** 2`, `${primary} === 0 ? 1 : ${primary}`];
+    const javaExpressions = [primary, `Math.abs(${primary})`, `-${primary}`, `${primary} * 2`, `${primary} / 2`, `${primary} + 1`, `${primary} - 1`, `Math.abs(${primary} % 1000) * Math.abs(${primary} % 1000)`, `${primary} == 0 ? 1 : ${primary}`];
+    const profiles = [inputProfiles[0],
+      {key:'absolute',label:'절댓값 입력',instruction:'입력 정수의 절댓값에 핵심 규칙을 적용합니다.'},
+      {key:'negate',label:'부호 반전',instruction:'입력 정수의 부호를 반전한 뒤 핵심 규칙을 적용합니다.'},
+      {key:'double',label:'두 배 입력',instruction:'입력 정수를 두 배로 바꾼 뒤 핵심 규칙을 적용합니다.'},
+      {key:'half',label:'절반 입력',instruction:'입력 정수를 0 방향으로 나눈 몫에 핵심 규칙을 적용합니다.'},
+      {key:'plus-one',label:'1 증가',instruction:'입력 정수에 1을 더한 뒤 핵심 규칙을 적용합니다.'},
+      {key:'minus-one',label:'1 감소',instruction:'입력 정수에서 1을 뺀 뒤 핵심 규칙을 적용합니다.'},
+      {key:'bounded-square',label:'세 자리 제곱',instruction:'입력의 마지막 세 자리 절댓값을 제곱한 뒤 핵심 규칙을 적용합니다.'},
+      {key:'nonzero',label:'0 보정',instruction:'입력이 0이면 1로 보정한 뒤 핵심 규칙을 적용합니다.'},
+    ];
+    return { jsArgs: [jsExpressions[profileIndex]], javaArgs: [javaExpressions[profileIndex]], helpers: '', profile: profiles[profileIndex] };
+  }
+  if (kind === 'String') return { jsArgs: [stringTransforms[profileIndex].js], javaArgs: [stringTransforms[profileIndex].java], helpers: 'string' };
+  if (kind === 'int[]') return { jsArgs: [sequenceTransforms[profileIndex].js], javaArgs: [sequenceTransforms[profileIndex].java], helpers: 'array' };
+  if (kind === 'int[][]') {
+    const profiles = [inputProfiles[0],
+      {key:'reverse-rows',label:'행 순서 반전',instruction:'행의 순서를 뒤집은 행렬에 핵심 규칙을 적용합니다.'},
+      {key:'reverse-columns',label:'열 순서 반전',instruction:'각 행의 열 순서를 뒤집은 뒤 핵심 규칙을 적용합니다.'},
+      {key:'even-grid',label:'짝수 좌표 축소',instruction:'짝수 행·짝수 열 좌표만 모은 행렬에 핵심 규칙을 적용합니다.'},
+      {key:'absolute-grid',label:'절댓값 행렬',instruction:'모든 원소를 절댓값으로 정규화한 뒤 핵심 규칙을 적용합니다.'},
+      {key:'double-grid',label:'가중치 두 배',instruction:'모든 행렬 원소를 두 배로 바꾼 뒤 핵심 규칙을 적용합니다.'},
+      {key:'shift-grid',label:'0 아닌 값 증가',instruction:'0이 아닌 모든 원소에 1을 더한 뒤 핵심 규칙을 적용합니다.'},
+      {key:'transpose',label:'전치 행렬',instruction:'행과 열을 맞바꾼 전치 행렬에 핵심 규칙을 적용합니다.'},
+      {key:'zero-diagonal',label:'대각선 제거',instruction:'주대각선 값을 0으로 바꾼 뒤 핵심 규칙을 적용합니다.'},
+    ];
+    return { jsArgs: [matrixTransforms[profileIndex].js], javaArgs: [matrixTransforms[profileIndex].java], helpers: 'matrix', profile: profiles[profileIndex] };
+  }
+  if (kind === 'intervals') return { jsArgs: [intervalTransforms[profileIndex].js], javaArgs: [intervalTransforms[profileIndex].java], helpers: 'intervals' };
+  if (kind === 'paired-arrays') {
+    const left = transformForProfile({ ...family, javaArgs: [family.javaArgs[0]] }, profileIndex);
+    const rightName = family.javaArgs[1].name;
+    const right = transformForProfile({ ...family, javaArgs: [{ ...family.javaArgs[1], name: rightName }] }, profileIndex);
+    return { jsArgs: [left.jsArgs[0], right.jsArgs[0]], javaArgs: [left.javaArgs[0], right.javaArgs[0]], helpers: 'array' };
+  }
+  if (kind === 'paired-strings') {
+    const transform = stringTransforms[profileIndex];
+    return { jsArgs: names.map((name) => transform.js.replaceAll(primary, name)), javaArgs: names.map((name) => transform.java.replaceAll(primary, name)), helpers: 'string' };
+  }
+  if (kind === 'tree-queries') {
+    const queries = names[2];
+    const transform = intervalTransforms[profileIndex];
+    return { jsArgs: [names[0], names[1], transform.js.replaceAll(primary, queries)], javaArgs: [names[0], names[1], transform.java.replaceAll(primary, queries)], helpers: 'intervals' };
+  }
+  if (kind === 'graph') {
+    const edges = names[1];
+    const transform = intervalTransforms[profileIndex];
+    const jsEdges = profileIndex === 4 ? `${edges}.map((edge) => edge.length < 2 ? [...edge] : [edge[1], edge[0], ...edge.slice(2)])` : transform.js.replaceAll(primary, edges);
+    const javaEdges = profileIndex === 4 ? `reverseEdges(${edges})` : transform.java.replaceAll(primary, edges);
+    const profiles = [inputProfiles[0],
+      {key:'reverse-edge-order',label:'간선 순서 반전',instruction:'간선의 입력 순서를 뒤집은 그래프에 핵심 규칙을 적용합니다.'},
+      {key:'even-edges',label:'짝수 순번 간선',instruction:'짝수 인덱스의 간선만 남긴 그래프에 핵심 규칙을 적용합니다.'},
+      {key:'odd-edges',label:'홀수 순번 간선',instruction:'홀수 인덱스의 간선만 남긴 그래프에 핵심 규칙을 적용합니다.'},
+      {key:'reverse-directions',label:'간선 방향 반전',instruction:'모든 간선의 시작점과 도착점을 바꾼 그래프에 핵심 규칙을 적용합니다.'},
+      {key:'drop-last-edge',label:'마지막 간선 제외',instruction:'마지막 간선을 제외한 그래프에 핵심 규칙을 적용합니다.'},
+      {key:'duplicate-edges',label:'간선 중복',instruction:'각 간선을 두 번 기록한 그래프에 핵심 규칙을 적용합니다.'},
+      {key:'rotate-edges',label:'간선 목록 회전',instruction:'간선 목록을 왼쪽으로 한 칸 회전한 뒤 핵심 규칙을 적용합니다.'},
+      {key:'remove-zero-edge',label:'0 좌표 간선 제외',instruction:'두 끝점이 모두 0인 간선을 제외한 뒤 핵심 규칙을 적용합니다.'},
+    ];
+    return { jsArgs: [names[0], jsEdges], javaArgs: [names[0], javaEdges], helpers: 'intervals', profile: profiles[profileIndex] };
+  }
+  return null;
+}
+
+const helperSources = {
+  array: `private static int[] reverse(int[] a){int[] r=a.clone();for(int l=0,h=r.length-1;l<h;l++,h--){int t=r[l];r[l]=r[h];r[h]=t;}return r;}\nprivate static int[] pickParity(int[] a,int p){return java.util.stream.IntStream.range(0,a.length).filter(i->i%2==p).map(i->a[i]).toArray();}\nprivate static int[] absolute(int[] a){return java.util.Arrays.stream(a).map(Math::abs).toArray();}\nprivate static int[] dropLast(int[] a){return java.util.Arrays.copyOf(a,Math.max(0,a.length-1));}\nprivate static int[] duplicate(int[] a){int[] r=new int[a.length*2];for(int i=0;i<a.length;i++){r[i*2]=a[i];r[i*2+1]=a[i];}return r;}\nprivate static int[] rotate(int[] a){if(a.length==0)return new int[0];int[] r=new int[a.length];for(int i=0;i<a.length;i++)r[i]=a[(i+1)%a.length];return r;}\nprivate static int[] withoutZero(int[] a){return java.util.Arrays.stream(a).filter(v->v!=0).toArray();}`,
+  string: `private static String reverse(String s){return new StringBuilder(s).reverse().toString();}\nprivate static String pickParity(String s,int p){StringBuilder r=new StringBuilder();for(int i=p;i<s.length();i+=2)r.append(s.charAt(i));return r.toString();}\nprivate static String unique(String s){StringBuilder r=new StringBuilder();Set<Character> seen=new HashSet<>();for(char c:s.toCharArray())if(seen.add(c))r.append(c);return r.toString();}\nprivate static String duplicate(String s){StringBuilder r=new StringBuilder();for(char c:s.toCharArray())r.append(c).append(c);return r.toString();}\nprivate static String rotate(String s){return s.isEmpty()?s:s.substring(1)+s.charAt(0);}`,
+  matrix: `private static int[][] reverseRows(int[][] a){int[][] r=copy(a);for(int l=0,h=r.length-1;l<h;l++,h--){int[] t=r[l];r[l]=r[h];r[h]=t;}return r;}\nprivate static int[][] reverseColumns(int[][] a){int[][] r=copy(a);for(int[] row:r)for(int l=0,h=row.length-1;l<h;l++,h--){int t=row[l];row[l]=row[h];row[h]=t;}return r;}\nprivate static int[][] pickEvenGrid(int[][] a){int n=(a.length+1)/2;int[][] r=new int[n][];for(int i=0;i<n;i++){int[] row=a[i*2];r[i]=new int[(row.length+1)/2];for(int j=0;j<r[i].length;j++)r[i][j]=row[j*2];}return r;}\nprivate static int[][] absolute(int[][] a){int[][] r=copy(a);for(int[] row:r)for(int j=0;j<row.length;j++)row[j]=Math.abs(row[j]);return r;}\nprivate static int[][] scale(int[][] a,int k){int[][] r=copy(a);for(int[] row:r)for(int j=0;j<row.length;j++)row[j]*=k;return r;}\nprivate static int[][] shiftNonZero(int[][] a){int[][] r=copy(a);for(int[] row:r)for(int j=0;j<row.length;j++)if(row[j]!=0)row[j]++;return r;}\nprivate static int[][] transpose(int[][] a){if(a.length==0)return new int[0][0];int[][] r=new int[a[0].length][a.length];for(int i=0;i<a.length;i++)for(int j=0;j<a[i].length;j++)r[j][i]=a[i][j];return r;}\nprivate static int[][] zeroDiagonal(int[][] a){int[][] r=copy(a);for(int i=0;i<r.length;i++)if(i<r[i].length)r[i][i]=0;return r;}\nprivate static int[][] copy(int[][] a){int[][] r=new int[a.length][];for(int i=0;i<a.length;i++)r[i]=a[i].clone();return r;}`,
+  intervals: `private static int[][] reverseRows(int[][] a){int[][] r=copy(a);for(int l=0,h=r.length-1;l<h;l++,h--){int[] t=r[l];r[l]=r[h];r[h]=t;}return r;}\nprivate static int[][] pickRows(int[][] a,int p){int n=(a.length+(p==0?1:0))/2;int[][] r=new int[n][];for(int i=p,k=0;i<a.length;i+=2)r[k++]=a[i].clone();return r;}\nprivate static int[][] normalizeIntervals(int[][] a){int[][] r=copy(a);for(int[] row:r)if(row.length>=2&&row[0]>row[1]){int t=row[0];row[0]=row[1];row[1]=t;}return r;}\nprivate static int[][] dropLastRows(int[][] a){return java.util.Arrays.copyOf(copy(a),Math.max(0,a.length-1));}\nprivate static int[][] duplicateRows(int[][] a){int[][] r=new int[a.length*2][];for(int i=0;i<a.length;i++){r[i*2]=a[i].clone();r[i*2+1]=a[i].clone();}return r;}\nprivate static int[][] rotateRows(int[][] a){if(a.length==0)return new int[0][0];int[][] r=new int[a.length][];for(int i=0;i<a.length;i++)r[i]=a[(i+1)%a.length].clone();return r;}\nprivate static int[][] withoutZeroRows(int[][] a){return java.util.Arrays.stream(a).filter(row->row.length<2||row[0]!=0||row[1]!=0).map(int[]::clone).toArray(int[][]::new);}\nprivate static int[][] reverseEdges(int[][] a){int[][] r=copy(a);for(int[] edge:r)if(edge.length>=2){int t=edge[0];edge[0]=edge[1];edge[1]=t;}return r;}\nprivate static int[][] copy(int[][] a){int[][] r=new int[a.length][];for(int i=0;i<a.length;i++)r[i]=a[i].clone();return r;}`,
+};
+
+function applyInputProfile(spec, family, profileIndex) {
+  const transform = transformForProfile(family, profileIndex);
+  const profile = transform?.profile || inputProfiles[profileIndex];
+  if (!transform) return { ...spec, templateProfile: inputProfiles[0] };
+  const originalSolve = spec.solve;
+  const transformValues = new Function(...family.args, `return [${transform.jsArgs.join(',')}];`);
+  const baseJavaBody = spec.javaBody;
+  const helperCall = (source) => source.replace(/\b(reverse|pickParity|absolute|dropLast|duplicate|rotate|withoutZero|unique|reverseRows|reverseColumns|pickEvenGrid|scale|shiftNonZero|transpose|zeroDiagonal|pickRows|normalizeIntervals|dropLastRows|duplicateRows|rotateRows|withoutZeroRows|reverseEdges)\(/g, 'helpers.$1(');
+  const javaCall = transform.javaArgs.map(helperCall).join(', ');
+  const javaParameters = family.javaArgs.map(({ type, name }) => `${type} ${name}`).join(', ');
+  return {
+    ...spec,
+    title: `${spec.title} · ${profile.label}`,
+    description: `${spec.description} ${profile.instruction}`,
+    constraints: [...(spec.constraints || family.constraints), `입력 전처리: ${profile.instruction}`],
+    solve: (...args) => originalSolve(...transformValues(...clone(args))),
+    referenceSolution: `${spec.referenceSolution.replace('function solution', 'function baseSolution')}\nfunction solution(${family.args.join(', ')}) { return baseSolution(${transform.jsArgs.join(', ')}); }`,
+    javaBody: `class BaseSolution { ${family.returnType} run(${javaParameters}) {\n${baseJavaBody}\n} }\nclass InputHelpers {\n${helperSources[transform.helpers] || ''}\n}\nInputHelpers helpers = new InputHelpers();\nreturn new BaseSolution().run(${javaCall});`,
+    observation: `핵심 알고리즘 전에 “${profile.label}” 전처리를 별도 단계로 분리하면 무엇이 단순해질까요?`,
+    templateProfile: profile,
+  };
+}
+
+function buildGeneratedProblem({ family, level, sequence, variant, profileIndex = 0 }) {
+  const spec = applyInputProfile(family.make(variant), family, profileIndex);
   const tests = makeTests(spec);
   const id = `JS${level}${String(sequence).padStart(3, '0')}`;
   const pseudocode = spec.pseudocode || `1. 입력의 경계 조건을 먼저 확인합니다.\n2. ${family.category} 규칙으로 필요한 상태를 갱신합니다.\n3. 계산한 결과를 반환합니다.`;
@@ -70,7 +237,7 @@ function buildGeneratedProblem({ family, level, sequence, variant }) {
     explanation: spec.explanation || `${family.category}의 핵심 상태를 정하고 입력을 필요한 횟수만큼 순회하면 해결할 수 있습니다.`,
     referenceSolution: spec.referenceSolution,
     estimatedMinutes: family.minutes,
-    templateId: `${level}:${family.key}`,
+    templateId: `${level}:${family.key}:${spec.templateProfile.key}`,
     templateVariant: variant,
     languageVariants: {
       java: javaVariant(family.javaArgs, family.returnType, spec.javaBody, algorithmHint, pseudocode),
@@ -594,25 +761,27 @@ const level5Families = [
 ];
 
 const familiesByLevel = {
-  0: level0Families,
-  1: level1Families,
-  2: level2Families,
-  3: level3Families,
-  4: level4Families,
-  5: level5Families,
+  0: [...level0Families, ...supplementalFamiliesByLevel[0]],
+  1: [...level1Families, ...supplementalFamiliesByLevel[1]],
+  2: [...level2Families, ...supplementalFamiliesByLevel[2]],
+  3: [...level3Families, ...supplementalFamiliesByLevel[3]],
+  4: [...level4Families, ...supplementalFamiliesByLevel[4]],
+  5: [...level5Families, ...supplementalFamiliesByLevel[5]],
 };
 
 export function createGeneratedLevelProblems(level, { start = 1, count = problemTargets[level] } = {}) {
   const families = familiesByLevel[level];
   if (!families) throw new Error(`지원하지 않는 생성 레벨입니다: ${level}`);
+  const templateCount = families.length * inputProfiles.length;
   return range(count, (index) => buildGeneratedProblem({
     family: families[index % families.length],
     level,
     sequence: start + index,
-    variant: Math.floor(index / families.length),
+    variant: Math.floor(index / templateCount),
+    profileIndex: Math.floor((index % templateCount) / families.length),
   }));
 }
 
 export const generatedTemplateCounts = Object.freeze(Object.fromEntries(
-  Object.entries(familiesByLevel).map(([level, families]) => [level, families.length]),
+  Object.entries(familiesByLevel).map(([level, families]) => [level, Math.min(problemTargets[level], families.length * inputProfiles.length)]),
 ));

@@ -9,6 +9,7 @@ import level5Problems from '../src/data/problems/level5/index.js';
 import { normalizeValue, valuesEqual } from '../src/core/runner/value.js';
 import { getCodeStorageKey, getDisplayProblemId, getProgressStorageKey } from '../src/core/languages/registry.js';
 import { loadProblem, loadProblemsByLevel } from '../src/core/problems/problemLoader.js';
+import { generateRuntimeTests } from '../src/core/problems/generateRuntimeTests.js';
 
 test('runner 비교 로직은 객체 키 순서와 BigInt를 안정적으로 처리한다', () => {
   assert.equal(valuesEqual({ b: 2, a: 1 }, { a: 1, b: 2 }), true);
@@ -21,6 +22,7 @@ const allProblems = levels.flat();
 test('레벨별 800개 문제의 공개·숨김 테스트가 기준 풀이를 통과한다', async () => {
   assert.deepEqual(levels.map((items) => items.length), [200, 220, 180, 120, 60, 20]);
   assert.equal(new Set(allProblems.map((problem) => problem.id)).size, 800);
+  assert.ok(new Set(allProblems.map((problem) => problem.templateId || problem.id)).size >= 250);
   for (const problem of allProblems) {
     const solution = new Function(`${problem.referenceSolution}; return solution;`)();
     for (const sample of problem.tests) {
@@ -45,5 +47,16 @@ test('모든 문제는 Java 시작 코드와 독립 저장 키를 제공한다',
 test('레벨별 lazy loader가 마지막 문제까지 찾는다', async () => {
   assert.equal((await loadProblemsByLevel(1)).length, 220);
   assert.equal((await loadProblemsByLevel(5)).length, 20);
-  assert.equal((await loadProblem('JS5020'))?.title, '비용 8 이하 작업만 배정');
+  assert.equal((await loadProblem('JS5020'))?.id, 'JS5020');
+  assert.equal((await loadProblem('JS5020'))?.level, 5);
+});
+
+test('seed 기반 숨김 테스트는 실행 시점마다 동일하게 생성되고 기준 풀이를 통과한다', () => {
+  for (const problem of allProblems) {
+    const first = generateRuntimeTests(problem);
+    const second = generateRuntimeTests(problem);
+    assert.deepEqual(first, second, `${problem.id} generation is not deterministic`);
+    assert.equal(first.length, 4);
+    assert.equal(first.every((test) => test.visibility === 'hidden' && test.generated), true);
+  }
 });

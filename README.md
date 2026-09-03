@@ -138,22 +138,24 @@ npm run validate:java # JDK 21 이상 필요
 
 - JavaScript/Java별 8문제 진단 또는 Level 0 직접 시작 온보딩과 진단 결과 리포트
 - Level 0~5 총 800문제: 200 · 220 · 180 · 120 · 60 · 20개를 레벨 선택 시 lazy loading
-- 매일 가능한 시간을 다시 확인해 문제 수와 세션을 조정하는 오늘의 계획
+- 실제 풀이 기록으로 현재 레벨을 자동 계산하고, 레벨별 해결 수·무힌트 풀이 비율·숙련도를 모두 통과하면 다음 레벨로 진급
+- 매일 가능한 시간을 다시 확인해 문제 수와 세션을 조정하며, 완료한 세션 상태도 새로고침 후 복원하는 오늘의 계획
 - CodeMirror 6 JavaScript·Java 구문 에디터, 언어별 자동 저장, 키보드 단축키
 - JavaScript는 실행마다 새 Web Worker에서, Java는 로컬 JDK 프로세스에서 메모리·시간 제한과 함께 실행
-- 공개 테스트 / 데이터가 가려진 숨김 테스트
+- 공개·정적 숨김 테스트와 제출 순간 문제별 seed로 생성했다가 제거하는 추가 숨김 테스트
 - 5단계 질문형 힌트, 상황별 `막혔어요`, 단계형 풀이 포기·복기
 - 막힌 이유 선택 → 내 기억 꺼내기 → 작은 단서 → 다음 시도 기록 → 다음 날 복습으로 이어지는 막힘 코치
-- 문제·개념별 숙련도, 1·3·7·14일 복습 큐
+- 전 레벨 문제·개념별 숙련도, 1·3·7·14일 복습 큐와 실제 날짜 기반 연속 학습 기록
 - Roadmap, JavaScript/브라우저 이론, Java/JVM/컬렉션 이론, FE × AI 사고 문제, Git·AWS 면접 보조 트랙, Analytics
 - 기본 배분 55% 코테 · 20% 이론 · 15% AI · 5% Git/AWS · 5% 복습이며, 2시간 미만인 날에는 Git/AWS를 자동 생략
 - 이론·문제·힌트의 어려운 용어를 자동 표시하는 마우스 오버·탭 용어 설명
 - IndexedDB 저장과 JSON 백업/복구, 항목별 초기화
+- 현재 레벨 지연 로딩, 필요할 때만 여는 800문제 전체 검색, 50개 단위 페이지 탐색
 - Light/Dark, 집중 모드, 문제 타이머, 반응형 레이아웃
 
 ## 문제 구조
 
-문제는 `src/data/problems/level0`부터 `level5`까지 레벨별 dynamic import로 분리됩니다. 현재 Level 0~5에 각각 200/220/180/120/60/20개, 총 800개가 등록되어 있으며 모든 문제를 JavaScript와 Java로 풀 수 있습니다. Level 0의 첫 30개는 개별 설계 문제이고, 나머지는 레벨별로 검증된 알고리즘 템플릿과 결정적 파라미터 변형으로 생성됩니다. 문제의 `languageVariants`와 `supportedLanguages`, `src/core/languages/registry.js`를 통해 언어별 시작 코드·기준 풀이·타입 명세·실행기를 분리합니다.
+문제는 `src/data/problems/level0`부터 `level5`까지 레벨별 dynamic import로 분리됩니다. 현재 Level 0~5에 각각 200/220/180/120/60/20개, 총 800개가 등록되어 있으며 모든 문제를 JavaScript와 Java로 풀 수 있습니다. 30개 개별 설계 입문 문제를 포함해 72개 핵심 설계 유형을 두고, 전처리·부분 선택·정규화·복합 조건 같은 별도 학습 목표를 결합한 362개 템플릿과 결정적 파라미터 변형으로 구성합니다. 단순히 숫자만 바꾼 문제를 템플릿 하나로 세지 않으며 validator가 최소 250개 템플릿을 강제합니다. 문제의 `languageVariants`와 `supportedLanguages`, `src/core/languages/registry.js`를 통해 언어별 시작 코드·기준 풀이·타입 명세·실행기를 분리합니다.
 
 주요 schema:
 
@@ -169,9 +171,9 @@ npm run validate:java # JDK 21 이상 필요
 }
 ```
 
-새 문제는 해당 레벨 모듈에 정의하고 `createProblem()`으로 정규화합니다. 각 문제에는 공개·숨김 테스트, 3~5개 힌트, 설명과 언어별 기준 풀이가 필요합니다. `npm run validate:problems`는 800문제의 ID 중복, 레벨별 개수, 필수 필드, 범위, 테스트 수, 힌트 수, Java 타입과 JavaScript 기준 풀이를 검사합니다. `npm run validate:java`는 800개 Java 기준 풀이를 JDK 21에서 실제로 컴파일해 3,200개 테스트를 확인합니다.
+새 문제는 해당 레벨 모듈에 정의하고 `createProblem()`으로 정규화합니다. 각 문제에는 공개·숨김 테스트, 3~5개 힌트, 설명과 언어별 기준 풀이가 필요합니다. 제출 시 `testGenerator.seed`로 추가 숨김 테스트 4개를 메모리에서 결정적으로 만들고 실행 후 버립니다. `npm run validate:problems`는 800문제의 ID 중복, 레벨별 개수, 250개 이상 템플릿, 필수 필드, 범위, 힌트와 6,400개 JavaScript 정적·생성 테스트를 검사합니다. `npm run validate:java`는 800개 Java 기준 풀이를 JDK 21에서 실제로 컴파일해 같은 6,400개 테스트를 확인합니다.
 
-`npm run generate:problems -- 10482`는 고정 seed와 검증된 템플릿을 사용하는 800문제 manifest를 생성합니다. 같은 seed는 같은 순서를 만들며 manifest에는 레벨별 목표·실제 등록 수와 각 문제 seed가 기록됩니다.
+`npm run generate:problems -- 10482`는 고정 seed와 검증된 템플릿을 사용하는 800문제 manifest를 생성합니다. 같은 seed는 같은 순서를 만들며 manifest에는 레벨별 목표·실제 등록 수, 핵심 유형·템플릿 수와 각 문제 seed가 기록됩니다.
 
 ## 폴더 구조
 
@@ -195,4 +197,4 @@ tests/                 핵심 학습 로직 테스트
 
 ## 로컬 데이터와 백업
 
-테마·프로필·기본 언어 같은 작은 설정은 `localStorage`에, 진도·작성 코드·메모·학습 기록은 `IndexedDB(loopin-learning)`에 저장합니다. 진도와 코드는 `문제 ID:언어 ID` 키로 분리됩니다. Settings의 데이터 내보내기는 양쪽 데이터를 version 1 JSON으로 묶으며, 가져오기 시 schema version을 확인하고 복구합니다.
+테마·프로필·기본 언어 같은 작은 설정은 `localStorage`에, 진도·작성 코드·메모·학습 기록·오늘 세션 상태는 `IndexedDB(loopin-learning)`에 저장합니다. 진도와 코드는 `문제 ID:언어 ID` 키로 분리됩니다. 앱 시작 시 해당 언어에서 시도한 레벨만 다시 불러오므로 고레벨 복습·메모·분석도 새로고침 후 유지됩니다. Settings의 데이터 내보내기는 양쪽 데이터를 version 1 JSON으로 묶으며, 가져오기 시 schema version을 확인하고 복구합니다. 특정 Level만 진도·코드·메모를 초기화하는 기능도 제공합니다.

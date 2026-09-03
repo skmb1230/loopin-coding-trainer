@@ -4,6 +4,7 @@ import { analyzeFailure } from '../../core/runner/analyzeFailure.js';
 import { storage } from '../../core/storage/db.js';
 import { calculateMastery } from '../../core/mastery/calculateMastery.js';
 import { calculateNextReview } from '../../core/review/calculateNextReview.js';
+import { generateRuntimeTests } from '../../core/problems/generateRuntimeTests.js';
 import { createStruggleProgress, createStruggleRecord } from '../../core/review/createStruggleReview.js';
 import { getAvailableLanguages, getCodeStorageKey, getDisplayProblemId, getLanguage, getProblemLanguageVariant } from '../../core/languages/registry.js';
 import GlossaryText, { GlossaryGuide } from '../glossary/GlossaryText.jsx';
@@ -156,13 +157,13 @@ export default function ProblemSolver({ problem, languageId, initialProgress, se
   const [runMode, setRunMode] = useState('run');
   const [running, setRunning] = useState(false);
   const [hintOpen, setHintOpen] = useState(false);
-  const [hintLevel, setHintLevel] = useState(initialProgress?.hintsUsed || 0);
+  const [hintLevel, setHintLevel] = useState(0);
   const [stuckOpen, setStuckOpen] = useState(false);
   const [giveUpOpen, setGiveUpOpen] = useState(false);
   const [retrospective, setRetrospective] = useState(false);
   const [focusMode, setFocusMode] = useState(false);
   const [timerRunning, setTimerRunning] = useState(false);
-  const [seconds, setSeconds] = useState(initialProgress?.timeSpent || 0);
+  const [seconds, setSeconds] = useState(0);
   const saveTimer = useRef(null);
   const attempts = useRef(initialProgress?.attempts || 0);
 
@@ -214,7 +215,7 @@ export default function ProblemSolver({ problem, languageId, initialProgress, se
     setRunMode(mode);
     setResult({ status: 'running' });
     await storage.set('code', codeStorageKey, code);
-    const tests = mode === 'run' ? problem.tests.filter((test) => test.visibility === 'public') : problem.tests;
+    const tests = mode === 'run' ? problem.tests.filter((test) => test.visibility === 'public') : [...problem.tests, ...generateRuntimeTests(problem)];
     const nextResult = await runCode({ code, tests, language: language.id, javaSpec: variant.javaSpec, timeout: problem.difficulty >= 4 ? 5000 : 2000 });
     setResult(nextResult);
     setRunning(false);
@@ -222,11 +223,15 @@ export default function ProblemSolver({ problem, languageId, initialProgress, se
     attempts.current += 1;
     const solved = nextResult.status === 'passed';
     const newMastery = calculateMastery(initialProgress?.mastery || 0, { solved, firstTry: attempts.current === 1, hintsUsed: hintLevel, timedOut: nextResult.status === 'timeout' });
+    const reviewCount = solved && initialProgress?.nextReview ? (initialProgress?.reviewCount || 0) + 1 : (initialProgress?.reviewCount || 0);
+    const mastered = solved && reviewCount >= 3 && hintLevel === 0;
     const patch = {
-      status: solved ? (hintLevel ? 'SOLVED_WITH_HINT' : 'SOLVED') : 'FAILED', attempts: attempts.current,
-      hintsUsed: hintLevel, timeSpent: seconds, mastery: newMastery, lastAttempt: new Date().toISOString(),
-      reviewCount: solved && initialProgress?.nextReview ? (initialProgress?.reviewCount || 0) + 1 : (initialProgress?.reviewCount || 0),
-      nextReview: solved && hintLevel === 0 && !initialProgress?.nextReview ? null : calculateNextReview(new Date(), solved && initialProgress?.nextReview ? (initialProgress?.reviewCount || 0) + 1 : (initialProgress?.reviewCount || 0)),
+      status: solved ? (mastered ? 'MASTERED' : hintLevel ? 'SOLVED_WITH_HINT' : 'SOLVED') : 'FAILED', attempts: attempts.current,
+      hintsUsed: Math.max(initialProgress?.hintsUsed || 0, hintLevel), lastHintsUsed: hintLevel, timeSpent: seconds,
+      totalTimeSpent: (initialProgress?.totalTimeSpent || initialProgress?.timeSpent || 0) + seconds,
+      mastery: newMastery, lastAttempt: new Date().toISOString(),
+      reviewCount,
+      nextReview: mastered || (solved && hintLevel === 0 && !initialProgress?.nextReview) ? null : calculateNextReview(new Date(), reviewCount),
       failureType: solved ? null : nextResult.status,
     };
     onProgress(problem.id, patch, language.id);
@@ -236,7 +241,7 @@ export default function ProblemSolver({ problem, languageId, initialProgress, se
   const useHint = () => {
     setHintLevel((level) => {
       const next = Math.min(5, Math.max(1, level + 1));
-      onProgress(problem.id, { status: 'TRYING', hintsUsed: next, timeSpent: seconds }, language.id);
+      onProgress(problem.id, { status: 'TRYING', hintsUsed: Math.max(initialProgress?.hintsUsed || 0, next), lastHintsUsed: next, timeSpent: seconds }, language.id);
       return next;
     });
   };

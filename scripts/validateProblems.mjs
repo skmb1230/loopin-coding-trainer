@@ -5,6 +5,7 @@ import level3Problems from '../src/data/problems/level3/index.js';
 import level4Problems from '../src/data/problems/level4/index.js';
 import level5Problems from '../src/data/problems/level5/index.js';
 import { valuesEqual } from '../src/core/runner/value.js';
+import { generateRuntimeTests } from '../src/core/problems/generateRuntimeTests.js';
 
 const required = ['id', 'title', 'level', 'difficulty', 'category', 'description', 'constraints', 'examples', 'starterCode', 'estimatedMinutes', 'concepts', 'hints', 'commonMistakes', 'reviewQuestions', 'testGenerator', 'solutionExplanation', 'referenceSolution'];
 const levels = [level0Problems, level1Problems, level2Problems, level3Problems, level4Problems, level5Problems];
@@ -12,6 +13,7 @@ const expectedCounts = [200, 220, 180, 120, 60, 20];
 const problems = levels.flat();
 const errors = [];
 const ids = new Set();
+const templateIds = new Set();
 const matchesJavaType = (value, type) => {
   if (value === null) return type === 'Integer' || type === 'Object';
   if (type === 'int' || type === 'Integer') return Number.isInteger(value) && value >= -2147483648 && value <= 2147483647;
@@ -31,6 +33,7 @@ levels.forEach((levelProblems, level) => {
 for (const problem of problems) {
   if (ids.has(problem.id)) errors.push(`${problem.id}: 중복 ID`);
   ids.add(problem.id);
+  templateIds.add(problem.templateId || problem.id);
   for (const field of required) if (problem[field] === undefined || problem[field] === null) errors.push(`${problem.id}: ${field} 필드 없음`);
   if (!/^JS\d{4}$/.test(problem.id)) errors.push(`${problem.id}: ID 형식 오류`);
   if (!Number.isInteger(problem.level) || problem.level < 0 || problem.level > 5) errors.push(`${problem.id}: level 범위 오류`);
@@ -55,7 +58,9 @@ for (const problem of problems) {
   }
   try {
     const solution = new Function(`${problem.referenceSolution}; return solution;`)();
-    for (const [index, test] of problem.tests.entries()) {
+    const runtimeTests = generateRuntimeTests(problem);
+    if (runtimeTests.length < 4 || runtimeTests.some((test) => !test.generated)) errors.push(`${problem.id}: seed 기반 실행 시점 테스트 생성 실패`);
+    for (const [index, test] of [...problem.tests, ...runtimeTests].entries()) {
       const actual = await solution(...structuredClone(test.args));
       if (!valuesEqual(actual, test.expected)) errors.push(`${problem.id}: test ${index + 1} 기대값 불일치 (actual=${JSON.stringify(actual)})`);
     }
@@ -70,6 +75,12 @@ if (errors.length) {
   process.exit(1);
 }
 
+if (templateIds.size < 250) {
+  console.error(`문제 검증 실패: 의미 있는 문제 템플릿이 250개 미만입니다. (${templateIds.size}개)`);
+  process.exit(1);
+}
+
 console.log(`✓ Level 0~5 ${levels.map((items) => items.length).join(' / ')}개, 총 ${problems.length}개 문제 검증 완료`);
-console.log(`✓ ${problems.reduce((sum, problem) => sum + problem.tests.length, 0)}개 테스트의 reference solution 결과 일치`);
+console.log(`✓ ${templateIds.size}개 학습 목표 템플릿과 결정적 파라미터 변형 확인`);
+console.log(`✓ ${problems.reduce((sum, problem) => sum + problem.tests.length + 4, 0)}개 정적·실행 시점 seed 테스트의 reference solution 결과 일치`);
 console.log(`✓ ${problems.length}개 문제의 Java 코드·타입 명세 확인`);

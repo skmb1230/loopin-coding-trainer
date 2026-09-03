@@ -45,6 +45,12 @@ export const storage = {
       transaction.onerror = () => reject(transaction.error);
     });
   },
+  async removeWhere(store, predicate) {
+    const entries = await this.getAll(store);
+    const keys = Object.entries(entries).filter(([key, value]) => predicate(key, value)).map(([key]) => key);
+    await Promise.all(keys.map((key) => this.remove(store, key)));
+    return keys.length;
+  },
   async exportAll() {
     const result = { version: 1, exportedAt: new Date().toISOString(), local: {} };
     for (const store of STORES) result[store] = await this.getAll(store);

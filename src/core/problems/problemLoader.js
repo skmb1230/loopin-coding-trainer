@@ -21,3 +21,12 @@ export async function loadProblem(id) {
   const problems = await loadProblemsByLevel(level);
   return problems.find((problem) => problem.id === id) || null;
 }
+
+export async function loadProblemsByLevels(levels) {
+  const normalized = [...new Set(levels.map(Number))].filter((level) => loaders[level]);
+  return (await Promise.all(normalized.map(loadProblemsByLevel))).flat();
+}
+
+export function clearProblemCache() {
+  cache.clear();
+}

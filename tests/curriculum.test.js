@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate } from '../src/core/curriculum/calculateStudyAllocation.js';
 import { adjustDifficulty } from '../src/core/curriculum/adjustDifficulty.js';
 import { selectDailyProblems } from '../src/core/curriculum/selectDailyProblems.js';
+import { calculateLevelStats, calculateStudyStreak, deriveCurriculumState, getLanguageProgress } from '../src/core/curriculum/curriculumEngine.js';
 
 test('초보자 4시간 학습 배분의 총합은 240분이다', () => {
   const allocation = calculateStudyAllocation(240, 'beginner');
@@ -50,4 +51,43 @@ test('오늘의 문제는 중복 없이 요청 개수만큼 선택한다', () =>
   const selected = selectDailyProblems({ problems, count: 7, progress: {}, mastery: { Array: 10 }, difficulty: 1 });
   assert.equal(selected.length, 7);
   assert.equal(new Set(selected.map((problem) => problem.id)).size, 7);
+});
+
+test('오늘의 핵심 문제는 현재 레벨에서 고르고 다른 레벨은 복습만 섞는다', () => {
+  const yesterday = new Date(Date.now() - 86_400_000).toISOString();
+  const problems = [
+    { id: 'JS0001', level: 0, difficulty: 1, concepts: ['Array'] },
+    ...Array.from({ length: 6 }, (_, index) => ({ id: `JS1${String(index + 1).padStart(3, '0')}`, level: 1, difficulty: 2, concepts: ['Map'] })),
+  ];
+  const selected = selectDailyProblems({ problems, count: 4, targetLevel: 1, progress: { JS0001: { status: 'FAILED', nextReview: yesterday } }, mastery: {}, difficulty: 2 });
+  assert.equal(selected.some((problem) => problem.id === 'JS0001'), true);
+  assert.equal(selected.filter((problem) => problem.level === 1).length, 3);
+});
+
+test('언어별 기록은 분리하고 새 저장 키가 레거시 JavaScript 기록보다 우선한다', () => {
+  const progress = {
+    JS0001: { status: 'FAILED' },
+    'JS0001:javascript': { status: 'SOLVED' },
+    'JS0001:java': { status: 'SOLVED_WITH_HINT' },
+  };
+  assert.equal(getLanguageProgress(progress, 'javascript').JS0001.status, 'SOLVED');
+  assert.equal(getLanguageProgress(progress, 'java').JS0001.status, 'SOLVED_WITH_HINT');
+});
+
+test('해결 수·독립 풀이 비율·숙련도를 모두 통과해야 다음 레벨로 진급한다', () => {
+  const makeProgress = (count, hintsUsed = 0, mastery = 60) => Object.fromEntries(Array.from({ length: count }, (_, index) => [`JS0${String(index + 1).padStart(3, '0')}:javascript`, { status: 'SOLVED', hintsUsed, mastery, lastAttempt: new Date().toISOString() }]));
+  assert.equal(deriveCurriculumState({ profile: { startLevel: 0 }, progress: makeProgress(11), languageId: 'javascript' }).currentLevel, 0);
+  assert.equal(deriveCurriculumState({ profile: { startLevel: 0 }, progress: makeProgress(12), languageId: 'javascript' }).currentLevel, 1);
+  assert.equal(deriveCurriculumState({ profile: { startLevel: 0 }, progress: makeProgress(12, 0, null), languageId: 'javascript' }).currentLevel, 1);
+  assert.equal(calculateLevelStats(makeProgress(12, 2), 'javascript')[0].readyForNext, false);
+});
+
+test('학습 연속일은 오늘 또는 어제부터 끊기지 않은 날짜만 센다', () => {
+  const now = new Date(2026, 8, 3, 12);
+  const progress = {
+    'JS0001:javascript': { lastAttempt: new Date(2026, 8, 1, 9).toISOString() },
+    'JS0002:javascript': { lastAttempt: new Date(2026, 8, 2, 9).toISOString() },
+    'JS0003:javascript': { lastAttempt: new Date(2026, 8, 3, 9).toISOString() },
+  };
+  assert.equal(calculateStudyStreak(progress, 'javascript', now), 3);
 });
