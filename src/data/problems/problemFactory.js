@@ -7,6 +7,8 @@ export function createProblem(definition) {
 
   return {
     id: definition.id,
+    language: definition.language || 'javascript',
+    supportedLanguages: definition.supportedLanguages || [definition.language || 'javascript'],
     title: definition.title,
     level: 0,
     difficulty: definition.difficulty,

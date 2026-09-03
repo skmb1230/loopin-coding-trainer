@@ -1,5 +1,9 @@
-export function runCode({ code, tests, timeout = 2000 }) {
+export function runCode({ code, tests, timeout = 2000, language = 'javascript' }) {
   return new Promise((resolve) => {
+    if (language !== 'javascript') {
+      resolve({ status: 'error', error: `${language} 실행기는 아직 설치되지 않았어요.`, results: [] });
+      return;
+    }
     const worker = new Worker(new URL('../../workers/runner.worker.js', import.meta.url), { type: 'module' });
     let settled = false;
     const finish = (result) => {

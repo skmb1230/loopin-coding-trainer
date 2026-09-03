@@ -1,6 +1,6 @@
 # loopin
 
-정답을 바로 보여주지 않고 문제 이해 → 관찰 → 자료구조 후보 → 의사코드 순서로 사고를 여는 JavaScript 코딩테스트 트레이너입니다. 서버, 로그인, AI API 없이 브라우저에서 로컬로 동작합니다.
+정답을 바로 보여주지 않고 문제 이해 → 관찰 → 자료구조 후보 → 의사코드 순서로 사고를 여는 코딩테스트 트레이너입니다. 서버, 로그인, AI API 없이 브라우저에서 로컬로 동작합니다. 첫 학습 언어는 JavaScript이며 Python·Java 실행기를 지연 로딩 방식으로 추가할 수 있는 언어 registry 구조를 사용합니다.
 
 ## 설치와 실행
 
@@ -9,6 +9,12 @@ Node.js 22.12 이상이 필요합니다.
 ```bash
 npm install
 npm run dev
+```
+
+macOS에서는 다음 명령을 한 번 실행하면 데스크톱에 `Loopin.app`이 생깁니다. 이후에는 아이콘을 더블클릭하면 서버 시작과 브라우저 열기가 자동으로 진행됩니다.
+
+```bash
+npm run install:app
 ```
 
 배포용 번들 확인:
@@ -40,13 +46,14 @@ npm run validate:problems
 
 ## 문제 구조
 
-문제는 `src/data/problems/level0`부터 `level5`까지 레벨별 dynamic import로 분리됩니다. 첫 버전에는 서로 다른 개념을 다루는 Level 0 문제 30개가 포함되어 있습니다.
+문제는 `src/data/problems/level0`부터 `level5`까지 레벨별 dynamic import로 분리됩니다. 첫 버전에는 JavaScript로 플레이 가능한 Level 0 문제 30개가 포함되어 있습니다. 문제의 `language`와 `supportedLanguages`, `src/core/languages/registry.js`를 통해 언어별 코드와 실행기를 분리 확장합니다.
 
 주요 schema:
 
 ```js
 {
-  id, title, level, difficulty, category, tags,
+  id, language, supportedLanguages,
+  title, level, difficulty, category, tags,
   description, constraints, examples, starterCode,
   estimatedMinutes, prerequisites, concepts,
   hints, commonMistakes, reviewQuestions,
