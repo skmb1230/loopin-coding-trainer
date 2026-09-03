@@ -1,11 +1,14 @@
 import { chmod, cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
-import { tmpdir } from 'node:os';
+import { homedir, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const projectDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const appDir = '/Users/skmb1230/Desktop/Loopin.app';
+const userHomeDir = homedir();
+const appDir = join(userHomeDir, 'Desktop', 'Loopin.app');
+const logDir = join(userHomeDir, 'Library', 'Logs');
+const logFile = join(logDir, 'Loopin.log');
 const contentsDir = join(appDir, 'Contents');
 const macosDir = join(contentsDir, 'MacOS');
 const resourcesDir = join(contentsDir, 'Resources');
@@ -17,6 +20,7 @@ await rm(appDir, { recursive: true, force: true });
 await mkdir(macosDir, { recursive: true });
 await mkdir(resourcesDir, { recursive: true });
 await mkdir(iconsetDir, { recursive: true });
+await mkdir(logDir, { recursive: true });
 
 const sizes = [16, 32, 128, 256, 512];
 for (const size of sizes) {
@@ -44,7 +48,7 @@ const plist = `<?xml version="1.0" encoding="UTF-8"?>
 const launcher = `#!/bin/zsh
 PROJECT_DIR=${JSON.stringify(projectDir)}
 LOOPIN_URL="http://localhost:5173"
-LOOPIN_LOG="/Users/skmb1230/Library/Logs/Loopin.log"
+LOOPIN_LOG=${JSON.stringify(logFile)}
 export PATH=${JSON.stringify(process.env.PATH)}
 
 if /usr/bin/curl -fsS "$LOOPIN_URL" >/dev/null 2>&1; then
