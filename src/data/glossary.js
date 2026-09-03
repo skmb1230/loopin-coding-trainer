@@ -480,6 +480,24 @@ export const glossaryEntries = [
     definition: '양쪽 끝에서 값을 넣고 꺼낼 수 있는 Java 인터페이스입니다. ArrayDeque는 코딩테스트에서 스택과 큐 구현에 자주 사용됩니다.',
   },
   {
+    id: 'converting',
+    label: '컨버팅 (Converting)',
+    terms: ['Converting', 'Conversion', '컨버팅', '컨버전'],
+    definition: '내용이나 목적은 유지하면서 데이터·파일·코드의 형식 또는 표현을 바꾸는 일입니다. 예: CSV를 JSON으로, PNG를 WebP로 변환하기.',
+  },
+  {
+    id: 'porting',
+    label: '포팅 (Porting)',
+    terms: ['Porting', '포팅'],
+    definition: '같은 기능의 소프트웨어가 다른 운영체제, CPU, 기기 또는 런타임에서도 실행되도록 코드를 맞추는 일입니다. 예: macOS 앱을 Windows에서도 실행되게 만들기.',
+  },
+  {
+    id: 'migration',
+    label: '마이그레이션 (Migration)',
+    terms: ['Migration', 'Migrate', '마이그레이션', '마이그레이트'],
+    definition: '운영 중인 데이터·서비스·사용자를 새 DB, 클라우드, 버전이나 구조로 옮겨 전환하는 일입니다. 보통 데이터 검증, 중단 시간과 롤백 계획도 함께 고려합니다.',
+  },
+  {
     id: 'git',
     label: 'Git',
     terms: ['Git'],

@@ -23,3 +23,10 @@ test('영문 용어는 다른 식별자의 일부와 잘못 매칭되지 않는�
 
   assert.deepEqual(terms.map((part) => part.entry.id), ['set-timeout', 'set']);
 });
+
+test('서로 헷갈리는 소프트웨어 변경 용어를 각각 설명한다', () => {
+  const parts = findGlossaryParts('컨버팅, Porting, Migration은 바꾸거나 옮기는 범위가 다르다.', glossaryEntries);
+  const terms = parts.filter((part) => part.type === 'term');
+
+  assert.deepEqual(terms.map((part) => part.entry.id), ['converting', 'porting', 'migration']);
+});

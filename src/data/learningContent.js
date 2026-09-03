@@ -1,8 +1,20 @@
+const softwareChangeTermsTopic = {
+  id: 'software-change-terms',
+  area: '공통 · 실무 용어',
+  title: '컨버팅·포팅·마이그레이션 구분',
+  level: '기초',
+  minutes: 15,
+  question: '파일 형식을 바꾸는 일, 같은 앱을 Windows에서도 돌게 만드는 일, 운영 중인 DB를 새 서비스로 옮기는 일은 각각 무엇이라고 부를까요?',
+  hint: '결과물의 형식이 바뀌는지, 실행할 대상 환경이 바뀌는지, 운영 중인 시스템과 데이터의 자리를 옮기는지 구분해보세요.',
+  answer: '컨버팅은 CSV를 JSON으로 바꾸는 것처럼 데이터·파일·코드의 형식이나 표현을 변환하는 일입니다. 포팅은 같은 기능의 소프트웨어가 다른 운영체제·CPU·런타임에서도 실행되도록 코드를 맞추는 일입니다. 마이그레이션은 운영 중인 데이터·서비스·사용자를 새 DB, 클라우드, 버전 또는 구조로 옮겨 전환하는 일이며 검증과 롤백 계획까지 포함하는 경우가 많습니다. 실제 현장에서는 표현이 겹치기도 하므로 “무엇을, 어디로, 운영 전환까지 옮기는가”를 함께 확인해야 합니다.',
+};
+
 export const theoryTopics = [
   { id: 'event-loop', area: 'JavaScript', title: '이벤트 루프와 작업의 순서', level: '중급', minutes: 18, question: 'Promise.then과 setTimeout(fn, 0)이 함께 있다면 무엇이 먼저 실행될까요?', hint: '현재 실행 중인 작업이 끝난 뒤 microtask queue와 task queue 중 어느 쪽을 먼저 비우는지 떠올려보세요.', answer: '현재 call stack이 비면 microtask queue의 Promise 콜백을 먼저 처리하고, 이후 task queue의 setTimeout 콜백을 실행합니다.' },
   { id: 'closure', area: 'JavaScript', title: 'Closure가 값을 기억하는 방식', level: '중급', minutes: 20, question: '함수 실행이 끝난 뒤에도 내부 함수가 바깥 변수를 읽을 수 있는 이유는 무엇일까요?', hint: '함수가 선언될 때 함께 저장되는 lexical environment를 생각해보세요.', answer: '내부 함수가 선언 당시의 lexical environment를 참조하고 있어 필요한 바깥 변수가 계속 유지되기 때문입니다.' },
   { id: 'rendering', area: 'Browser', title: '렌더링 파이프라인', level: '심화', minutes: 25, question: '요소의 width 변경과 transform 변경은 브라우저 작업량이 왜 다를까요?', hint: 'Layout, Paint, Composite 중 다시 수행해야 하는 단계를 비교해보세요.', answer: 'width는 보통 Layout과 Paint를 다시 유발하지만 transform은 합성 단계만으로 처리될 수 있어 비용이 더 낮습니다.' },
   { id: 'react-render', area: 'React', title: '렌더링과 메모이제이션', level: '심화', minutes: 22, question: 'React.memo를 모든 컴포넌트에 적용하면 항상 빨라질까요?', hint: 'props 비교 비용과 실제 렌더링 비용을 함께 비교해보세요.', answer: '아닙니다. props 비교에도 비용이 들고 자주 변하는 props에는 이득이 없어, 측정된 병목에 선택적으로 적용해야 합니다.' },
+  softwareChangeTermsTopic,
 ];
 
 export const javaTheoryTopics = [
@@ -14,6 +26,7 @@ export const javaTheoryTopics = [
   { id: 'java-memory', area: 'JVM · 메모리', title: '스택·힙·가비지 컬렉션', level: '심화', minutes: 25, question: '메서드가 끝났는데 그 안에서 만든 객체가 항상 즉시 사라지는 것은 아닌 이유가 무엇일까요?', hint: '메서드 호출 프레임의 수명과 힙 객체에 도달할 수 있는 참조의 수명을 구분해보세요.', answer: '메서드 호출 정보와 지역 변수는 스택 프레임에서 관리되지만 객체는 보통 힙에 있습니다. 다른 곳에서 객체를 계속 참조하면 메서드가 끝나도 도달 가능하므로 남고, 더 이상 도달할 수 없을 때 가비지 컬렉션의 대상이 됩니다. 실제 회수 시점은 즉시 보장되지 않습니다.' },
   { id: 'java-exception', area: 'Java · 안정성', title: 'Checked와 Unchecked Exception', level: '중급', minutes: 20, question: '모든 예외를 catch (Exception e)로 잡고 무시하면 왜 디버깅과 복구가 어려워질까요?', hint: '호출자가 처리해야 하는 실패인지, 프로그래밍 오류인지, 실패 정보가 어디에서 사라지는지 생각해보세요.', answer: '무조건 잡아 무시하면 실패 원인과 스택 정보가 사라지고 프로그램이 잘못된 상태로 계속될 수 있습니다. 복구할 수 있는 위치에서 구체적인 예외를 처리하고, 처리할 수 없다면 의미 있는 문맥을 더해 전달해야 합니다. RuntimeException 계열은 주로 코드 계약 위반을 나타냅니다.' },
   { id: 'java-complexity', area: 'Java · 코딩테스트', title: '배열과 컬렉션의 연산 비용', level: '중급', minutes: 22, question: 'ArrayList에서 remove(0)를 반복하는 큐가 느려질 수 있는 이유는 무엇이며 어떤 대안이 있을까요?', hint: '맨 앞 원소를 없앤 뒤 나머지 원소가 어느 위치로 이동해야 하는지 생각해보세요.', answer: 'ArrayList의 첫 원소를 제거하면 뒤 원소들을 앞으로 옮겨야 해 한 번에 O(N)이 걸릴 수 있습니다. 큐에는 ArrayDeque의 offer와 poll을 쓰거나, 문제 조건상 배열을 써야 한다면 앞을 지우지 않고 head 인덱스를 증가시키는 방법이 적합합니다.' },
+  softwareChangeTermsTopic,
 ];
 
 export const aiTopics = [
