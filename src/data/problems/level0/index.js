@@ -1,5 +1,6 @@
 import { createProblem } from '../problemFactory.js';
 import { javaLevel0Variants } from '../java/level0.js';
+import { createGeneratedLevelProblems, problemTargets } from '../generated/problemTemplates.js';
 
 const definitions = [
   {
@@ -184,8 +185,13 @@ const definitions = [
   },
 ];
 
-export const level0Problems = definitions.map((definition) => createProblem({
+const handcraftedProblems = definitions.map((definition) => createProblem({
   ...definition,
   languageVariants: { java: javaLevel0Variants[definition.id] },
 }));
+
+export const level0Problems = [
+  ...handcraftedProblems,
+  ...createGeneratedLevelProblems(0, { start: handcraftedProblems.length + 1, count: problemTargets[0] - handcraftedProblems.length }),
+];
 export default level0Problems;

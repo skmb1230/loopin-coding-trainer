@@ -137,6 +137,7 @@ npm run validate:java # JDK 21 이상 필요
 ## 제공 기능
 
 - JavaScript/Java별 8문제 진단 또는 Level 0 직접 시작 온보딩과 진단 결과 리포트
+- Level 0~5 총 800문제: 200 · 220 · 180 · 120 · 60 · 20개를 레벨 선택 시 lazy loading
 - 매일 가능한 시간을 다시 확인해 문제 수와 세션을 조정하는 오늘의 계획
 - CodeMirror 6 JavaScript·Java 구문 에디터, 언어별 자동 저장, 키보드 단축키
 - JavaScript는 실행마다 새 Web Worker에서, Java는 로컬 JDK 프로세스에서 메모리·시간 제한과 함께 실행
@@ -152,7 +153,7 @@ npm run validate:java # JDK 21 이상 필요
 
 ## 문제 구조
 
-문제는 `src/data/problems/level0`부터 `level5`까지 레벨별 dynamic import로 분리됩니다. Level 0의 같은 문제 30개를 JavaScript와 Java로 모두 풀 수 있습니다. 문제의 `languageVariants`와 `supportedLanguages`, `src/core/languages/registry.js`를 통해 언어별 시작 코드·기준 풀이·타입 명세·실행기를 분리합니다.
+문제는 `src/data/problems/level0`부터 `level5`까지 레벨별 dynamic import로 분리됩니다. 현재 Level 0~5에 각각 200/220/180/120/60/20개, 총 800개가 등록되어 있으며 모든 문제를 JavaScript와 Java로 풀 수 있습니다. Level 0의 첫 30개는 개별 설계 문제이고, 나머지는 레벨별로 검증된 알고리즘 템플릿과 결정적 파라미터 변형으로 생성됩니다. 문제의 `languageVariants`와 `supportedLanguages`, `src/core/languages/registry.js`를 통해 언어별 시작 코드·기준 풀이·타입 명세·실행기를 분리합니다.
 
 주요 schema:
 
@@ -168,9 +169,9 @@ npm run validate:java # JDK 21 이상 필요
 }
 ```
 
-새 문제는 해당 레벨 모듈에 정의하고 `createProblem()`으로 정규화합니다. 각 문제에는 공개·숨김 테스트, 3~5개 힌트, 설명과 언어별 기준 풀이가 필요합니다. `npm run validate:problems`는 ID 중복, 필수 필드, 범위, 테스트 수, 힌트 수와 JavaScript 기준 풀이를 검사합니다. `npm run validate:java`는 30개 Java 기준 풀이를 실제로 컴파일해 120개 테스트를 확인합니다.
+새 문제는 해당 레벨 모듈에 정의하고 `createProblem()`으로 정규화합니다. 각 문제에는 공개·숨김 테스트, 3~5개 힌트, 설명과 언어별 기준 풀이가 필요합니다. `npm run validate:problems`는 800문제의 ID 중복, 레벨별 개수, 필수 필드, 범위, 테스트 수, 힌트 수, Java 타입과 JavaScript 기준 풀이를 검사합니다. `npm run validate:java`는 800개 Java 기준 풀이를 JDK 21에서 실제로 컴파일해 3,200개 테스트를 확인합니다.
 
-`npm run generate:problems -- 10482`는 고정 seed와 검증된 템플릿을 사용하는 확장 manifest를 생성합니다. 같은 seed는 같은 순서를 만듭니다. 목표 분포는 Level 0~5에 200/220/180/120/60/20개입니다.
+`npm run generate:problems -- 10482`는 고정 seed와 검증된 템플릿을 사용하는 800문제 manifest를 생성합니다. 같은 seed는 같은 순서를 만들며 manifest에는 레벨별 목표·실제 등록 수와 각 문제 seed가 기록됩니다.
 
 ## 폴더 구조
 

@@ -20,7 +20,7 @@ export function createProblem(definition) {
     supportedLanguages: definition.supportedLanguages || Object.keys(languageVariants),
     languageVariants,
     title: definition.title,
-    level: 0,
+    level: definition.level ?? 0,
     difficulty: definition.difficulty,
     category: definition.category,
     tags: definition.concepts,
@@ -55,5 +55,7 @@ export function createProblem(definition) {
       code: definition.referenceSolution,
     },
     referenceSolution: definition.referenceSolution,
+    templateId: definition.templateId,
+    templateVariant: definition.templateVariant,
   };
 }

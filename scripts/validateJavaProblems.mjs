@@ -1,4 +1,9 @@
 import level0Problems from '../src/data/problems/level0/index.js';
+import level1Problems from '../src/data/problems/level1/index.js';
+import level2Problems from '../src/data/problems/level2/index.js';
+import level3Problems from '../src/data/problems/level3/index.js';
+import level4Problems from '../src/data/problems/level4/index.js';
+import level5Problems from '../src/data/problems/level5/index.js';
 import { checkJdk, executeJava } from './javaRunnerPlugin.mjs';
 
 const jdk = await checkJdk();
@@ -8,8 +13,9 @@ if (!jdk.available) {
 }
 
 const failures = [];
-for (let start = 0; start < level0Problems.length; start += 4) {
-  const batch = level0Problems.slice(start, start + 4);
+const problems = [level0Problems, level1Problems, level2Problems, level3Problems, level4Problems, level5Problems].flat();
+for (let start = 0; start < problems.length; start += 8) {
+  const batch = problems.slice(start, start + 8);
   const results = await Promise.all(batch.map(async (problem) => {
     const variant = problem.languageVariants.java;
     return { problem, result: await executeJava({ code: variant.referenceSolution, tests: problem.tests, javaSpec: variant.javaSpec, timeout: 5000 }) };
@@ -25,5 +31,5 @@ if (failures.length) {
   process.exit(1);
 }
 
-console.log(`✓ JDK ${jdk.major}에서 Java 기준 풀이 ${level0Problems.length}개 컴파일 완료`);
-console.log(`✓ ${level0Problems.reduce((sum, problem) => sum + problem.tests.length, 0)}개 Java 테스트 통과`);
+console.log(`✓ JDK ${jdk.major}에서 Java 기준 풀이 ${problems.length}개 컴파일 완료`);
+console.log(`✓ ${problems.reduce((sum, problem) => sum + problem.tests.length, 0)}개 Java 테스트 통과`);
