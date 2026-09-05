@@ -1,4 +1,5 @@
 import { calculateStudyStreak, deriveCurriculumState, problemCountsByLevel } from '../../core/curriculum/curriculumEngine.js';
+import { getDiagnosticReport } from '../../core/onboarding/diagnosticReport.js';
 
 const record = (value) => value && typeof value === 'object' && !Array.isArray(value) ? value : {};
 const languageLabels = { javascript: 'JavaScript', java: 'Java' };
@@ -17,8 +18,9 @@ export function getProfileSummary({ profile, settings, progress, todayMinutes, n
   const initial = record(profile);
   const current = record(settings);
   const history = Object.fromEntries(Object.entries(record(progress)).filter(([, value]) => value && typeof value === 'object' && !Array.isArray(value)));
-  const score = integer(initial.diagnosticScore, 0, 8);
-  const tookDiagnostic = typeof initial.diagnosticTaken === 'boolean' ? initial.diagnosticTaken : score !== null && score > 0 ? true : null;
+  const diagnostic = getDiagnosticReport(initial);
+  const score = diagnostic.score;
+  const tookDiagnostic = diagnostic.taken;
   const startLevel = integer(initial.startLevel, 0, 5);
   const daysPerWeek = integer(initial.daysPerWeek, 1, 7);
   const targetWeeks = integer(initial.targetWeeks, 1, 520);

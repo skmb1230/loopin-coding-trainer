@@ -1,4 +1,6 @@
 import { getProfileSummary } from './profileSummary.js';
+import { useRef } from 'react';
+import OnboardingHistory from './OnboardingHistory.jsx';
 import './profile.css';
 
 function InformationList({ rows }) {
@@ -7,13 +9,15 @@ function InformationList({ rows }) {
 
 export default function ProfilePage({ profile, settings, progress, todayMinutes, onNavigate }) {
   const summary = getProfileSummary({ profile, settings, progress, todayMinutes });
+  const onboardingHeading = useRef(null);
+  const showInitialResult = () => { onboardingHeading.current?.scrollIntoView({ block: 'start' }); onboardingHeading.current?.focus({ preventScroll: true }); };
   const canNavigate = typeof onNavigate === 'function';
   const navigate = (page) => { if (canNavigate) onNavigate(page); };
 
   return <main className="page profile-page">
     <header className="page-header profile-page-header">
       <div><span className="eyebrow">나의 학습 정보</span><h1>내 정보</h1><p>처음 정한 출발점과 지금의 학습 현황을 함께 확인하세요.</p></div>
-      <button className="secondary-button" disabled={!canNavigate} onClick={() => navigate('settings')}>설정 열기 <span aria-hidden="true">↗</span></button>
+      <div className="profile-header-actions"><button className="primary-button" onClick={showInitialResult}>처음 테스트 결과 보기</button><button className="secondary-button" disabled={!canNavigate} onClick={() => navigate('settings')}>설정 열기 <span aria-hidden="true">↗</span></button></div>
     </header>
 
     {!summary.hasProfile && <p className="profile-empty-notice" role="status">저장된 시작 정보가 아직 없어요. 기록하지 않은 항목은 미설정으로 표시합니다.</p>}
@@ -48,8 +52,11 @@ export default function ProfilePage({ profile, settings, progress, todayMinutes,
         ]} />
         <p className="profile-section-note">진단은 8문제로 확인한 당시의 출발점이에요. 현재 레벨은 아래 언어별 풀이 기록에 따라 달라집니다.</p>
         {summary.diagnostic.taken === false && <p className="profile-diagnostic-note">진단 없이 시작한 기록이에요. 미응시는 0점과 다르게 표시합니다.</p>}
+        <button className="secondary-button" onClick={showInitialResult}>문항별 답변과 온보딩 결과 보기</button>
       </section>
     </div>
+
+    <OnboardingHistory profile={profile} headingRef={onboardingHeading}/>
 
     <section className="profile-progress-section" aria-labelledby="profile-progress-title">
       <div className="profile-section-heading"><div><span className="eyebrow">풀이 기록 기준</span><h2 id="profile-progress-title">언어별 학습 현황</h2></div></div>

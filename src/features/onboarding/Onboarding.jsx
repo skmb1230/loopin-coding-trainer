@@ -1,31 +1,9 @@
 import { useMemo, useState } from 'react';
 import { calculateStudyAllocation } from '../../core/curriculum/calculateStudyAllocation.js';
-import { getLanguage } from '../../core/languages/registry.js';
+import { getDiagnosticQuestions, diagnosticStartLevel, ONBOARDING_DIAGNOSTIC_VERSION } from '../../data/onboardingDiagnostics.js';
+import { getDiagnosticReport } from '../../core/onboarding/diagnosticReport.js';
 
-const javascriptDiagnostics = [
-  { area: '문자열', question: "'hello'.slice(1, 4)의 결과는?", options: ['ell', 'ello', 'hel'], answer: 0 },
-  { area: '배열', question: '[1, 2, 3].map(x => x * 2)의 결과는?', options: ['[2, 4, 6]', '6', '[1, 2, 3, 2]'], answer: 0 },
-  { area: 'Map/Set', question: '중복 없는 값의 존재 여부를 빠르게 확인할 때 알맞은 것은?', options: ['Set', 'Array.shift', 'JSON.stringify'], answer: 0 },
-  { area: '구현', question: '배열의 마지막 유효 인덱스는?', options: ['length', 'length - 1', 'length + 1'], answer: 1 },
-  { area: '정렬', question: '숫자 오름차순 sort comparator는?', options: ['(a,b) => a-b', '(a,b) => a>b', '생략한다'], answer: 0 },
-  { area: 'Stack', question: '가장 나중에 넣은 값부터 꺼내는 구조는?', options: ['Queue', 'Stack', 'Set'], answer: 1 },
-  { area: '완전탐색', question: '후보 수가 작을 때 모든 경우를 확인하는 접근은?', options: ['완전탐색', '이진탐색', '위상정렬'], answer: 0 },
-  { area: '시간복잡도', question: '길이 N 배열을 한 번 순회할 때 복잡도는?', options: ['O(1)', 'O(log N)', 'O(N)'], answer: 2 },
-];
-
-const javaDiagnostics = [
-  { area: '문자열', question: '"hello".substring(1, 4)의 결과는?', options: ['ell', 'ello', 'hel'], answer: 0 },
-  { area: '배열', question: 'int[] numbers = {1, 2, 3}; 배열 길이를 읽는 표현은?', options: ['numbers.length', 'numbers.length()', 'numbers.size()'], answer: 0 },
-  { area: 'Map/Set', question: '중복 없는 값의 존재 여부를 빠르게 확인할 때 알맞은 것은?', options: ['HashSet', 'ArrayList.remove', 'StringBuilder'], answer: 0 },
-  { area: '구현', question: '배열의 마지막 유효 인덱스는?', options: ['length', 'length - 1', 'length + 1'], answer: 1 },
-  { area: '정렬', question: 'int[]를 오름차순 정렬하는 표준 메서드는?', options: ['Arrays.sort(numbers)', 'numbers.sort()', 'Collections.sort(numbers)'], answer: 0 },
-  { area: 'Stack', question: 'Java에서 스택·큐를 구현할 때 자주 권장되는 인터페이스는?', options: ['Deque', 'String', 'TreeMap'], answer: 0 },
-  { area: '완전탐색', question: '후보 수가 작을 때 모든 경우를 확인하는 접근은?', options: ['완전탐색', '이진탐색', '위상정렬'], answer: 0 },
-  { area: '시간복잡도', question: '길이 N 배열을 한 번 순회할 때 복잡도는?', options: ['O(1)', 'O(log N)', 'O(N)'], answer: 2 },
-];
-
-const diagnosticsForLanguage = (languageId) => languageId === 'java' ? javaDiagnostics : javascriptDiagnostics;
-export const diagnosticStartLevel = (score) => score >= 7 ? 1 : 0;
+export { diagnosticStartLevel } from '../../data/onboardingDiagnostics.js';
 
 const steps = ['기본 정보', '학습 목표', '시작점'];
 
@@ -47,17 +25,17 @@ export function OnboardingResult({ profile, onComplete }) {
     catch { setSaveError('시작 설정을 저장하지 못했어요. 진단 결과는 이 화면에 유지됩니다. 저장 공간과 브라우저 설정을 확인한 뒤 다시 시도해 주세요.'); }
     finally { setSaving(false); }
   };
-  const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
-  const language = getLanguage(profile.learningLanguage);
-  const score = profile.diagnosticScore || 0;
-  const tookDiagnostic = profile.diagnosticTaken ?? score > 0;
-  const answers = profile.diagnosticAnswers || [];
+  const report = getDiagnosticReport(profile);
+  const language = { label: report.languageLabel };
+  const score = report.score;
+  const tookDiagnostic = report.taken === true;
   const allocation = calculateStudyAllocation(profile.dailyMinutes || 120, 'beginner');
   const algorithmTrack = !tookDiagnostic
     ? 'Level 0 · 차근차근'
+    : score === null ? 'Level 0 · 실제 풀이로 확인'
     : profile.startLevel >= 1 ? 'Level 1 · 기초 확인 병행' : score >= 4 ? 'Level 0 · 핵심 트랙' : 'Level 0 · 기초 강화';
   const firstFocus = tookDiagnostic
-    ? diagnostics.filter((item, index) => answers[index] !== item.answer).map((item) => item.area).slice(0, 3)
+    ? report.rows.filter((item) => item.isCorrect === false).map((item) => item.area).slice(0, 3)
     : ['배열', '문자열', '반복문'];
 
   return (
@@ -71,16 +49,17 @@ export function OnboardingResult({ profile, onComplete }) {
         </div>
 
         <div className="assessment-summary">
-          <div className="score-ring"><strong>{tookDiagnostic ? score : '—'}</strong><span>{tookDiagnostic ? '/ 8' : '미응시'}</span></div>
-          <div><small>코딩테스트 진단</small><h2>{algorithmTrack}</h2><p>{tookDiagnostic ? `${8 - score}개 영역은 쉬운 문제로 다시 연결하고, 익숙한 영역은 빠르게 통과합니다.` : '진단 점수 대신 기초 문제의 실제 풀이 기록으로 난이도를 조정합니다.'}</p></div>
+          <div className="score-ring"><strong>{tookDiagnostic && score !== null ? score : '—'}</strong><span>{tookDiagnostic && score !== null ? '/ 8' : report.taken === false ? '미응시' : '기록 확인 필요'}</span></div>
+          <div><small>코딩테스트 진단</small><h2>{algorithmTrack}</h2><p>{tookDiagnostic && score !== null ? `${8 - score}개 영역은 쉬운 문제로 다시 연결하고, 익숙한 영역은 빠르게 통과합니다.` : '진단 점수 대신 기초 문제의 실제 풀이 기록으로 난이도를 조정합니다.'}</p></div>
         </div>
+        {report.notice && <p className="support-copy">{report.notice}</p>}
 
         <div className="separate-tracks">
           <article><span>01</span><small>ALGORITHM TRACK</small><h3>{algorithmTrack}</h3><p>문제 난이도는 오직 진단과 실제 풀이 기록으로 조정</p></article>
           <article><span>02</span><small>{language.label.toUpperCase()} THEORY TRACK</small><h3>{experienceDepth(profile.frontendYears)}</h3><p>{profile.frontendYears} 경력을 참고한 추천 깊이 · 이론 주제는 직접 선택</p></article>
         </div>
 
-        <div className="result-focus"><div><small>FIRST FOCUS</small><strong>{firstFocus.length ? firstFocus.join(' · ') : 'Map/Set · 구현 심화'}</strong></div><div><small>WEEKLY RHYTHM</small><strong>주 {formatResultTime((profile.dailyMinutes || 120) * (profile.daysPerWeek || 5))}</strong></div><div><small>TARGET</small><strong>{profile.targetWeeks}주 · {profile.goal}</strong></div></div>
+        <div className="result-focus"><div><small>FIRST FOCUS</small><strong>{firstFocus.length ? firstFocus.join(' · ') : report.answeredCount === 8 ? 'Map/Set · 구현 심화' : '실제 풀이로 확인'}</strong></div><div><small>WEEKLY RHYTHM</small><strong>주 {formatResultTime((profile.dailyMinutes || 120) * (profile.daysPerWeek || 5))}</strong></div><div><small>TARGET</small><strong>{profile.targetWeeks}주 · {profile.goal}</strong></div></div>
         <div className="result-notice"><span>i</span><p><b>{formatResultTime(profile.dailyMinutes)}은 기본값이에요.</b> 실제 계획은 매일 “오늘 가능한 시간”을 다시 확인한 뒤 만듭니다.</p></div>
         {saveError && <p className="data-action-error" role="alert">{saveError}</p>}
         <button className="primary-button result-cta" disabled={saving} onClick={finish}>{saving ? '시작 설정 저장 중…' : '오늘 계획 만들기'} <span>→</span></button>
@@ -125,11 +104,11 @@ export default function Onboarding({ onComplete }) {
   const update = (key, value) => setProfile((current) => ({ ...current, [key]: value }));
 
   const answerDiagnostic = (answer) => {
-    const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
+    const diagnostics = getDiagnosticQuestions(profile.learningLanguage, ONBOARDING_DIAGNOSTIC_VERSION);
     const nextAnswers = [...answers, answer];
     if (diagnosticIndex === diagnostics.length - 1) {
       const score = nextAnswers.reduce((sum, value, index) => sum + (value === diagnostics[index].answer ? 1 : 0), 0);
-      setResultProfile({ ...profile, diagnosticScore: score, diagnosticTaken: true, diagnosticAnswers: nextAnswers, startLevel: diagnosticStartLevel(score) });
+      setResultProfile({ ...profile, diagnosticScore: score, diagnosticTaken: true, diagnosticAnswers: nextAnswers, diagnosticVersion: ONBOARDING_DIAGNOSTIC_VERSION, diagnosticCompletedAt: new Date().toISOString(), startLevel: diagnosticStartLevel(score) });
       return;
     }
     setAnswers(nextAnswers);
@@ -139,7 +118,7 @@ export default function Onboarding({ onComplete }) {
   if (resultProfile) return <OnboardingResult profile={resultProfile} onComplete={onComplete} />;
 
   if (diagnosticMode) {
-    const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
+    const diagnostics = getDiagnosticQuestions(profile.learningLanguage, ONBOARDING_DIAGNOSTIC_VERSION);
     const item = diagnostics[diagnosticIndex];
     return (
       <main className="onboarding-shell">
@@ -152,7 +131,7 @@ export default function Onboarding({ onComplete }) {
           <div className="option-stack">
             {item.options.map((option, index) => <button key={option} className="choice-button" onClick={() => answerDiagnostic(index)}>{String.fromCharCode(65 + index)}<span>{option}</span></button>)}
           </div>
-          <button className="text-button" onClick={() => setResultProfile({ ...profile, diagnosticScore: 0, diagnosticTaken: false, startLevel: 0 })}>진단을 그만두고 Level 0부터 시작</button>
+          <button className="text-button" onClick={() => setResultProfile({ ...profile, diagnosticScore: 0, diagnosticTaken: false, diagnosticVersion: ONBOARDING_DIAGNOSTIC_VERSION, startLevel: 0 })}>진단을 그만두고 Level 0부터 시작</button>
         </section>
       </main>
     );
@@ -168,7 +147,7 @@ export default function Onboarding({ onComplete }) {
 
         {step === 0 && <div className="onboarding-content"><div className="eyebrow">나에게 맞는 출발점</div><h1>경력과 코테 실력은<br />따로 보고 시작할게요.</h1><p className="support-copy">개발 경력은 이론 깊이에만, 문제 난이도는 별도의 진단 결과에만 반영합니다.</p><div className="form-grid"><label className="wide">먼저 학습할 언어<select value={profile.learningLanguage} onChange={(event) => update('learningLanguage', event.target.value)}><option value="javascript">JavaScript</option><option value="java">Java</option></select></label><label>전체 개발 경력<select value={profile.careerYears} onChange={(event) => update('careerYears', event.target.value)}>{['0~1년','2~3년','4~5년','6~7년','8~10년','10년+'].map((item)=><option key={item}>{item}</option>)}</select></label><label>프론트엔드 경력<select value={profile.frontendYears} onChange={(event) => update('frontendYears', event.target.value)}>{['0~1년','2~3년','4~5년','6~7년','8~10년','10년+'].map((item)=><option key={item}>{item}</option>)}</select></label><label className="wide">코딩테스트 경험<select value={profile.codingTestLevel} onChange={(event) => update('codingTestLevel', event.target.value)}>{['처음','Level 0','Level 1','Level 2','Level 3+'].map((item)=><option key={item}>{item}</option>)}</select></label></div></div>}
         {step === 1 && <div className="onboarding-content"><div className="eyebrow">현실적인 학습 리듬</div><h1>꾸준히 지킬 수 있는<br />시간을 알려주세요.</h1><p className="support-copy">하루 시간을 문제풀이·이론·AI·네트워크·보안·복습으로 나누고, 여유 있는 날에만 Git·AWS 면접 학습을 짧게 넣습니다.</p><div className="form-grid"><label>하루 학습 시간<select value={profile.dailyMinutes} onChange={(event) => update('dailyMinutes', Number(event.target.value))}>{[[30,'30분'],[60,'1시간'],[120,'2시간'],[180,'3시간'],[240,'4시간'],[300,'5시간'],[360,'6시간']].map(([value,label])=><option value={value} key={value}>{label}</option>)}</select></label><label>주당 학습일<select value={profile.daysPerWeek} onChange={(event) => update('daysPerWeek', Number(event.target.value))}>{[2,3,4,5,6,7].map((item)=><option value={item} key={item}>{item}일</option>)}</select></label><label>목표 기간<select value={profile.targetWeeks} onChange={(event) => update('targetWeeks', Number(event.target.value))}>{[4,8,12,16].map((item)=><option value={item} key={item}>{item}주</option>)}</select></label><label>집중 세션<select value={profile.focusMinutes} onChange={(event) => update('focusMinutes', Number(event.target.value))}>{[25,40,50,60,90].map((item)=><option value={item} key={item}>{item}분</option>)}</select></label><label className="wide">목표<select value={profile.goal} onChange={(event) => update('goal', event.target.value)}>{['이직 준비','대기업 코테','일반 FE 이직','알고리즘 기초','개인 공부'].map((item)=><option key={item}>{item}</option>)}</select></label></div></div>}
-        {step === 2 && <div className="onboarding-content start-choice"><div className="eyebrow">마지막 선택</div><h1>어디서부터 시작할까요?</h1><p className="support-copy">8개의 짧은 질문으로 시작점을 찾거나, 부담 없이 Level 0부터 시작할 수 있어요.</p><button className="start-card recommended" onClick={() => setDiagnosticMode(true)}><span className="tag">추천</span><strong>8문제 진단으로 시작</strong><small>약 5분 · 문자열부터 시간복잡도까지</small><span>진단 시작 →</span></button><button className="start-card" onClick={() => setResultProfile({ ...profile, diagnosticScore: 0, diagnosticTaken: false, startLevel: 0 })}><strong>그냥 Level 0부터 시작</strong><small>기초 사고 과정부터 차근차근</small><span>결과 확인 →</span></button></div>}
+        {step === 2 && <div className="onboarding-content start-choice"><div className="eyebrow">마지막 선택</div><h1>어디서부터 시작할까요?</h1><p className="support-copy">8개의 짧은 질문으로 시작점을 찾거나, 부담 없이 Level 0부터 시작할 수 있어요.</p><button className="start-card recommended" onClick={() => setDiagnosticMode(true)}><span className="tag">추천</span><strong>8문제 진단으로 시작</strong><small>약 5분 · 문자열부터 시간복잡도까지</small><span>진단 시작 →</span></button><button className="start-card" onClick={() => setResultProfile({ ...profile, diagnosticScore: 0, diagnosticTaken: false, diagnosticVersion: ONBOARDING_DIAGNOSTIC_VERSION, startLevel: 0 })}><strong>그냥 Level 0부터 시작</strong><small>기초 사고 과정부터 차근차근</small><span>결과 확인 →</span></button></div>}
 
         {step < 2 && <div className="onboarding-actions"><button className="secondary-button" disabled={step === 0} onClick={() => setStep((value) => value - 1)}>이전</button><button className="primary-button" disabled={!canContinue} onClick={() => setStep((value) => value + 1)}>계속하기 <span>→</span></button></div>}
       </section>
