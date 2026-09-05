@@ -4,6 +4,7 @@ import { createWorkplaceState, normalizeWorkplaceState, createDailySession, reco
 import { workplaceCategories, workplaceTerms, workplaceSources } from '../../data/workplaceTerms.js';
 import GlossaryText from '../glossary/GlossaryText.jsx';
 import { workplaceGlossaryEntries } from '../../data/workplaceGlossary.js';
+import { createWorkplaceQuestion } from '../../core/workplace/question.js';
 import './workplace.css';
 
 export const WORKPLACE_STORAGE_KEY = 'loopin-workplace-learning';
@@ -92,7 +93,7 @@ function DailyWordSetup({ learning, onStart }) {
   };
   return <div className="word-setup-layout">
     <section className="word-plan-panel">
-      <span className="eyebrow">01 · YOUR DAILY PLAN</span><h2>오늘은 몇 개 익힐까요?</h2>
+      <span className="eyebrow">01 · 원하는 만큼 선택</span><h2>오늘은 몇 개 익힐까요?</h2>
       <p className="support-copy">개수만 정해 추천받아도 되고, 궁금했던 단어를 직접 골라도 좋아요.</p>
       <div className="word-count-presets">{[3, 5, 10].map((value) => <button key={value} className={Number(count) === value ? 'active' : ''} aria-pressed={Number(count) === value} onClick={() => { setCount(value); setMessage(''); }}>{value}개</button>)}
         <label>직접 <input aria-label="하루 용어 개수" type="number" min="1" max="20" value={count} onChange={(event) => setCount(event.target.value)} onBlur={() => setCount(normalizedCount)} />개</label></div>
@@ -108,7 +109,7 @@ function DailyWordSetup({ learning, onStart }) {
       <button className="primary-button full" onClick={start}>{selectedIds.length ? '선택한 용어로 학습 시작' : '오늘의 용어 추천받기'} →</button>
     </section>
     <section className="word-library-panel">
-      <div className="word-library-heading"><div><span className="eyebrow">02 · PICK WHAT YOU NEED</span><h2>회의 용어 사전 <small>{workplaceTerms.length}개</small></h2></div><span>설명 → 상황 퀴즈 → 복습</span></div>
+      <div className="word-library-heading"><div><span className="eyebrow">02 · 궁금한 용어 고르기</span><h2>회의 용어 사전 <small>{workplaceTerms.length}개</small></h2></div><span>뜻 익히기 → 상황 보고 용어 맞히기</span></div>
       <label className="word-search"><span aria-hidden="true">⌕</span><input aria-label="회의 용어 검색" placeholder="카니발매출, 마이그레이션, 포팅, 피저빌리티…" value={query} onChange={(event) => setQuery(event.target.value)} /></label>
       <p className="word-plan-note">회사마다 쓰는 범위가 다를 수 있어요. 상황과 지표의 기준까지 확인하는 연습을 합니다.</p>
       <div className="word-library-list">{filtered.map((term) => <article key={term.id} className={selectedIds.includes(term.id) ? 'selected' : ''}>
@@ -121,19 +122,10 @@ function DailyWordSetup({ learning, onStart }) {
   </div>;
 }
 
-// Different situations and a deterministic choice rotation prevent memorizing an answer position.
-function questionFor(term, day, attempts) {
-  const seed = [...`${term.id}:${day}`].reduce((total, character) => total + character.charCodeAt(0), 0);
-  const question = term.questions[(seed + attempts) % term.questions.length];
-  const options = question.options.map((label, index) => ({ label, correct: index === question.answerIndex }));
-  const offset = (seed + attempts) % options.length;
-  return { ...question, choices: [...options.slice(offset), ...options.slice(0, offset)] };
-}
-
 function WordPractice({ term, learning, onNext, onActivate }) {
   const { state, update, day } = learning;
   const [phase, setPhase] = useState(state.session?.seenTermIds?.includes(term.id) ? 'quiz' : 'learn');
-  const [question, setQuestion] = useState(() => questionFor(term, day, state.session?.answers?.[term.id]?.attempts || 0));
+  const [question, setQuestion] = useState(() => createWorkplaceQuestion(term, day, state.session?.answers?.[term.id]?.attempts || 0));
   const [feedback, setFeedback] = useState(null);
   const [selected, setSelected] = useState(null);
   const submitting = useRef(false);
@@ -156,16 +148,16 @@ function WordPractice({ term, learning, onNext, onActivate }) {
   };
   const beginQuiz = () => {
     if (!update((previous) => markWorkplaceTermSeen(previous, term.id, new Date()))) return;
-    setQuestion(questionFor(term, day, state.session?.answers?.[term.id]?.attempts || 0));
+    setQuestion(createWorkplaceQuestion(term, day, state.session?.answers?.[term.id]?.attempts || 0));
     setSelected(null); setFeedback(null); setPhase('quiz');
   };
   return <article className="word-practice">
-    <div className="word-practice-top"><span className="eyebrow">{phase === 'quiz' ? '02 · RECALL IN CONTEXT' : '01 · UNDERSTAND THE SITUATION'}</span><span>{phase === 'quiz' ? '뜻을 떠올려 답해보세요' : '읽는 것만으로 완료 처리되지 않아요'}</span></div>
+    <div className="word-practice-top"><span className="eyebrow">{phase === 'quiz' ? '02 · 상황 보고 용어 맞히기' : '01 · 뜻과 사용 상황 익히기'}</span><span>{phase === 'quiz' ? '네 가지 용어 중 하나를 고르세요' : '읽는 것만으로 완료 처리되지 않아요'}</span></div>
     {phase !== 'quiz' ? <><div ref={heading} tabIndex={-1}><TermExplanation term={term} /></div><button className="primary-button" onClick={beginQuiz}>{phase === 'recap' ? '다른 상황으로 다시 풀기' : '상황을 이해했어요 · 맞혀보기'} →</button></>
-      : <><h2 ref={heading} tabIndex={-1}>이 회의에서 무슨 뜻일까요?</h2><p className="word-question">{question.prompt}</p>
+      : <><h2 ref={heading} tabIndex={-1}>이 상황을 뭐라고 부를까요?</h2><p className="word-question">{question.prompt}</p>
         <div className="word-answer-options">{question.choices.map((choice, index) => <button key={choice.label} disabled={Boolean(feedback)} className={feedback ? choice.correct ? 'correct' : selected === index ? 'incorrect' : '' : ''} onClick={() => answer(choice, index)}><span>{index + 1}</span><p>{choice.label}</p>{feedback && choice.correct && <b>✓ 정답</b>}</button>)}</div>
         {!feedback && <button className="text-button" onClick={showMeaning}>아직 모르겠어요 · 뜻 다시 보기</button>}
-        {feedback && <div className={`word-feedback ${feedback}`} role="status"><h3>{feedback === 'correct' ? '맞았어요. 이 상황에서 꺼내 쓸 수 있는 말이에요.' : '괜찮아요. 어떤 부분이 다른지 비교해 볼까요?'}</h3><p>{question.explanation}</p><p className="word-feedback-note">{feedback === 'incorrect' || state.session?.answers?.[term.id]?.hadError || state.session?.answers?.[term.id]?.assisted ? '다른 상황으로 다시 풀고, 내일도 한 번 더 만나요.' : '잊기 전에 다시 만나도록 복습 날짜를 저장했어요.'}</p><div>
+        {feedback && <div className={`word-feedback ${feedback}`} role="status"><h3>{feedback === 'correct' ? '맞았어요!' : '다시 기억해 볼까요?'} 정답은 ‘{term.term}’이에요.</h3><p className="word-feedback-english">{term.english}</p><p>{question.explanation}</p><p className="word-feedback-note">{feedback === 'incorrect' || state.session?.answers?.[term.id]?.hadError || state.session?.answers?.[term.id]?.assisted ? '다른 상황으로 다시 풀고, 내일도 한 번 더 만나요.' : '잊기 전에 다시 만나도록 복습 날짜를 저장했어요.'}</p><div>
           {feedback === 'incorrect' && <button className="secondary-button" onClick={() => setPhase('recap')}>뜻과 차이 다시 보기</button>}
           <button className="primary-button" onClick={onNext}>{feedback === 'correct' ? '다음으로' : '다음 순서로 · 다시 도전'} →</button></div></div>}
       </>}
@@ -201,12 +193,12 @@ export default function WorkplaceLearning() {
   // Keep the final answer explanation visible until the learner presses Next.
   const showResults = summary.complete && !activeId;
   return <main className="page workplace-page">
-    <header className="page-header"><div><span className="eyebrow">OPTIONAL · MEETING LANGUAGE · {day}</span><h1>회의 용어 연습실</h1><p>원할 때만 따로 하는 선택 학습이에요. 코테의 오늘 계획·학습 시간·진도에는 포함되지 않습니다.</p></div><div className="word-header-count"><strong>{summary.learnedCount}</strong><span>/ {workplaceTerms.length}개 익힘</span></div></header>
+    <header className="page-header"><div><span className="eyebrow">선택 학습 · 상황별 용어 퀴즈 · {day}</span><h1>회의 용어 연습실</h1><p>상황을 읽고 알맞은 용어 이름을 맞혀보세요. 원할 때만 하는 별도 학습으로, 코테 계획·공부 시간·진도에 포함되지 않습니다.</p></div><div className="word-header-count"><strong>{summary.learnedCount}</strong><span>/ {workplaceTerms.length}개 익힘</span></div></header>
     {saveError && <div className="word-inline-error" role="alert">{saveError}</div>}
     {!configuring && hasSession && <div className="word-session-bar"><div><strong>오늘 {summary.completedCount} / {summary.selectedCount}개</strong><span>틀린 용어는 다시 연습 · 진도 자동 저장</span></div><button className="text-button" onClick={() => setConfiguring(true)}>분야·개수 변경 / 사전</button><progress aria-label="오늘 용어 학습 진행률" value={summary.completedCount} max={Math.max(1, summary.selectedCount)} /></div>}
     {configuring || !hasSession ? <DailyWordSetup key={day} learning={learning} onStart={() => { setConfiguring(false); setActiveId(null); setRound((value) => value + 1); }} />
       : showResults ? <WordResults learning={learning} onConfigure={() => setConfiguring(true)} />
-        : displayedId && <div className="word-study-layout"><aside className="word-today-list"><h2>오늘 고른 용어</h2>{state.session.termIds.map((id, index) => <div key={id} className={displayedId === id ? 'active' : ''}><span>{state.session.answers[id]?.correct ? '✓' : String(index + 1).padStart(2, '0')}</span><div><strong>{termsById.get(id)?.term}</strong><small>{state.session.answers[id]?.correct ? '완료' : state.session.answers[id]?.attempts ? '다시 연습' : categoryLabel(termsById.get(id)?.category)}</small></div></div>)}<p>문장을 읽고 뜻을 익힌 다음, 다른 회의 상황에서 맞혀보세요.</p></aside>
+        : displayedId && <div className="word-study-layout"><aside className="word-today-list"><h2>오늘 연습 순서</h2>{state.session.termIds.map((id, index) => <div key={id} className={displayedId === id ? 'active' : ''}><span>{state.session.answers[id]?.correct ? '✓' : String(index + 1).padStart(2, '0')}</span><div><strong>{state.session.answers[id]?.correct ? termsById.get(id)?.term : `문제 ${index + 1}`}</strong><small>{state.session.answers[id]?.correct ? '완료' : state.session.answers[id]?.attempts ? '다시 연습' : categoryLabel(termsById.get(id)?.category)}</small></div></div>)}<p>정답을 떠올릴 수 있도록 아직 맞히지 않은 용어 이름은 가려 두었어요.</p></aside>
           <WordPractice key={`${displayedId}:${round}:${day}`} term={termsById.get(displayedId)} learning={learning} onNext={next} onActivate={setActiveId} /></div>}
     <footer className="word-sources"><details><summary>용어 설명의 기준과 참고 자료</summary><p>실무에서 통하는 일반적인 뜻을 학습용 상황으로 풀었습니다. 회사·팀마다 표현이 다르므로 대상, 범위, 계산 기준을 함께 확인하세요.</p><div>{workplaceSources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.label} ↗</a>)}</div></details></footer>
   </main>;
