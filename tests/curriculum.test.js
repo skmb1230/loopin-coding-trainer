@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate, getSystemsTrackForDate } from '../src/core/curriculum/calculateStudyAllocation.js';
+import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate, getSystemsTrackForDate, migrateCompletedStudySessions } from '../src/core/curriculum/calculateStudyAllocation.js';
 import { adjustDifficulty } from '../src/core/curriculum/adjustDifficulty.js';
 import { selectDailyProblems } from '../src/core/curriculum/selectDailyProblems.js';
 import { calculateLevelStats, calculateStudyStreak, deriveCurriculumState, getLanguageProgress, isSolvedOnLocalDay } from '../src/core/curriculum/curriculumEngine.js';
@@ -127,4 +127,77 @@ test('학습 연속일은 오늘 또는 어제부터 끊기지 않은 날짜만 
     'JS0003:javascript': { lastAttempt: new Date(2026, 8, 3, 9).toISOString() },
   };
   assert.equal(calculateStudyStreak(progress, 'javascript', now), 3);
+});
+
+test('0·음수·비정상 집중 시간에서도 세션을 유한하게 만들고 배분 총합을 유지한다', () => {
+  for (const focus of [0, -5, Infinity, NaN, 'invalid']) {
+    const sessions = buildStudySessions({ problems: 125, theory: 20 }, focus);
+    assert.equal(sessions.reduce((total, session) => total + session.duration, 0), 145);
+    assert.ok(sessions.every(session => session.duration > 0 && session.duration <= 50));
+  }
+  assert.deepEqual(buildStudySessions({ problems: Infinity, theory: -5 }, 50), []);
+  assert.equal(Object.values(calculateStudyAllocation(Infinity)).reduce((total, value) => total + value, 0), 0);
+  assert.equal(Object.values(calculateStudyAllocation(125, 'beginner', { problems: '55', theory: '20', review: '25' })).reduce((total, value) => total + value, 0), 125);
+  assert.equal(Object.values(calculateStudyAllocation(125, 'beginner', { problems: Number.MAX_VALUE, theory: Number.MAX_VALUE })).reduce((total, value) => total + value, 0), 125);
+});
+
+test('코딩 세션 수가 바뀌어도 다른 종류의 세션 완료 ID는 움직이지 않는다', () => {
+  const short = buildStudySessions({ problems: 50, theory: 20, review: 10 });
+  const long = buildStudySessions({ problems: 150, theory: 20, review: 10 });
+  assert.equal(short.find(session => session.type === 'theory').id, 'theory-0-20');
+  assert.equal(long.find(session => session.type === 'theory').id, 'theory-0-20');
+  assert.equal(short.find(session => session.type === 'review').id, long.find(session => session.type === 'review').id);
+  assert.deepEqual(migrateCompletedStudySessions(['problems-0', 'theory-3', 'review-4', 'review-999', 'theory-0'], { problems: 150, theory: 20, review: 10 }), ['problems-0-50', 'theory-0-20', 'review-0-10']);
+});
+
+test('집중시간이나 마지막 세션 길이가 바뀌면 이전 완료를 새 길이에 적용하지 않는다', () => {
+  const shortFocus = buildStudySessions({ problems: 100, theory: 20 }, 25);
+  const longFocus = buildStudySessions({ problems: 100, theory: 20 }, 50);
+  const completedIds = shortFocus.map(session => session.id);
+  assert.ok(longFocus.filter(session => session.type === 'problems').every(session => !completedIds.includes(session.id)));
+  assert.ok(completedIds.includes(longFocus.find(session => session.type === 'theory').id));
+  const original = buildStudySessions({ problems: 60 }, 50);
+  const extended = buildStudySessions({ problems: 70 }, 50);
+  assert.equal(original[0].id, extended[0].id);
+  assert.equal(original[1].id, 'problems-1-10');
+  assert.equal(extended[1].id, 'problems-1-20');
+});
+
+test('이전 v2 완료 ID도 저장 당시 길이로 이관하고 모르는 번호와 길이는 버린다', () => {
+  const allocation = { problems: 75, theory: 20, review: 10 };
+  const date = new Date(2026, 8, 5);
+  const migrated = migrateCompletedStudySessions(['problems-0', 'problems-1', 'theory-0', 'theory-3', 'review-0', 'unknown-0'], allocation, 25, date, 'JavaScript', 2);
+  assert.deepEqual(migrated, ['problems-0-25', 'problems-1-25', 'theory-0-20', 'review-0-10']);
+  assert.equal(buildStudySessions(allocation, 50, date).some(session => session.type === 'problems' && session.duration === 50 && migrated.includes(session.id)), false);
+  assert.deepEqual(migrateCompletedStudySessions(['problems-0-25', 'problems-0-50', 'unknown-0-25'], allocation, 25, date, 'JavaScript', 3), ['problems-0-25']);
+  assert.deepEqual(migrateCompletedStudySessions(['problems-0'], allocation, 25, date, 'JavaScript', 99), []);
+});
+
+test('현재 레벨 문제가 모자라도 잠긴 다른 레벨의 새 문제를 섞지 않는다', () => {
+  const problems = [
+    { id: 'JS0001', level: 0, difficulty: 1, concepts: ['Array'] },
+    { id: 'JS5001', level: 5, difficulty: 5, concepts: ['Graph'] },
+  ];
+  const selected = selectDailyProblems({ problems, targetLevel: 0, count: 7 });
+  assert.deepEqual(selected.map(problem => problem.id), ['JS0001']);
+  assert.deepEqual(selectDailyProblems({ problems, targetLevel: 0, count: -2 }), []);
+});
+
+test('복습일을 기다리는 중이라도 현재 레벨의 막힌 문제를 새 문제보다 먼저 이어간다', () => {
+  const problems = [
+    { id: 'JS0001', level: 0, difficulty: 1, concepts: ['Array'] },
+    { id: 'JS0002', level: 0, difficulty: 1, concepts: ['Array'] },
+    { id: 'JS0003', level: 0, difficulty: 1, concepts: ['Array'] },
+  ];
+  for (const status of ['TRYING', 'FAILED', 'REVIEW']) {
+    const selected = selectDailyProblems({ problems, targetLevel: 0, count: 1, progress: { JS0003: { status, nextReview: '2026-09-07T03:00:00Z' } }, now: new Date('2026-09-05T03:00:00Z') });
+    assert.equal(selected[0].id, 'JS0003');
+  }
+});
+
+test('저장된 학습 날짜 이력은 같은 문제를 반복한 날의 연속 기록도 유지한다', () => {
+  const progress = { 'JS0001:javascript': { lastAttempt: new Date(2026, 8, 6, 12).toISOString(), studyDays: ['2026-09-04', '2026-09-05', '2026-09-06', 'invalid'] } };
+  assert.equal(calculateStudyStreak(progress, 'javascript', new Date(2026, 8, 6, 13)), 3);
+  assert.equal(calculateStudyStreak(progress, 'java', new Date(2026, 8, 6, 13)), 0);
+  assert.equal(deriveCurriculumState({ profile: { startLevel: 1.5 }, progress: null }).currentLevel, 1);
 });

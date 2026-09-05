@@ -3,13 +3,14 @@ import { getLocal, setLocal } from '../../core/storage/db.js';
 import { createWorkplaceState, normalizeWorkplaceState, createDailySession, recordWorkplaceAnswer, markWorkplaceTermSeen, getWorkplaceSummary, localDayKey } from '../../core/workplace/learning.js';
 import { workplaceCategories, workplaceTerms, workplaceSources } from '../../data/workplaceTerms.js';
 import GlossaryText from '../glossary/GlossaryText.jsx';
+import { workplaceGlossaryEntries } from '../../data/workplaceGlossary.js';
 import './workplace.css';
 
 export const WORKPLACE_STORAGE_KEY = 'loopin-workplace-learning';
 const termsById = new Map(workplaceTerms.map((term) => [term.id, term]));
 const categoryLabel = (id) => workplaceCategories.find((category) => category.id === id)?.label || id;
 
-export function useWorkplaceLearning() {
+function useWorkplaceLearning() {
   const [state, setState] = useState(() => normalizeWorkplaceState(getLocal(WORKPLACE_STORAGE_KEY, createWorkplaceState()), workplaceTerms));
   const current = useRef(state);
   const [day, setDay] = useState(() => localDayKey(new Date()));
@@ -50,28 +51,15 @@ export function useWorkplaceLearning() {
   return { state, summary, update, day, saveError };
 }
 
-export function WorkplaceTodayCard({ learning, onOpen }) {
-  const { state, summary, day } = learning;
-  const hasToday = state.session?.day === day && state.session.termIds.length > 0;
-  return <section className="workplace-today">
-    <span className="workplace-symbol" aria-hidden="true">Aa</span>
-    <div><span className="eyebrow">A LITTLE EVERY DAY</span><h2>회의에서 놓쳤던 말, 오늘은 내 말로.</h2>
-      <p>{hasToday ? `오늘 ${summary.completedCount} / ${summary.selectedCount}개 완료` : `하루 ${state.preferences.count}개부터 · 분야와 용어를 직접 선택`}
-        {' · '}코테와 별도로 약 {(hasToday ? summary.selectedCount : state.preferences.count) * 2}분
-        {summary.dueCount > 0 && ` · 복습할 용어 ${summary.dueCount}개`}</p></div>
-    <button className="secondary-button" onClick={onOpen}>{hasToday ? summary.complete ? '오늘 결과 보기' : '용어 학습 이어하기' : '오늘의 용어 고르기'} →</button>
-  </section>;
-}
-
 function TermExplanation({ term }) {
   return <div className="word-explanation">
     <span className="word-category">{categoryLabel(term.category)}</span>
     <h2>{term.term}</h2><p className="word-english">{term.english}</p>
-    <p className="word-meaning"><GlossaryText text={term.meaning} /></p>
+    <p className="word-meaning"><GlossaryText entries={workplaceGlossaryEntries} text={term.meaning} /></p>
     <div className="meeting-scene"><span>회의에서는 이렇게 들려요</span><blockquote>“{term.situation.replace(/^“|”$/g, '')}”</blockquote></div>
-    <div className="word-translation"><h3>쉬운 말로 풀면</h3><p><GlossaryText text={term.interpretation} /></p></div>
+    <div className="word-translation"><h3>쉬운 말로 풀면</h3><p><GlossaryText entries={workplaceGlossaryEntries} text={term.interpretation} /></p></div>
     <div className="word-reply"><h3>이렇게 답하거나 물어보세요</h3><p>“{term.exampleReply}”</p></div>
-    <div className="word-distinction"><h3>헷갈리기 쉬운 부분</h3><p><GlossaryText text={term.distinction} /></p></div>
+    <div className="word-distinction"><h3>헷갈리기 쉬운 부분</h3><p><GlossaryText entries={workplaceGlossaryEntries} text={term.distinction} /></p></div>
   </div>;
 }
 
@@ -193,7 +181,8 @@ function WordResults({ learning, onConfigure }) {
   </section>;
 }
 
-export default function WorkplaceLearning({ learning }) {
+export default function WorkplaceLearning() {
+  const learning = useWorkplaceLearning();
   const { state, summary, day, saveError } = learning;
   const hasSession = state.session?.day === day && state.session.termIds.length > 0;
   const [configuring, setConfiguring] = useState(!hasSession);
@@ -212,7 +201,7 @@ export default function WorkplaceLearning({ learning }) {
   // Keep the final answer explanation visible until the learner presses Next.
   const showResults = summary.complete && !activeId;
   return <main className="page workplace-page">
-    <header className="page-header"><div><span className="eyebrow">MEETING LANGUAGE · {day}</span><h1>회의 용어 연습실</h1><p>어려운 말을 쉬운 말로. 듣고, 이해하고, 내 말로 답하는 연습.</p></div><div className="word-header-count"><strong>{summary.learnedCount}</strong><span>/ {workplaceTerms.length}개 익힘</span></div></header>
+    <header className="page-header"><div><span className="eyebrow">OPTIONAL · MEETING LANGUAGE · {day}</span><h1>회의 용어 연습실</h1><p>원할 때만 따로 하는 선택 학습이에요. 코테의 오늘 계획·학습 시간·진도에는 포함되지 않습니다.</p></div><div className="word-header-count"><strong>{summary.learnedCount}</strong><span>/ {workplaceTerms.length}개 익힘</span></div></header>
     {saveError && <div className="word-inline-error" role="alert">{saveError}</div>}
     {!configuring && hasSession && <div className="word-session-bar"><div><strong>오늘 {summary.completedCount} / {summary.selectedCount}개</strong><span>틀린 용어는 다시 연습 · 진도 자동 저장</span></div><button className="text-button" onClick={() => setConfiguring(true)}>분야·개수 변경 / 사전</button><progress aria-label="오늘 용어 학습 진행률" value={summary.completedCount} max={Math.max(1, summary.selectedCount)} /></div>}
     {configuring || !hasSession ? <DailyWordSetup key={day} learning={learning} onStart={() => { setConfiguring(false); setActiveId(null); setRound((value) => value + 1); }} />

@@ -1,6 +1,4 @@
-import { workplaceTerms } from './workplaceTerms.js';
-
-const coreGlossaryEntries = [
+export const glossaryEntries = [
   {
     id: 'algorithm',
     label: '알고리즘',
@@ -1112,17 +1110,3 @@ const coreGlossaryEntries = [
     definition: '보안 사고를 식별하고 격리·제거한 뒤 안전하게 복구하고 원인과 통제를 개선하는 절차입니다.',
   },
 ];
-
-// Preserve established programming definitions while adding workplace aliases.
-const knownAliases = new Set(coreGlossaryEntries.flatMap((entry) => entry.terms.map((term) => term.toLowerCase())));
-const workplaceGlossaryEntries = workplaceTerms.flatMap((entry) => {
-  const terms = [...new Set([entry.term, entry.english, ...entry.aliases])].filter((term) => {
-    const alias = term.toLowerCase();
-    if (knownAliases.has(alias)) return false;
-    knownAliases.add(alias);
-    return true;
-  });
-  return terms.length ? [{ id: entry.id, label: entry.term, terms, definition: `${entry.meaning} ${entry.distinction}` }] : [];
-});
-
-export const glossaryEntries = [...coreGlossaryEntries, ...workplaceGlossaryEntries];

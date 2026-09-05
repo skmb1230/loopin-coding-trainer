@@ -38,6 +38,15 @@ const experienceDepth = (years = '') => {
 };
 
 export function OnboardingResult({ profile, onComplete }) {
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const finish = async () => {
+    if (saving) return;
+    setSaving(true); setSaveError('');
+    try { await onComplete({ ...profile, onboardingResultSeen: true }); }
+    catch { setSaveError('시작 설정을 저장하지 못했어요. 진단 결과는 이 화면에 유지됩니다. 저장 공간과 브라우저 설정을 확인한 뒤 다시 시도해 주세요.'); }
+    finally { setSaving(false); }
+  };
   const diagnostics = diagnosticsForLanguage(profile.learningLanguage);
   const language = getLanguage(profile.learningLanguage);
   const score = profile.diagnosticScore || 0;
@@ -68,17 +77,18 @@ export function OnboardingResult({ profile, onComplete }) {
 
         <div className="separate-tracks">
           <article><span>01</span><small>ALGORITHM TRACK</small><h3>{algorithmTrack}</h3><p>문제 난이도는 오직 진단과 실제 풀이 기록으로 조정</p></article>
-          <article><span>02</span><small>{language.label.toUpperCase()} THEORY TRACK</small><h3>{experienceDepth(profile.frontendYears)}</h3><p>{profile.frontendYears} 경력을 반영해 {language.label} 이론 깊이를 조정</p></article>
+          <article><span>02</span><small>{language.label.toUpperCase()} THEORY TRACK</small><h3>{experienceDepth(profile.frontendYears)}</h3><p>{profile.frontendYears} 경력을 참고한 추천 깊이 · 이론 주제는 직접 선택</p></article>
         </div>
 
         <div className="result-focus"><div><small>FIRST FOCUS</small><strong>{firstFocus.length ? firstFocus.join(' · ') : 'Map/Set · 구현 심화'}</strong></div><div><small>WEEKLY RHYTHM</small><strong>주 {formatResultTime((profile.dailyMinutes || 120) * (profile.daysPerWeek || 5))}</strong></div><div><small>TARGET</small><strong>{profile.targetWeeks}주 · {profile.goal}</strong></div></div>
         <div className="result-notice"><span>i</span><p><b>{formatResultTime(profile.dailyMinutes)}은 기본값이에요.</b> 실제 계획은 매일 “오늘 가능한 시간”을 다시 확인한 뒤 만듭니다.</p></div>
-        <button className="primary-button result-cta" onClick={() => onComplete({ ...profile, onboardingResultSeen: true })}>오늘 계획 만들기 <span>→</span></button>
+        {saveError && <p className="data-action-error" role="alert">{saveError}</p>}
+        <button className="primary-button result-cta" disabled={saving} onClick={finish}>{saving ? '시작 설정 저장 중…' : '오늘 계획 만들기'} <span>→</span></button>
       </section>
       <aside className="result-aside">
         <span className="aside-kicker">DEFAULT DAY · {formatResultTime(profile.dailyMinutes)}</span>
         <h2>첫 학습 배분</h2>
-        <p>오늘 시간이 달라지면 이 비율을 유지한 채 세션 길이와 문제 수가 함께 바뀝니다.</p>
+        <p>오늘 시간에 맞춰 세션과 문제 수가 달라집니다. 짧은 날에는 Git·AWS를 줄이고 핵심 학습을 우선합니다.</p>
         <div className="result-allocation">
           {[
             ['problems', '코딩테스트 문제', '55%'],
@@ -87,7 +97,7 @@ export function OnboardingResult({ profile, onComplete }) {
             ['systems', 'SMTP · 네트워크 · 보안', '10%'],
             ['career', 'Git · AWS 면접', '5%'],
             ['review', '오답 복습', '5%'],
-          ].map(([key, label, ratio]) => <div key={key}><span className={key}>{ratio}</span><p><strong>{label}</strong><small>{formatResultTime(allocation[key])}</small></p></div>)}
+          ].map(([key, label]) => <div key={key}><span className={key}>{Math.round(allocation[key] / (profile.dailyMinutes || 120) * 100)}%</span><p><strong>{label}</strong><small>{formatResultTime(allocation[key])}</small></p></div>)}
         </div>
         <div className="result-principle"><small>ADAPTIVE PLAN</small><p>정답률이 떨어지면 난이도만 낮추지 않고, 같은 개념의 더 작은 문제로 연결합니다.</p></div>
       </aside>

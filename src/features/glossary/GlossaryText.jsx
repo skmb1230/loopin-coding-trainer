@@ -77,8 +77,8 @@ function GlossaryTerm({ children, entry }) {
   );
 }
 
-export default function GlossaryText({ text }) {
-  return findGlossaryParts(text, glossaryEntries).map((part, index) => (
+export default function GlossaryText({ text, entries = glossaryEntries }) {
+  return findGlossaryParts(text, entries).map((part, index) => (
     <Fragment key={`${part.type}-${index}-${part.text}`}>
       {part.type === 'term' ? <GlossaryTerm entry={part.entry}>{part.text}</GlossaryTerm> : part.text}
     </Fragment>

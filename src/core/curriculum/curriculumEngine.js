@@ -1,4 +1,5 @@
 import { adjustDifficulty } from './adjustDifficulty.js';
+import { localDayKey, parseLocalDay } from '../dates/localDay.js';
 
 export const problemCountsByLevel = Object.freeze([200, 220, 180, 120, 60, 20]);
 
@@ -37,6 +38,7 @@ export function getProblemLevel(problemId = '') {
 
 export function getLanguageProgress(progress = {}, languageId = 'javascript') {
   const records = {};
+  progress = progress && typeof progress === 'object' ? progress : {};
 
   if (languageId === 'javascript') {
     for (const [key, record] of Object.entries(progress)) {
@@ -54,7 +56,7 @@ export function getLanguageProgress(progress = {}, languageId = 'javascript') {
 
 function recordMastery(record) {
   const statusFloor = record?.status === 'MASTERED' ? 85 : record?.status === 'SOLVED' ? 58 : record?.status === 'SOLVED_WITH_HINT' ? 44 : 0;
-  if (Number.isFinite(record?.mastery)) return Math.max(statusFloor, record.mastery);
+  if (Number.isFinite(record?.mastery)) return Math.min(100, Math.max(statusFloor, record.mastery, 0));
   if (statusFloor) return statusFloor;
   return 0;
 }
@@ -91,7 +93,7 @@ export function calculateLevelStats(progress = {}, languageId = 'javascript') {
 
 export function deriveCurriculumState({ profile = {}, progress = {}, languageId = 'javascript' } = {}) {
   const diagnosticLanguage = profile?.learningLanguage || 'javascript';
-  const startLevel = diagnosticLanguage === languageId ? Math.min(5, Math.max(0, Number(profile?.startLevel) || 0)) : 0;
+  const startLevel = diagnosticLanguage === languageId ? Math.min(5, Math.max(0, Math.floor(Number(profile?.startLevel) || 0))) : 0;
   const levels = calculateLevelStats(progress, languageId);
   let currentLevel = startLevel;
   while (currentLevel < 5 && levels[currentLevel].readyForNext) currentLevel += 1;
@@ -128,16 +130,15 @@ export function getLevelsReferencedByIds(ids = []) {
 
 export function calculateStudyStreak(progress = {}, languageId = 'javascript', now = new Date()) {
   const days = new Set(Object.values(getLanguageProgress(progress, languageId))
-    .map((record) => record.lastAttempt)
-    .filter(Boolean)
-    .map((value) => new Date(value).toLocaleDateString('en-CA')));
+    .flatMap(record => [...(Array.isArray(record.studyDays) ? record.studyDays.filter(value => parseLocalDay(value)) : []), record.lastAttempt].filter(Boolean))
+    .flatMap(value => { try { return [localDayKey(value)]; } catch { return []; } }));
   if (!days.size) return 0;
 
-  const cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const today = cursor.toLocaleDateString('en-CA');
+  const cursor = parseLocalDay(localDayKey(now));
+  const today = localDayKey(cursor);
   if (!days.has(today)) cursor.setDate(cursor.getDate() - 1);
   let streak = 0;
-  while (days.has(cursor.toLocaleDateString('en-CA'))) {
+  while (days.has(localDayKey(cursor))) {
     streak += 1;
     cursor.setDate(cursor.getDate() - 1);
   }

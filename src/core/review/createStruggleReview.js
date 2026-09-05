@@ -21,6 +21,7 @@ export function createStruggleProgress(current = {}, record, hintLevel = 0) {
   return {
     status: solvedStatuses.has(current.status) ? 'REVIEW' : 'TRYING',
     hintsUsed: Math.max(1, current.hintsUsed || 0, hintLevel),
+    lastHintsUsed: Math.max(1, ['TRYING', 'FAILED', 'REVIEW'].includes(current.status) ? current.lastHintsUsed || 0 : 0, hintLevel),
     stuckCount: (current.stuckCount || 0) + 1,
     lastStuckAt: record.createdAt,
     nextReview: calculateNextReview(new Date(record.createdAt), 0, 'retry'),

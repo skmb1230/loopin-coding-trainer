@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { workplaceTerms, workplaceCategories, workplaceSources } from '../src/data/workplaceTerms.js';
-import { glossaryEntries } from '../src/data/glossary.js';
+import { workplaceGlossaryEntries as glossaryEntries } from '../src/data/workplaceGlossary.js';
 import { findGlossaryParts } from '../src/core/glossary/findGlossaryParts.js';
 
 test('회의 학습은 5개 분야의 고유 용어 60개와 서로 다른 상황 문제 120개를 제공한다', () => {

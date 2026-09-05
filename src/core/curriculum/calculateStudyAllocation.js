@@ -24,8 +24,11 @@ export function getSystemsTrackForDate(date = new Date()) {
 }
 
 export function calculateStudyAllocation(totalMinutes, stage = 'beginner', customRatios) {
-  const minutes = Math.max(0, Math.round(Number(totalMinutes) || 0));
-  const baseRatios = customRatios || ratiosByStage[stage] || ratiosByStage.beginner;
+  const inputMinutes = Number(totalMinutes);
+  const minutes = Number.isFinite(inputMinutes) ? Math.min(1440, Math.max(0, Math.round(inputMinutes))) : 0;
+  const requestedRatios = customRatios || ratiosByStage[stage] || ratiosByStage.beginner;
+  const sanitizedRatios = Object.fromEntries(allocationKeys.map(key => [key, Number.isFinite(Number(requestedRatios[key])) ? Math.min(1_000_000, Math.max(0, Number(requestedRatios[key]))) : 0]));
+  const baseRatios = allocationKeys.some(key => sanitizedRatios[key] > 0) ? sanitizedRatios : ratiosByStage[stage] || ratiosByStage.beginner;
   const ratios = minutes < 120 && (baseRatios.career || 0) > 0
     ? { ...baseRatios, systems: (baseRatios.systems || 0) + baseRatios.career, career: 0 }
     : baseRatios;
@@ -52,14 +55,33 @@ export function buildStudySessions(allocation, focusMinutes = 50, date = new Dat
   const systemsTrack = getSystemsTrackForDate(date);
   const labels = { problems: '코딩테스트', theory: `알고리즘 · ${languageLabel}`, ai: 'AI · 프론트엔드', systems: systemsTrack.sessionTitle, career: careerTrack.sessionTitle, review: '오답 복습' };
   const sessions = [];
+  const requestedFocus = Number(focusMinutes);
+  const focus = Number.isFinite(requestedFocus) && requestedFocus > 0 ? Math.min(1440, Math.max(1, Math.round(requestedFocus))) : 50;
   for (const key of allocationKeys) {
-    let remaining = allocation[key] || 0;
+    const requestedMinutes = Number(allocation?.[key]);
+    let remaining = Number.isFinite(requestedMinutes) ? Math.min(1440, Math.max(0, Math.round(requestedMinutes))) : 0;
+    let typeIndex = 0;
     while (remaining > 0) {
-      const duration = Math.min(focusMinutes, remaining);
+      const duration = Math.min(focus, remaining);
       const track = key === 'career' ? careerTrack.id : key === 'systems' ? systemsTrack.id : undefined;
-      sessions.push({ id: `${key}-${sessions.length}`, type: key, title: labels[key], duration, done: false, track });
+      sessions.push({ id: `${key}-${typeIndex}-${duration}`, type: key, title: labels[key], duration, done: false, track });
+      typeIndex += 1;
       remaining -= duration;
     }
   }
   return sessions;
+}
+
+/**
+ * Resolve completed IDs against the saved plan, never the newly edited plan.
+ * Version 1 used global indices, version 2 type-local indices, and version 3
+ * includes duration so changing a 25-minute session cannot complete 50 minutes.
+ */
+export function migrateCompletedStudySessions(completedIds, allocation, focusMinutes = 50, date = new Date(), languageLabel = 'JavaScript', version = 1) {
+  if (![1, 2, 3].includes(version)) return [];
+  const oldToNew = new Map(buildStudySessions(allocation, focusMinutes, date, languageLabel).map((session, index) => {
+    const oldId = version === 1 ? `${session.type}-${index}` : version === 2 ? session.id.slice(0, session.id.lastIndexOf('-')) : session.id;
+    return [oldId, session.id];
+  }));
+  return [...new Set((Array.isArray(completedIds) ? completedIds : []).filter(id => oldToNew.has(id)).map(id => oldToNew.get(id)))];
 }

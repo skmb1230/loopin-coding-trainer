@@ -35,5 +35,6 @@ test('해결한 문제에서 다시 막히면 복습 상태로 전환한다', ()
 
   assert.equal(progress.status, 'REVIEW');
   assert.equal(progress.hintsUsed, 2);
+  assert.equal(progress.lastHintsUsed, 1);
   assert.equal(progress.stuckCount, 2);
 });

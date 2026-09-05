@@ -4,33 +4,38 @@ import { homedir, tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const projectDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const userHomeDir = homedir();
-const appDir = join(userHomeDir, 'Desktop', 'Loopin.app');
-const logDir = join(userHomeDir, 'Library', 'Logs');
-const logFile = join(logDir, 'Loopin.log');
-const contentsDir = join(appDir, 'Contents');
-const macosDir = join(contentsDir, 'MacOS');
-const resourcesDir = join(contentsDir, 'Resources');
-const sourceIcon = join(projectDir, 'public', 'loopin-icon.png');
-const tempDir = await mkdtemp(join(tmpdir(), 'loopin-icon-'));
-const iconsetDir = join(tempDir, 'Loopin.iconset');
+export const shellQuote = (value) => `'${String(value).replaceAll("'", "'\"'\"'")}'`;
 
-await rm(appDir, { recursive: true, force: true });
-await mkdir(macosDir, { recursive: true });
-await mkdir(resourcesDir, { recursive: true });
-await mkdir(iconsetDir, { recursive: true });
-await mkdir(logDir, { recursive: true });
+export async function installMacApp() {
+  if (process.platform !== 'darwin') throw new Error('Loopin.app 설치는 macOS 전용입니다. Windows에서는 npm run start:local로 실행해 주세요.');
 
-const sizes = [16, 32, 128, 256, 512];
-for (const size of sizes) {
-  execFileSync('sips', ['-z', String(size), String(size), sourceIcon, '--out', join(iconsetDir, `icon_${size}x${size}.png`)], { stdio: 'ignore' });
-  execFileSync('sips', ['-z', String(size * 2), String(size * 2), sourceIcon, '--out', join(iconsetDir, `icon_${size}x${size}@2x.png`)], { stdio: 'ignore' });
-}
-execFileSync('iconutil', ['-c', 'icns', iconsetDir, '-o', join(resourcesDir, 'Loopin.icns')]);
-await cp(sourceIcon, join(resourcesDir, 'Loopin.png'));
+  const projectDir = resolve(fileURLToPath(new URL('..', import.meta.url)));
+  const userHomeDir = homedir();
+  const appDir = join(userHomeDir, 'Desktop', 'Loopin.app');
+  const logDir = join(userHomeDir, 'Library', 'Logs');
+  const logFile = join(logDir, 'Loopin.log');
+  const contentsDir = join(appDir, 'Contents');
+  const macosDir = join(contentsDir, 'MacOS');
+  const resourcesDir = join(contentsDir, 'Resources');
+  const sourceIcon = join(projectDir, 'public', 'loopin-icon.png');
+  const tempDir = await mkdtemp(join(tmpdir(), 'loopin-icon-'));
+  const iconsetDir = join(tempDir, 'Loopin.iconset');
 
-const plist = `<?xml version="1.0" encoding="UTF-8"?>
+  await rm(appDir, { recursive: true, force: true });
+  await mkdir(macosDir, { recursive: true });
+  await mkdir(resourcesDir, { recursive: true });
+  await mkdir(iconsetDir, { recursive: true });
+  await mkdir(logDir, { recursive: true });
+
+  const sizes = [16, 32, 128, 256, 512];
+  for (const size of sizes) {
+    execFileSync('sips', ['-z', String(size), String(size), sourceIcon, '--out', join(iconsetDir, `icon_${size}x${size}.png`)], { stdio: 'ignore' });
+    execFileSync('sips', ['-z', String(size * 2), String(size * 2), sourceIcon, '--out', join(iconsetDir, `icon_${size}x${size}@2x.png`)], { stdio: 'ignore' });
+  }
+  execFileSync('iconutil', ['-c', 'icns', iconsetDir, '-o', join(resourcesDir, 'Loopin.icns')]);
+  await cp(sourceIcon, join(resourcesDir, 'Loopin.png'));
+
+  const plist = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
   <key>CFBundleName</key><string>Loopin</string>
@@ -45,14 +50,18 @@ const plist = `<?xml version="1.0" encoding="UTF-8"?>
   <key>LSUIElement</key><true/>
 </dict></plist>`;
 
-const launcher = `#!/bin/zsh
-PROJECT_DIR=${JSON.stringify(projectDir)}
+  const launcher = `#!/bin/zsh
+PROJECT_DIR=${shellQuote(projectDir)}
 LOOPIN_URL="http://localhost:5173"
-LOOPIN_LOG=${JSON.stringify(logFile)}
-NODE_BIN=${JSON.stringify(process.execPath)}
-export PATH=${JSON.stringify(process.env.PATH)}
+LOOPIN_LOG=${shellQuote(logFile)}
+NODE_BIN=${shellQuote(process.execPath)}
+export PATH=${shellQuote(process.env.PATH || '')}
 
-if /usr/bin/curl -fsS "$LOOPIN_URL" >/dev/null 2>&1; then
+is_loopin() {
+  /usr/bin/curl -fsS --max-time 2 "$LOOPIN_URL/api/loopin/status" 2>/dev/null | /usr/bin/grep -q '"app":"loopin-coding-trainer"'
+}
+
+if is_loopin; then
   /usr/bin/open "$LOOPIN_URL"
   exit 0
 fi
@@ -66,11 +75,12 @@ fi
 "$NODE_BIN" "$PROJECT_DIR/scripts/startLocalServer.mjs" >>"$LOOPIN_LOG" 2>&1 </dev/null &
 SERVER_PID=$!
 for attempt in {1..60}; do
-  if /usr/bin/curl -fsS "$LOOPIN_URL" >/dev/null 2>&1; then
+  if is_loopin; then
     /usr/bin/open "$LOOPIN_URL"
     wait "$SERVER_PID"
     exit $?
   fi
+  /bin/kill -0 "$SERVER_PID" >/dev/null 2>&1 || break
   /bin/sleep 0.25
 done
 
@@ -79,8 +89,13 @@ done
 exit 1
 `;
 
-await writeFile(join(contentsDir, 'Info.plist'), plist);
-await writeFile(join(macosDir, 'Loopin'), launcher);
-await chmod(join(macosDir, 'Loopin'), 0o755);
-await rm(tempDir, { recursive: true, force: true });
-console.log(`✓ ${appDir} 설치 완료`);
+  await writeFile(join(contentsDir, 'Info.plist'), plist);
+  await writeFile(join(macosDir, 'Loopin'), launcher);
+  await chmod(join(macosDir, 'Loopin'), 0o755);
+  await rm(tempDir, { recursive: true, force: true });
+  console.log(`✓ ${appDir} 설치 완료`);
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  await installMacApp();
+}

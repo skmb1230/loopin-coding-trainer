@@ -23,3 +23,12 @@ test('복습 간격은 1, 3, 7, 14일로 증가한다', () => {
   assert.equal((new Date(calculateNextReview(start, 3)) - start) / day, 14);
   assert.equal(isReviewDue('2026-09-02T00:00:00.000Z', start), true);
 });
+
+test('가져온 점수·힌트·복습 횟수에 비정상 숫자가 있어도 숙련도와 날짜가 깨지지 않는다', () => {
+  assert.equal(calculateMastery('20', { solved: true }), 30);
+  assert.equal(calculateMastery(NaN, { solved: true }), 10);
+  assert.equal(calculateMastery(20, { solved: true, hintsUsed: -9 }), 30);
+  const start = new Date('2026-09-03T00:00:00.000Z');
+  assert.equal(calculateNextReview(start, 1.5), calculateNextReview(start, 1));
+  assert.equal(calculateNextReview(start, Infinity), calculateNextReview(start, 0));
+});

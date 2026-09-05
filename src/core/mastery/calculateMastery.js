@@ -1,13 +1,15 @@
 const clamp = (value, min = 0, max = 100) => Math.min(max, Math.max(min, value));
 
 export function calculateMastery(currentScore = 0, attempt = {}) {
+  currentScore = Number.isFinite(Number(currentScore)) ? clamp(Number(currentScore)) : 0;
   const {
     solved = false,
     firstTry = false,
-    hintsUsed = 0,
+    hintsUsed: rawHintsUsed = 0,
     timedOut = false,
     reviewSuccess = false,
   } = attempt;
+  const hintsUsed = Number.isFinite(Number(rawHintsUsed)) ? Math.max(0, Math.floor(Number(rawHintsUsed))) : 0;
 
   if (!solved) return clamp(currentScore - (timedOut ? 1 : 0));
 
@@ -30,7 +32,7 @@ export function calculateConceptMastery(problems, progress) {
         continue;
       }
       const statusFloor = record.status === 'MASTERED' ? 85 : record.status === 'SOLVED' ? 55 : record.status === 'SOLVED_WITH_HINT' ? 42 : 0;
-      const score = Math.max(statusFloor, record.mastery ?? 0);
+      const score = clamp(Math.max(statusFloor, Number.isFinite(Number(record.mastery)) ? Number(record.mastery) : 0));
       totals.set(concept, { score: current.score + score, count: current.count + 1 });
     }
   }

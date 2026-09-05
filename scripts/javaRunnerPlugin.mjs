@@ -21,8 +21,9 @@ function isLocalRequest(request) {
 }
 
 async function findJavaTool(tool) {
+  const executable = process.platform === 'win32' ? `${tool}.exe` : tool;
   const candidates = [
-    process.env.JAVA_HOME ? join(process.env.JAVA_HOME, 'bin', tool) : null,
+    process.env.JAVA_HOME ? join(process.env.JAVA_HOME, 'bin', executable) : null,
     `/opt/homebrew/opt/openjdk@21/bin/${tool}`,
     `/usr/local/opt/openjdk@21/bin/${tool}`,
   ].filter(Boolean);
@@ -30,7 +31,7 @@ async function findJavaTool(tool) {
     try { await access(candidate); return candidate; }
     catch { /* 다음 설치 위치를 확인합니다. */ }
   }
-  return tool;
+  return executable;
 }
 
 const json = (response, statusCode, body) => {
@@ -154,8 +155,8 @@ class LoopinRunner {
     for (int i = 0; i < value.length(); i++) {
       char ch = value.charAt(i);
       switch (ch) {
-        case '\\' -> output.append("\\\\\\\\");
-        case '"' -> output.append("\\\\\\\"");
+        case '\\' -> output.append("\\\\");
+        case '"' -> output.append("\\\"");
         case '\n' -> output.append("\\n");
         case '\r' -> output.append("\\r");
         case '\t' -> output.append("\\t");
@@ -280,6 +281,10 @@ export async function executeJava({ code, tests, javaSpec, timeout }) {
 function javaRunnerMiddleware() {
   return async (request, response, next) => {
     const pathname = new URL(request.url, 'http://localhost').pathname;
+    if (pathname === '/api/loopin/status' && request.method === 'GET') {
+      json(response, 200, { app: 'loopin-coding-trainer' });
+      return;
+    }
     if (pathname === '/api/java/status' && request.method === 'GET') {
       try { json(response, 200, await checkJdk()); }
       catch { json(response, 200, { available: false, requirement: 'JDK 21+' }); }
