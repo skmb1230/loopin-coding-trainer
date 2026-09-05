@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { calculateStudyAllocation, buildStudySessions, getCareerTrackForDate, getSystemsTrackForDate } from '../src/core/curriculum/calculateStudyAllocation.js';
 import { adjustDifficulty } from '../src/core/curriculum/adjustDifficulty.js';
 import { selectDailyProblems } from '../src/core/curriculum/selectDailyProblems.js';
-import { calculateLevelStats, calculateStudyStreak, deriveCurriculumState, getLanguageProgress } from '../src/core/curriculum/curriculumEngine.js';
+import { calculateLevelStats, calculateStudyStreak, deriveCurriculumState, getLanguageProgress, isSolvedOnLocalDay } from '../src/core/curriculum/curriculumEngine.js';
 
 test('초보자 4시간 학습 배분의 총합은 240분이다', () => {
   const allocation = calculateStudyAllocation(240, 'beginner');
@@ -82,6 +82,33 @@ test('언어별 기록은 분리하고 새 저장 키가 레거시 JavaScript �
   };
   assert.equal(getLanguageProgress(progress, 'javascript').JS0001.status, 'SOLVED');
   assert.equal(getLanguageProgress(progress, 'java').JS0001.status, 'SOLVED_WITH_HINT');
+});
+
+test('선택하지 않은 언어에는 다른 언어의 온보딩 진단 점수를 적용하지 않는다', () => {
+  const profile = { learningLanguage: 'javascript', startLevel: 1 };
+  assert.equal(deriveCurriculumState({ profile, languageId: 'javascript' }).currentLevel, 1);
+  assert.equal(deriveCurriculumState({ profile, languageId: 'java' }).currentLevel, 0);
+  assert.equal(deriveCurriculumState({ profile: { learningLanguage: 'java', startLevel: 1 }, languageId: 'javascript' }).currentLevel, 0);
+});
+
+test('프로필 없는 최초 실행에서도 온보딩 전 기본 커리큘럼을 계산한다', () => {
+  assert.equal(deriveCurriculumState({ profile: null }).currentLevel, 0);
+  assert.equal(deriveCurriculumState({ profile: null, languageId: 'java' }).currentLevel, 0);
+});
+
+test('오늘 완료는 유효한 정답 상태이면서 사용자 현지 날짜에 제출한 문제만 센다', () => {
+  const now = new Date(2026, 8, 5, 1, 0);
+  for (const status of ['SOLVED', 'SOLVED_WITH_HINT', 'MASTERED']) {
+    const record = { status, lastAttempt: new Date(2026, 8, 5, 0, 1).toISOString() };
+    assert.equal(isSolvedOnLocalDay(record, now), true);
+    assert.equal(isSolvedOnLocalDay(record, '2026-09-05'), true);
+  }
+  assert.equal(isSolvedOnLocalDay({ status: 'SOLVED_WITH_HINT', lastAttempt: new Date(2026, 8, 4, 23, 59).toISOString(), nextReview: now.toISOString() }, now), false);
+  assert.equal(isSolvedOnLocalDay({ status: 'FAILED', lastAttempt: now.toISOString() }, now), false);
+  assert.equal(isSolvedOnLocalDay({ status: 'SOLVED', lastAttempt: 'invalid' }, now), false);
+  assert.equal(isSolvedOnLocalDay({ status: 'SOLVED', lastAttempt: now.toISOString() }, '2026-02-30'), false);
+  assert.equal(isSolvedOnLocalDay({ status: 'SOLVED', lastAttempt: now.toISOString() }, 'invalid'), false);
+  assert.equal(isSolvedOnLocalDay(undefined, now), false);
 });
 
 test('해결 수·독립 풀이 비율·숙련도를 모두 통과해야 다음 레벨로 진급한다', () => {

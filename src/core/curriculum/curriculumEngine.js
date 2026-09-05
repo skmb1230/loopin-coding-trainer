@@ -13,6 +13,19 @@ export const levelRequirements = Object.freeze([
 
 const solvedStatuses = new Set(['SOLVED', 'SOLVED_WITH_HINT', 'MASTERED']);
 
+export function isSolvedOnLocalDay(record, date = new Date()) {
+  if (!solvedStatuses.has(record?.status) || !record.lastAttempt) return false;
+  const attempt = new Date(record.lastAttempt);
+  const day = typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date)
+    ? new Date(`${date}T12:00:00`)
+    : new Date(date);
+  if (!Number.isFinite(attempt.getTime()) || !Number.isFinite(day.getTime())) return false;
+  const localKey = (value) => `${String(value.getFullYear()).padStart(4, '0')}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`;
+  // Reject impossible YYYY-MM-DD values that Date otherwise rolls forward.
+  if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(date) && localKey(day) !== date) return false;
+  return localKey(attempt) === localKey(day);
+}
+
 export function getProblemIdFromStorageKey(key = '') {
   return String(key).match(/JS\d{4}/)?.[0] || null;
 }
@@ -77,7 +90,8 @@ export function calculateLevelStats(progress = {}, languageId = 'javascript') {
 }
 
 export function deriveCurriculumState({ profile = {}, progress = {}, languageId = 'javascript' } = {}) {
-  const startLevel = Math.min(5, Math.max(0, Number(profile.startLevel) || 0));
+  const diagnosticLanguage = profile?.learningLanguage || 'javascript';
+  const startLevel = diagnosticLanguage === languageId ? Math.min(5, Math.max(0, Number(profile?.startLevel) || 0)) : 0;
   const levels = calculateLevelStats(progress, languageId);
   let currentLevel = startLevel;
   while (currentLevel < 5 && levels[currentLevel].readyForNext) currentLevel += 1;
